@@ -1099,6 +1099,11 @@ body.is-hover .cursor-ring {
   display: none;
 }
 
+/* Hidden on desktop — only shown via media query on mobile */
+.nav-mobile-dropdown {
+  display: none;
+}
+
 @media (max-width: 720px) {
   :root {
     --pad-x: 22px;
@@ -1145,6 +1150,7 @@ body.is-hover .cursor-ring {
 
   /* Dropdown panel */
   .nav-mobile-dropdown {
+    display: block; /* override the base display:none on mobile */
     position: fixed;
     top: 60px;
     left: 0;

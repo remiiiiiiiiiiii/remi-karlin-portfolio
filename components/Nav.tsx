@@ -38,6 +38,9 @@ export default function Nav() {
     transition: visible ? "opacity 0.25s ease" : "none",
   } as React.CSSProperties;
 
+  // For dropdown: only hide during flash — after mount let CSS fully control it
+  const dropdownFlashStyle = visible ? {} : { opacity: 0 } as React.CSSProperties;
+
   return (
     <>
       <nav
@@ -76,7 +79,7 @@ export default function Nav() {
       </nav>
 
       {/* Mobile dropdown */}
-      <div className={`nav-mobile-dropdown${open ? " is-open" : ""}`} aria-hidden={!open} style={visibilityStyle}>
+      <div className={`nav-mobile-dropdown${open ? " is-open" : ""}`} aria-hidden={!open} style={dropdownFlashStyle}>
         {LINKS.map((l) => {
           const active = l.match(pathname);
           return (
