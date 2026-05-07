@@ -1211,6 +1211,11 @@ body.is-hover .cursor-ring {
     text-align: center;
   }
 
+  /* Shorter hero scroll runway on mobile */
+  .hero-text {
+    height: 80vh;
+  }
+
   /* Project page hero — taller on mobile so overlay text fits */
   .project-video-frame {
     aspect-ratio: unset;
