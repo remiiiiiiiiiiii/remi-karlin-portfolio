@@ -86,7 +86,8 @@
       "Bash(git push *)",
       "Bash(git commit *)",
       "Bash(open http://localhost:3000/work/b1nbags)",
-      "Bash(rm -rf .next)"
+      "Bash(rm -rf .next)",
+      "Bash(node -e ' *)"
     ]
   }
 }
