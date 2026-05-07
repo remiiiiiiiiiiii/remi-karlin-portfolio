@@ -27,7 +27,7 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="nav" id="nav" aria-label="Primary">
+      <nav className="nav" id="nav" aria-label="Primary" style={{ position: "fixed", top: 0, left: 0, right: 0 }}>
         <Link className="nav-logo" href="/">
           Remi Karlin
         </Link>

@@ -74,8 +74,8 @@ export default function Cursor() {
 
   return (
     <>
-      <div className="cursor-ring" ref={ringRef} aria-hidden="true" />
-      <div className="cursor-dot" ref={dotRef} aria-hidden="true" />
+      <div className="cursor-ring" ref={ringRef} aria-hidden="true" style={{ opacity: 0 }} />
+      <div className="cursor-dot" ref={dotRef} aria-hidden="true" style={{ opacity: 0 }} />
     </>
   );
 }
