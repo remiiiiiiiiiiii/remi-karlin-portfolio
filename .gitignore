@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.env*
+
+# Full-quality videos are too large for git (11 GB).
+# Only the small preview clips (*-preview.mp4) are committed.
+# Host full videos on a CDN (Cloudflare R2 / Bunny.net) and update
+# the localVideo paths in data/projects.json to point there.
+public/videos/*.mp4
+public/videos/*.mov
+!public/videos/*-preview.mp4
