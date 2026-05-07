@@ -1216,6 +1216,14 @@ body.is-hover .cursor-ring {
     height: 80vh;
   }
 
+  /* Tighten hero text spacing so subtitle stays visible */
+  .hero-eyebrow {
+    margin-bottom: 14px;
+  }
+  .hero-sub {
+    margin-top: 12px;
+  }
+
   /* Project page hero — taller on mobile so overlay text fits */
   .project-video-frame {
     aspect-ratio: unset;
