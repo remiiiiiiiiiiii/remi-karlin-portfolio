@@ -14,6 +14,13 @@ const LINKS = [
 export default function Nav() {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  // Fade in nav after mount — prevents unstyled flash before CSS loads
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 50);
+    return () => clearTimeout(t);
+  }, []);
 
   // Close menu on route change
   useEffect(() => { setOpen(false); }, [pathname]);
@@ -27,7 +34,16 @@ export default function Nav() {
 
   return (
     <>
-      <nav className="nav" id="nav" aria-label="Primary" style={{ position: "fixed", top: 0, left: 0, right: 0 }}>
+      <nav
+        className="nav"
+        id="nav"
+        aria-label="Primary"
+        style={{
+          position: "fixed", top: 0, left: 0, right: 0,
+          opacity: visible ? 1 : 0,
+          transition: visible ? "opacity 0.25s ease" : "none",
+        }}
+      >
         <Link className="nav-logo" href="/">
           Remi Karlin
         </Link>
