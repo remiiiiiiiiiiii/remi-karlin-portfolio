@@ -34,10 +34,11 @@ export default function ScrollReveal({
     return () => io.disconnect();
   }, [delay]);
 
-  // @ts-expect-error — generic Tag with ref
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const AnyTag = Tag as any;
   return (
-    <Tag ref={ref} className={`reveal ${className}`}>
+    <AnyTag ref={ref} className={`reveal ${className}`}>
       {children}
-    </Tag>
+    </AnyTag>
   );
 }

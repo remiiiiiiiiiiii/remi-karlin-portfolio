@@ -33,7 +33,7 @@ export type Project = {
   campaignDesignImage?: string;
 };
 
-export const projects: Project[] = data.projects as Project[];
+export const projects: Project[] = data.projects as unknown as Project[];
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
