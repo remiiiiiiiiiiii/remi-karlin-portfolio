@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -32,17 +33,18 @@ export default function Nav() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const visibilityStyle = {
+    opacity: visible ? 1 : 0,
+    transition: visible ? "opacity 0.25s ease" : "none",
+  } as React.CSSProperties;
+
   return (
     <>
       <nav
         className="nav"
         id="nav"
         aria-label="Primary"
-        style={{
-          position: "fixed", top: 0, left: 0, right: 0,
-          opacity: visible ? 1 : 0,
-          transition: visible ? "opacity 0.25s ease" : "none",
-        }}
+        style={{ position: "fixed", top: 0, left: 0, right: 0, ...visibilityStyle }}
       >
         <Link className="nav-logo" href="/">
           Remi Karlin
@@ -74,7 +76,7 @@ export default function Nav() {
       </nav>
 
       {/* Mobile dropdown */}
-      <div className={`nav-mobile-dropdown${open ? " is-open" : ""}`} aria-hidden={!open}>
+      <div className={`nav-mobile-dropdown${open ? " is-open" : ""}`} aria-hidden={!open} style={visibilityStyle}>
         {LINKS.map((l) => {
           const active = l.match(pathname);
           return (
