@@ -92,19 +92,38 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 </a>
               )}
             </div>
-            {/* Banner — full width */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/b1nbags/banner.png"
-              alt="B1NBAGS banner"
-              style={{ width: "100%", display: "block", marginTop: 32 }}
-            />
-            {/* Instagram grid + logo */}
-            <div className="image-grid" style={{ marginTop: 16 }}>
+            {/* Banner — full bleed, cropped to a strip */}
+            <div style={{
+              width: "100vw",
+              position: "relative",
+              left: "50%",
+              transform: "translateX(-50%)",
+              marginTop: 32,
+              height: "clamp(140px, 22vw, 320px)",
+              overflow: "hidden",
+            }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/b1nbags/instagram-grid.png" alt="B1NBAGS Instagram" style={{ width: "100%", display: "block" }} />
+              <img
+                src="/images/b1nbags/banner.png"
+                alt="B1NBAGS banner"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+            </div>
+            {/* Instagram carousel post — full bleed, no crop */}
+            <div style={{
+              width: "100vw",
+              position: "relative",
+              left: "50%",
+              transform: "translateX(-50%)",
+              marginTop: 16,
+              background: "#0a0a0a",
+            }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/b1nbags/logo.png" alt="B1NBAGS logo" style={{ width: "100%", display: "block", background: "#0a0a0a" }} />
+              <img
+                src="/images/b1nbags/instagram-grid.png"
+                alt="B1NBAGS Instagram carousel"
+                style={{ width: "100%", display: "block" }}
+              />
             </div>
           </ScrollReveal>
         </section>
