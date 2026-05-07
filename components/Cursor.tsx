@@ -14,24 +14,31 @@ export default function Cursor() {
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
-    let mx = window.innerWidth / 2;
-    let my = window.innerHeight / 2;
+    let mx = -999;
+    let my = -999;
     let dx = mx;
     let dy = my;
     let rx = mx;
     let ry = my;
+    let hasMovedOnce = false;
 
     const onMove = (e: MouseEvent) => {
       mx = e.clientX;
       my = e.clientY;
+      if (!hasMovedOnce) {
+        hasMovedOnce = true;
+        dx = mx; dy = my; rx = mx; ry = my;
+        dot.style.opacity = "1";
+        ring.style.opacity = "1";
+      }
     };
     const onLeave = () => {
       dot.style.opacity = "0";
       ring.style.opacity = "0";
+      hasMovedOnce = false;
     };
     const onEnter = () => {
-      dot.style.opacity = "1";
-      ring.style.opacity = "1";
+      // opacity set on first mousemove to avoid appearing at wrong position
     };
 
     window.addEventListener("mousemove", onMove);
