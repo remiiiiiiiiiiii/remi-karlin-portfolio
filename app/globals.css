@@ -92,8 +92,8 @@ button {
   align-items: center;
   padding: 22px var(--pad-x);
   background: transparent;
-  transition: background 400ms var(--ease), backdrop-filter 400ms var(--ease),
-    border-color 400ms var(--ease);
+  transition: background 250ms var(--ease), backdrop-filter 250ms var(--ease),
+    border-color 250ms var(--ease);
   border-bottom: 1px solid transparent;
 }
 .nav.scrolled {
@@ -335,7 +335,7 @@ button {
 .tile.in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 800ms var(--ease), transform 800ms var(--ease);
+  transition: opacity 400ms var(--ease), transform 400ms var(--ease);
 }
 .tile-media {
   position: absolute;
@@ -347,10 +347,7 @@ button {
   object-fit: cover;
   display: block;
   filter: saturate(0.95) contrast(1.04);
-  transition: opacity 800ms ease-in-out, transform 900ms var(--ease), filter 600ms var(--ease);
-}
-.tile:hover .tile-media video {
-  transform: scale(1.03);
+  transition: opacity 200ms ease-out, transform 250ms ease-out, filter 200ms ease-out;
 }
 .tile-meta {
   position: absolute;
@@ -366,14 +363,19 @@ button {
   color: #fff;
   opacity: 0;
   transform: translateY(-6px);
-  transition: opacity 320ms var(--ease), transform 320ms var(--ease);
+  transition: opacity 200ms var(--ease), transform 200ms var(--ease);
   pointer-events: none;
   text-shadow: 0 1px 24px rgba(0, 0, 0, 0.5);
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
 }
-.tile:hover .tile-meta {
-  opacity: 1;
-  transform: translateY(0);
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .tile-media video {
+    transform: scale(1.03);
+  }
+  .tile:hover .tile-meta {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .tile-title {
   font-weight: 600;
@@ -520,7 +522,7 @@ button {
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  will-change: transform, width, height, opacity, background;
+  will-change: transform, opacity;
 }
 .cursor-dot {
   width: 6px;
@@ -569,7 +571,7 @@ body.is-hover .cursor-ring {
 .reveal.in {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 800ms var(--ease), transform 800ms var(--ease);
+  transition: opacity 400ms var(--ease), transform 400ms var(--ease);
 }
 
 /* ========== project detail page ========== */
@@ -1265,5 +1267,31 @@ body.is-hover .cursor-ring {
     font-size: 11px;
     line-height: 1.6;
     max-width: 100%;
+  }
+}
+
+/* ========== reduced motion ========== */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.in {
+    transform: none;
+    transition: opacity 200ms ease;
+  }
+  .tile,
+  .tile.in {
+    transform: none;
+    transition: opacity 200ms ease;
+  }
+  .tile-media video {
+    transition: opacity 200ms ease;
+  }
+  .strip-frame {
+    animation: none;
+    transition: opacity 400ms ease;
+  }
+  .hero-text,
+  .hero-eyebrow,
+  .hero-sub {
+    transition: opacity 200ms ease;
   }
 }
