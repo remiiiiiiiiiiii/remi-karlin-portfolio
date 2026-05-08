@@ -19,13 +19,23 @@ export default function OtherWorkPage() {
         {[
           {
             href: "/work/halatia",
+            category: "Brand Identity",
             title: "Halatia",
             subtitle: "Brand identity · Eau de parfum · Paris",
             description: "Brand identity and art direction for Halatia Paris — a Parisian eau de parfum built around the concept of halation, a vintage film aesthetic, and an orange signature colour.",
             year: "2025",
           },
           {
+            href: "/work/unfold-agency",
+            category: "Brand Identity",
+            title: "Unfold Agency",
+            subtitle: "Brand identity · Creative agency",
+            description: "Brand identity for Unfold Agency built around the metaphor of origami — transforming raw ideas into structured, elevated work. Origami crane logo mark, sky blue and navy palette, League Spartan and Playfair Display typography.",
+            year: "2025",
+          },
+          {
             href: "/work/the-outfiters",
+            category: "Art Direction",
             title: "The Outfiters",
             subtitle: "Artistic direction · Vietnamese streetwear",
             description: "Artistic direction for a project selling Vietnamese streetwear to European markets — Instagram strategy, mood board curation and brand identity.",
@@ -34,7 +44,7 @@ export default function OtherWorkPage() {
         ].map((item, i, arr) => (
           <div key={item.href} style={{ borderTop: "1px solid var(--line)", paddingTop: 24, marginBottom: i < arr.length - 1 ? 48 : 0 }}>
             <div style={{ fontWeight: 300, fontSize: 9, letterSpacing: "0.26em", textTransform: "uppercase", color: "var(--text-dim)", marginBottom: 20 }}>
-              {item.href.includes("halatia") ? "Brand Identity" : "Art Direction"}
+              {item.category}
             </div>
             <Link
               href={item.href}
