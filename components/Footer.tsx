@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="footer-left">
         Remi Karlin
         <div style={{ fontWeight: 300, fontSize: 9, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>
-          © 2025
+          © 2026
         </div>
       </div>
       <div className="footer-center" style={{ flexDirection: "column", gap: 8 }}>

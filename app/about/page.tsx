@@ -2,7 +2,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "About — Remi Karlin",
-  description: "About Remi Karlin — filmmaker, cinematographer and creative director.",
+  description: "About Remi Karlin — filmmaker, cinematographer and artistic director.",
 };
 
 export default function AboutPage() {

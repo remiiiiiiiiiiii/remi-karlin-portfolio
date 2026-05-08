@@ -60,7 +60,7 @@ export default function WorkRows({
           <div className="work-row-desc">{p.shortDescription}</div>
           <div className="work-row-tag">{p.tag}</div>
           <div className="work-row-year">{p.year}</div>
-          <div className="work-row-arrow">→</div>
+          <div className="work-row-arrow" aria-hidden="true">→</div>
           <div className="work-row-cover" aria-hidden="true">
             <video src={p.previewVideo} muted loop playsInline preload="auto" />
           </div>
