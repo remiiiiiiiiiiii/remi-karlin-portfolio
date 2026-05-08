@@ -12,16 +12,34 @@ const LINKS = [
   { href: "/about", label: "About", match: (p: string) => p.startsWith("/about") },
 ];
 
+// Project detail pages share /work/ prefix regardless of which section they belong to.
+// We track the last visited section so the nav stays consistent when drilling into a project.
+const isProjectDetail = (p: string) => /^\/work\/.+/.test(p);
+
 export default function Nav() {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [sectionHint, setSectionHint] = useState("/");
 
   // Fade in nav after mount — prevents unstyled flash before CSS loads
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 50);
     return () => clearTimeout(t);
   }, []);
+
+  // Track which section the user came from so project pages keep the right nav active
+  useEffect(() => {
+    if (!isProjectDetail(pathname)) {
+      // On a section page — remember it
+      sessionStorage.setItem("nav-section", pathname);
+      setSectionHint(pathname);
+    } else {
+      // On a project detail page — restore saved section, default to "/"
+      const saved = sessionStorage.getItem("nav-section") ?? "/";
+      setSectionHint(saved);
+    }
+  }, [pathname]);
 
   // Close menu on route change
   useEffect(() => { setOpen(false); }, [pathname]);
@@ -41,6 +59,9 @@ export default function Nav() {
   // For dropdown: only hide during flash — after mount let CSS fully control it
   const dropdownFlashStyle = visible ? {} : { opacity: 0 } as React.CSSProperties;
 
+  // On project detail pages use the saved section hint; otherwise use actual pathname
+  const effectivePath = isProjectDetail(pathname) ? sectionHint : pathname;
+
   return (
     <>
       <nav
@@ -56,7 +77,7 @@ export default function Nav() {
         {/* Desktop links */}
         <div className="nav-links nav-links-desktop">
           {LINKS.map((l) => {
-            const active = l.match(pathname);
+            const active = l.match(effectivePath);
             return (
               <Link key={l.href} href={l.href} className={`nav-link${active ? " active" : ""}`}>
                 {l.label}
@@ -81,7 +102,7 @@ export default function Nav() {
       {/* Mobile dropdown */}
       <div className={`nav-mobile-dropdown${open ? " is-open" : ""}`} aria-hidden={!open} style={dropdownFlashStyle}>
         {LINKS.map((l) => {
-          const active = l.match(pathname);
+          const active = l.match(effectivePath);
           return (
             <Link
               key={l.href}
