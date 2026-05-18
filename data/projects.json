@@ -97,14 +97,14 @@
     {
       "slug": "france",
       "title": "France",
-      "subtitle": "Chamonix and the South of France",
-      "shortDescription": "Travel cinematography across Chamonix and the South of France.",
+      "subtitle": "Chamonix, the South of France and Avignon",
+      "shortDescription": "Travel cinematography across Chamonix, the South of France and Avignon.",
       "tag": "Travel",
       "category": "travel",
       "year": "2025",
       "location": "France",
       "roles": ["Cinematographer", "Editor", "Colorist"],
-      "description": "Two contrasting palettes — alpine cold in the French Alps and Mediterranean warmth on the southern coast. Vlog-style edits filmed across Chamonix and Sanary-sur-Mer.",
+      "description": "Three contrasting palettes across France — alpine cold in the French Alps, Mediterranean warmth on the southern coast, and the warm stone light of Avignon. Vlog-style edits filmed across Chamonix, Sanary-sur-Mer and Avignon.",
       "previewVideo": "/videos/france-chamonix-preview.mp4",
       "coverImage": "/images/cover-france.jpg",
       "videos": [
@@ -119,6 +119,12 @@
           "youtubeId": "Wwl1e1j1-54",
           "localVideo": "/videos/france-south.mp4",
           "previewVideo": "/videos/france-south-preview.mp4"
+        },
+        {
+          "title": "Avignon",
+          "youtubeId": "gOAvKEz_shI",
+          "localVideo": "",
+          "previewVideo": "/videos/avignon-preview.mp4"
         }
       ],
       "credits": {
