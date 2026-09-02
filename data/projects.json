@@ -43,19 +43,19 @@
     {
       "slug": "solene",
       "title": "Solène",
-      "subtitle": "Music video · 1251",
-      "shortDescription": "Music video for Solène — 1251. Shot, edited and graded end-to-end.",
+      "subtitle": "Music video · 12:51 cover · The Strokes",
+      "shortDescription": "Music video for Solène — a cover of 12:51 by The Strokes, filmed in Philadelphia.",
       "tag": "Music Video",
       "category": "film",
       "year": "2025",
-      "location": "Paris",
+      "location": "Philadelphia",
       "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
-      "description": "Music video for Solène — 1251. Shot, edited and colour graded end-to-end.",
+      "description": "Music video for Solène — a cover of 12:51 by The Strokes. Shot, edited and colour graded end-to-end in Philadelphia.",
       "previewVideo": "/videos/solene-preview.mp4",
       "coverImage": "",
       "videos": [
         {
-          "title": "Solène — 1251",
+          "title": "Solène — 12:51 cover",
           "youtubeId": "5-u9BV25JG8",
           "localVideo": "",
           "previewVideo": "/videos/solene-preview.mp4"
@@ -63,7 +63,7 @@
       ],
       "credits": {
         "Year": "2025",
-        "Location": "Paris",
+        "Location": "Philadelphia",
         "Roles": "Direction · Cinematography · Editing · Color",
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",

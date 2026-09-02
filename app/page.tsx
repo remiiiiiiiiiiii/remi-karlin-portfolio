@@ -8,13 +8,13 @@ import type { Project } from "@/lib/projects";
 export default function Page() {
   const LANDING_ORDER = [
     "fan-yan",
+    "solene",
     "hong-kong",
     "b1nbags",
     "modessec",
     "rmx",
     "ruinarktefact",
     "spain",
-    "vietnam",
   ];
 
   const projectMap = Object.fromEntries(projectsData.projects.map((p) => [p.slug, p]));
