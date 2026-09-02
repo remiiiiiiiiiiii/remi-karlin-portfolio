@@ -41,6 +41,36 @@
       }
     },
     {
+      "slug": "solene",
+      "title": "Solène",
+      "subtitle": "Music video · 1251",
+      "shortDescription": "Music video for Solène — 1251. Shot, edited and graded end-to-end.",
+      "tag": "Music Video",
+      "category": "film",
+      "year": "2025",
+      "location": "Paris",
+      "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
+      "description": "Music video for Solène — 1251. Shot, edited and colour graded end-to-end.",
+      "previewVideo": "/videos/solene-preview.mp4",
+      "coverImage": "",
+      "videos": [
+        {
+          "title": "Solène — 1251",
+          "youtubeId": "5-u9BV25JG8",
+          "localVideo": "",
+          "previewVideo": "/videos/solene-preview.mp4"
+        }
+      ],
+      "credits": {
+        "Year": "2025",
+        "Location": "Paris",
+        "Roles": "Direction · Cinematography · Editing · Color",
+        "Camera": "Lumix S5II",
+        "Lens": "Lumix 20–60mm f/3.5–5.6",
+        "Post": "DaVinci Resolve"
+      }
+    },
+    {
       "slug": "hong-kong",
       "title": "Hong Kong",
       "subtitle": "Cinematic portraits of the city",
@@ -250,6 +280,66 @@
       "credits": {
         "Year": "2025",
         "Location": "Vietnam",
+        "Roles": "Cinematography · Editing · Color",
+        "Camera": "Lumix S5II",
+        "Lens": "Lumix 20–60mm f/3.5–5.6",
+        "Post": "DaVinci Resolve"
+      }
+    },
+    {
+      "slug": "venice",
+      "title": "Venice",
+      "subtitle": "Travel film",
+      "shortDescription": "Short travel film from a trip to Venice.",
+      "tag": "Travel",
+      "category": "travel",
+      "year": "2025",
+      "location": "Venice",
+      "roles": ["Cinematographer", "Editor", "Colorist"],
+      "description": "Short travel film from a trip to Venice — canals, early morning light, and the city's quiet rhythm.",
+      "previewVideo": "/videos/venice-preview.mp4",
+      "coverImage": "",
+      "videos": [
+        {
+          "title": "Venice",
+          "youtubeId": "1JtN6NCqXWo",
+          "localVideo": "",
+          "previewVideo": "/videos/venice-preview.mp4"
+        }
+      ],
+      "credits": {
+        "Year": "2025",
+        "Location": "Venice",
+        "Roles": "Cinematography · Editing · Color",
+        "Camera": "Lumix S5II",
+        "Lens": "Lumix 20–60mm f/3.5–5.6",
+        "Post": "DaVinci Resolve"
+      }
+    },
+    {
+      "slug": "new-york",
+      "title": "New York",
+      "subtitle": "Travel film",
+      "shortDescription": "Short travel film from a trip to New York.",
+      "tag": "Travel",
+      "category": "travel",
+      "year": "2025",
+      "location": "New York",
+      "roles": ["Cinematographer", "Editor", "Colorist"],
+      "description": "Short travel film from a trip to New York — the city's pace, energy, and contrasts.",
+      "previewVideo": "/videos/newyork-preview.mp4",
+      "coverImage": "",
+      "videos": [
+        {
+          "title": "New York",
+          "youtubeId": "sgVeARSI2pg",
+          "localVideo": "",
+          "previewVideo": "/videos/newyork-preview.mp4"
+        }
+      ],
+      "credits": {
+        "Year": "2025",
+        "Location": "New York",
         "Roles": "Cinematography · Editing · Color",
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
