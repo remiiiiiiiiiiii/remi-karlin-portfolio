@@ -4,6 +4,7 @@ import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import ScrollRoot from "@/components/ScrollRoot";
 import PageTransition from "@/components/PageTransition";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "Remi Karlin — Filmmaker",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ScrollRoot>
           <PageTransition>{children}</PageTransition>
         </ScrollRoot>
+        <Analytics />
       </body>
     </html>
   );
