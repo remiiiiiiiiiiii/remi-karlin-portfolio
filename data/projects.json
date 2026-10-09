@@ -9,15 +9,12 @@
       "category": "film",
       "year": "2025",
       "location": "Hong Kong",
-      "roles": [
-        "Director",
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
       "description": "A mini documentary portrait of Hong Kong–based artist Fan Yan. Shot, edited and graded end-to-end. The project also includes a series of artwork product photography stills, a lamps short film, and a short film to advertise the artist's products.",
       "previewVideo": "/videos/fan-yan-2-preview.mp4",
       "coverImage": "/images/cover-fan-yan.webp",
+      "featured": 1,
+      "hidden": false,
       "videos": [
         {
           "title": "Mini documentary about a local artist",
@@ -43,9 +40,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
-      },
-      "featured": 1,
-      "hidden": false
+      }
     },
     {
       "slug": "solene",
@@ -56,15 +51,11 @@
       "category": "film",
       "year": "2025",
       "location": "Philadelphia",
-      "roles": [
-        "Director",
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
       "description": "Music video for Solène — a cover of 12:51 by The Strokes. Shot, edited and colour graded end-to-end in Philadelphia.",
       "previewVideo": "/videos/solene-preview.mp4",
       "coverImage": "",
+      "hidden": false,
       "videos": [
         {
           "title": "Solène — 12:51 cover",
@@ -80,9 +71,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
-      },
-      "featured": 2,
-      "hidden": false
+      }
     },
     {
       "slug": "havas-kfc",
@@ -93,15 +82,13 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Filmmaker",
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Filmmaker", "Editor", "Art Director"],
       "description": "A product film for KFC and a second film built from stills, made at Havas Play. Filmed, edited and art directed in Paris during the internship.",
       "previewVideo": "/videos/havas-kfc-1-preview.mp4",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-kfc.webp",
+      "featured": 2,
+      "hidden": false,
       "agency": {
         "name": "Havas Play",
         "slug": "havas-play"
@@ -130,9 +117,7 @@
       "credits": {
         "Client": "KFC",
         "Roles": "Filming · Editing · Art Direction"
-      },
-      "featured": 3,
-      "hidden": false
+      }
     },
     {
       "slug": "havas-renault",
@@ -143,15 +128,12 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Filmmaker",
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Filmmaker", "Editor", "Art Director"],
       "description": "A one-minute film for Renault, made at Havas Play. Filmed, edited and art directed in Paris during the internship.",
       "previewVideo": "/videos/havas-renault-1-preview.mp4",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-renault.webp",
+      "hidden": false,
       "agency": {
         "name": "Havas Play",
         "slug": "havas-play"
@@ -172,9 +154,7 @@
       "credits": {
         "Client": "Renault",
         "Roles": "Filming · Editing · Art Direction"
-      },
-      "featured": 4,
-      "hidden": false
+      }
     },
     {
       "slug": "havas-kellogs",
@@ -185,15 +165,12 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Filmmaker",
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Filmmaker", "Editor", "Art Director"],
       "description": "Short social films for Kellogg's Tasty Krunchy, built around close shots and the sound of the snack in the manner of ASMR. Filmed, edited and art directed at Havas Play, delivered as short social cuts.",
       "previewVideo": "/videos/havas-kellogs-hero-preview.mp4",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-kellogs.webp",
+      "hidden": false,
       "agency": {
         "name": "Havas Play",
         "slug": "havas-play"
@@ -207,11 +184,7 @@
           "previewVideo": "/videos/havas-kellogs-1-preview.mp4",
           "aspect": "9:16",
           "hosting": "self",
-          "variants": [
-            "Kellogs/1x1 10s Tasty Krunchy .mp4",
-            "Kellogs/1x1 6s Tasty Krunchy .mp4",
-            "Kellogs/9x16 6s Tasty Krunchy .mp4"
-          ],
+          "variants": ["Kellogs/1x1 10s Tasty Krunchy .mp4", "Kellogs/1x1 6s Tasty Krunchy .mp4", "Kellogs/9x16 6s Tasty Krunchy .mp4"],
           "durationSec": 9.98
         },
         {
@@ -221,20 +194,14 @@
           "previewVideo": "/videos/havas-kellogs-2-preview.mp4",
           "aspect": "9:16",
           "hosting": "self",
-          "variants": [
-            "Kellogs/1x1 10s ASMR.mp4",
-            "Kellogs/1x1 6s ASMR.mp4",
-            "Kellogs/9x16 6s ASMR.mp4"
-          ],
+          "variants": ["Kellogs/1x1 10s ASMR.mp4", "Kellogs/1x1 6s ASMR.mp4", "Kellogs/9x16 6s ASMR.mp4"],
           "durationSec": 10.41
         }
       ],
       "credits": {
         "Client": "Kellogg's",
         "Roles": "Filming · Editing · Art Direction"
-      },
-      "featured": 5,
-      "hidden": false
+      }
     },
     {
       "slug": "havas-nissan",
@@ -245,10 +212,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "A social series for the Nissan Juke, made at Havas Play. It mixes ASMR films, a film around One Piece and calendar-style posts, edited and art directed as social cuts.",
       "previewVideo": "/videos/havas-nissan-1-preview.mp4",
       "coverImage": "",
@@ -369,10 +333,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "Social content around winter sports for Allianz, made at Havas Play. Films on slalom and paragliding and a day in the life, alongside emoji stickers and \"did you know\" cards, edited and art directed for social formats.",
       "previewVideo": "/videos/havas-allianz-1-preview.mp4",
       "coverImage": "",
@@ -470,14 +431,13 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "A set of athlete films for Sanofi, made at Havas Play: a reveal film, one shot at Paul Ricard and one with Mikkel, plus a logo animation. Edited and art directed in Paris.",
       "previewVideo": "/videos/havas-sanofi-1-preview.mp4",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-sanofi.webp",
+      "featured": 4,
+      "hidden": false,
       "agency": {
         "name": "Havas Play",
         "slug": "havas-play"
@@ -525,8 +485,7 @@
       "credits": {
         "Client": "Sanofi",
         "Roles": "Editing · Art Direction"
-      },
-      "hidden": false
+      }
     },
     {
       "slug": "havas-bkt",
@@ -537,10 +496,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "Social content for BKT, the tyre brand, around its football sponsorship. Match-day \"actions\" films and social posts, edited and art directed at Havas Play.",
       "previewVideo": "/videos/havas-bkt-1-preview.mp4",
       "coverImage": "",
@@ -558,9 +514,7 @@
           "previewVideo": "/videos/havas-bkt-1-preview.mp4",
           "aspect": "9:16",
           "hosting": "self",
-          "variants": [
-            "bkt/actions/ACTION_1_1200x1200.mp4"
-          ],
+          "variants": ["bkt/actions/ACTION_1_1200x1200.mp4"],
           "durationSec": 29.8
         },
         {
@@ -570,9 +524,7 @@
           "previewVideo": "/videos/havas-bkt-2-preview.mp4",
           "aspect": "9:16",
           "hosting": "self",
-          "variants": [
-            "bkt/actions/ACTION_2_1200x1200.mp4"
-          ],
+          "variants": ["bkt/actions/ACTION_2_1200x1200.mp4"],
           "durationSec": 28.29
         },
         {
@@ -582,9 +534,7 @@
           "previewVideo": "/videos/havas-bkt-3-preview.mp4",
           "aspect": "9:16",
           "hosting": "self",
-          "variants": [
-            "bkt/actions/ACTION_3_1200x1200.mp4"
-          ],
+          "variants": ["bkt/actions/ACTION_3_1200x1200.mp4"],
           "durationSec": 35.75
         },
         {
@@ -595,9 +545,7 @@
           "aspect": "9:16",
           "hosting": "youtube",
           "pending": true,
-          "variants": [
-            "bkt/actions/L'ACTION_1200x1200.mp4"
-          ],
+          "variants": ["bkt/actions/L'ACTION_1200x1200.mp4"],
           "durationSec": 74.26
         },
         {
@@ -715,10 +663,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "A film for Paris FC about the Kop, edited and art directed at Havas Play.",
       "previewVideo": "/videos/havas-paris-fc-1-preview.mp4",
       "coverImage": "",
@@ -754,10 +699,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "Films and visuals for Team Orange Running, a running event by Orange, made at Havas Play. A finish-line film and teaser films, plus visuals for a contest, edited and art directed in Paris.",
       "previewVideo": "/videos/havas-tor-1-preview.mp4",
       "coverImage": "",
@@ -849,10 +791,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "A series of posters for the Fédération Française de Judo (FFJ), art directed at Havas Play.",
       "previewVideo": "",
       "coverImage": "",
@@ -895,10 +834,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "Two vertical films for Louis Burton, edited and art directed at Havas Play.",
       "previewVideo": "/videos/havas-louis-burton-1-preview.mp4",
       "coverImage": "",
@@ -943,10 +879,7 @@
       "category": "film",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "Work made for the agency itself: the Havas Play showreel, the Ce Créa 2026 film, a Sephora crew film and a BKT x M6N piece, plus an interns poster, profile portraits and awards posters. Edited and art directed during the internship.",
       "previewVideo": "/videos/havas-internal-1-preview.mp4",
       "coverImage": "",
@@ -1119,14 +1052,12 @@
       "category": "travel",
       "year": "2025",
       "location": "Hong Kong",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Cinematic portraits of Hong Kong shot across the city — Lantau Peak, the harbour, the cliffs, the junk, Sham Shui Po and Mong Kok. A study of the city's light, texture and quiet rhythm.",
       "previewVideo": "/videos/hong-kong-ssp-preview.mp4",
       "coverImage": "/images/cover-hong-kong.webp",
+      "featured": 5,
+      "hidden": false,
       "videos": [
         {
           "title": "Hong Kong — Full Compilation",
@@ -1166,9 +1097,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
-      },
-      "featured": 6,
-      "hidden": false
+      }
     },
     {
       "slug": "france",
@@ -1179,11 +1108,7 @@
       "category": "travel",
       "year": "2025",
       "location": "France",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Three contrasting palettes across France — alpine cold in the French Alps, Mediterranean warmth on the southern coast, and the warm stone light of Avignon. Vlog-style edits filmed across Chamonix, Sanary-sur-Mer and Avignon.",
       "previewVideo": "/videos/france-chamonix-preview.mp4",
       "coverImage": "/images/cover-france.webp",
@@ -1226,11 +1151,7 @@
       "category": "travel",
       "year": "2025",
       "location": "Spain",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Road-trip and surf film along the northern coast of Spain.",
       "previewVideo": "/videos/spain-preview.mp4",
       "coverImage": "/images/cover-spain.webp",
@@ -1261,11 +1182,7 @@
       "category": "travel",
       "year": "2025",
       "location": "Morocco",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Short-form travel film from a trip to Morocco.",
       "previewVideo": "/videos/morocco-preview.mp4",
       "coverImage": "/images/cover-morocco.webp",
@@ -1296,11 +1213,7 @@
       "category": "travel",
       "year": "2025",
       "location": "Amsterdam",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Short vlog-style edit from a trip to Amsterdam.",
       "previewVideo": "/videos/amsterdam-preview.mp4",
       "coverImage": "/images/cover-amsterdam.webp",
@@ -1331,11 +1244,7 @@
       "category": "travel",
       "year": "2025",
       "location": "Vietnam",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Short travel film from a trip to Vietnam.",
       "previewVideo": "/videos/vietnam-preview.mp4",
       "coverImage": "/images/cover-vietnam.webp",
@@ -1366,11 +1275,7 @@
       "category": "travel",
       "year": "2025",
       "location": "Venice",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Short travel film from a trip to Venice — canals, early morning light, and the city's quiet rhythm.",
       "previewVideo": "/videos/venice-preview.mp4",
       "coverImage": "",
@@ -1401,11 +1306,7 @@
       "category": "travel",
       "year": "2025",
       "location": "New York",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Short travel film from a trip to New York — the city's pace, energy, and contrasts.",
       "previewVideo": "/videos/newyork-preview.mp4",
       "coverImage": "",
@@ -1436,15 +1337,12 @@
       "category": "film",
       "year": "2023–25",
       "location": "Hong Kong",
-      "roles": [
-        "Founder",
-        "Artistic Director",
-        "Cinematographer",
-        "Editor"
-      ],
+      "roles": ["Founder", "Artistic Director", "Cinematographer", "Editor"],
       "description": "B1NBAGS is a brand I started in 2023 in Hong Kong, paused in 2024 to focus on university, and restarted in 2025. The video work focuses on selling the creative lifestyle rather than the product — high-quality reels shot on a cinema-grade camera, colour-graded with film emulations to build a consistent vintage, textured feel.",
       "previewVideo": "/videos/b1nbags-1-preview.mp4",
       "coverImage": "/images/cover-b1nbags.webp",
+      "featured": 6,
+      "hidden": false,
       "videos": [
         {
           "title": "B1NBAGS — Teaser",
@@ -1476,9 +1374,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve · Photoshop"
-      },
-      "featured": 7,
-      "hidden": false
+      }
     },
     {
       "slug": "halatia",
@@ -1489,10 +1385,7 @@
       "category": "other",
       "year": "2025",
       "location": "Paris",
-      "roles": [
-        "Art Director",
-        "Brand Designer"
-      ],
+      "roles": ["Art Director", "Brand Designer"],
       "description": "Brand identity and art direction for Halatia Paris — a Parisian eau de parfum. The brand takes its name from halation, the photographic phenomenon of light spreading beyond its proper boundaries, used as a metaphor for a fragrance that leaves a radiant, invisible impression. The identity is built around an orange signature colour representing optimism, confidence, warmth and boundless energy, paired with a vintage film aesthetic drawn from Paris and classic photography. Designed for a new generation that defies labels.",
       "previewVideo": "",
       "coverImage": "",
@@ -1514,10 +1407,7 @@
       "category": "other",
       "year": "2025",
       "location": "Paris",
-      "roles": [
-        "Art Director",
-        "Brand Designer"
-      ],
+      "roles": ["Art Director", "Brand Designer"],
       "description": "Brand identity for Unfold Agency built around the metaphor of origami — transforming raw ideas into structured, elevated work. Origami crane logo mark, sky blue and navy palette, League Spartan and Playfair Display typography.",
       "previewVideo": "",
       "coverImage": "",
@@ -1535,9 +1425,7 @@
       "category": "other",
       "year": "2025",
       "location": "Paris / Vietnam",
-      "roles": [
-        "Art Director"
-      ],
+      "roles": ["Art Director"],
       "description": "Artistic direction for a small project selling Vietnamese streetwear to European markets. The goal was to build an Instagram account that represented a mood board of the style and lifestyle we wanted to project to our audience — and within that mood board, mix in the Vietnamese brands to sell in Europe using the mood we had built up on the page.",
       "previewVideo": "/videos/b1nbags-shot-expresso-preview.mp4",
       "coverImage": "",
@@ -1559,11 +1447,7 @@
       "category": "other",
       "year": "2023–25",
       "location": "Hong Kong",
-      "roles": [
-        "Art Director",
-        "Photographer",
-        "Colorist"
-      ],
+      "roles": ["Art Director", "Photographer", "Colorist"],
       "description": "The physical and digital creative process behind B1NBAGS — from Photoshop bitmap exports to screen-printing, Lumix S5II photography with film colour profiles, and two years of DaVinci Resolve colour grading research.",
       "previewVideo": "",
       "coverImage": "",
@@ -1581,10 +1465,7 @@
       "category": "other",
       "year": "2024–25",
       "location": "Cergy",
-      "roles": [
-        "Art Director",
-        "Director"
-      ],
+      "roles": ["Art Director", "Director"],
       "description": "The full creative process behind the VOLCAN'ARCHIK BDE campaign — mascot design in Procreate and Illustrator, 3D name renders in Blender and Photoshop, and the production of a 20-minute declaration short film on Sony FX3.",
       "previewVideo": "",
       "coverImage": "",
@@ -1602,10 +1483,7 @@
       "category": "other",
       "year": "2026",
       "location": "Paris",
-      "roles": [
-        "Editor",
-        "Art Director"
-      ],
+      "roles": ["Editor", "Art Director"],
       "description": "Havas Play is the sports and entertainment agency of Havas, based in Paris. Between January and June 2026, Remi worked there as an editor and art director, with some filming for a few clients. The clients below are Allianz, BKT, the Fédération Française de Judo, Kellogg's, KFC, Nissan, Orange, Paris FC, Renault, Sanofi and Louis Burton, plus work made for the agency itself.",
       "previewVideo": "",
       "coverImage": "",
@@ -1627,14 +1505,12 @@
       "category": "film",
       "year": "2024–25",
       "location": "Cergy, France",
-      "roles": [
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Cinematographer", "Editor", "Colorist"],
       "description": "Visual work for Modessec — the fashion association at ESSEC. Includes the 2025 fashion show aftermovie and teaser, a 2024 teaser, and product photography for the association's hoodie release.",
       "previewVideo": "/videos/essec-modessec-teaser-preview.mp4",
       "coverImage": "/images/cover-modessec.webp",
+      "featured": 8,
+      "hidden": false,
       "videos": [
         {
           "title": "Modessec — Fashion Show Teaser 2025",
@@ -1660,9 +1536,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
-      },
-      "featured": 9,
-      "hidden": false
+      }
     },
     {
       "slug": "rmx",
@@ -1673,15 +1547,12 @@
       "category": "film",
       "year": "2025",
       "location": "Cergy, France",
-      "roles": [
-        "Director",
-        "Cinematographer",
-        "Editor",
-        "Colorist"
-      ],
+      "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
       "description": "Promotional and event films for RMX, the DJ association at ESSEC. Includes a short promo and an aftermovie from a school event.",
       "previewVideo": "/videos/essec-rmx-2-preview.mp4",
       "coverImage": "/images/cover-rmx.webp",
+      "featured": 3,
+      "hidden": false,
       "videos": [
         {
           "title": "RMX — Short Promo",
@@ -1703,8 +1574,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
-      },
-      "hidden": false
+      }
     },
     {
       "slug": "ruinarktefact",
@@ -1715,15 +1585,12 @@
       "category": "film",
       "year": "2024–25",
       "location": "Cergy, France",
-      "roles": [
-        "Artistic Director",
-        "Head of Communications",
-        "Director",
-        "Editor"
-      ],
+      "roles": ["Artistic Director", "Head of Communications", "Director", "Editor"],
       "description": "Artistic director and head of communications for RUINARKTEFACT, the year-long BDE campaign at ESSEC 2024/25 — two teams of 35 competing through events and communications. Directed rap videos, event aftermovies and teasers, plus a 20-minute declaration film for the campaign. Campaign identity, mascot, and Instagram managed entirely by Remi Karlin alongside a team of 5.",
       "previewVideo": "/videos/essec-wei07-preview.mp4",
       "coverImage": "/images/cover-ruinarktefact.webp",
+      "featured": 7,
+      "hidden": false,
       "videos": [
         {
           "title": "Declaration Film",
@@ -1757,9 +1624,7 @@
         "Cameras": "Lumix S5II · Sony FX3",
         "Lenses": "Lumix 20–60mm f/3.5–5.6 · Sony GM 24–70",
         "Post": "DaVinci Resolve · Premiere Pro · After Effects"
-      },
-      "featured": 8,
-      "hidden": false
+      }
     }
   ]
 }
