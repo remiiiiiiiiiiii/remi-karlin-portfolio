@@ -7,6 +7,8 @@ export type FeaturedItem = {
   label: string;
   poster: string;
   tiny: string;
+  /** Agency hub only: client names, one line under the meta. */
+  clients?: string[];
 };
 
 const MOBILE_QUERY = "(max-width: 768px)";
@@ -53,6 +55,7 @@ export default function FeaturedGrid({ items }: { items: FeaturedItem[] }) {
                 <span className="hm-num">{pad(i + 1)}</span>
                 <span className="hm-title">{it.title}</span>
                 <span className="hm-meta label">{it.label}</span>
+                {it.clients && it.clients.length > 0 && <span className="hm-clients">{it.clients.join(" · ")}</span>}
               </Link>
             </li>
           );

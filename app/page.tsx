@@ -7,8 +7,8 @@ import HeroFrame from "@/components/HeroFrame";
 import type { HeroItem } from "@/components/HeroFrame";
 import WorkIndex from "@/components/WorkIndex";
 import type { IndexRow } from "@/components/WorkIndex";
-import { getHeroProjects, getIndexProjects, groupOf } from "@/components/landing-data";
-import { getHeroClips } from "@/lib/projects";
+import { getHeroProjects, getIndexProjects, groupOf, isAgencyHub } from "@/components/landing-data";
+import { getAgencyProjects, getHeroClips, type Project } from "@/lib/projects";
 import { posterPath } from "@/lib/posters";
 import { pageMeta, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/seo";
 
@@ -22,20 +22,34 @@ export default function Page() {
   // Featured projects (numeric `featured` in data/projects.json) fill the hero, in order.
   const hero = getHeroProjects();
 
+  // Agency hubs list their clients next to the title (hero: expand on hover; grid: one line).
+  const clientsOf = (p: Project) =>
+    isAgencyHub(p)
+      ? getAgencyProjects(p.slug).map((c) => ({
+          slug: c.slug,
+          title: c.client && c.client !== p.title ? c.client : "Internal",
+        }))
+      : undefined;
+
   const heroItems: HeroItem[] = hero.map((p) => ({
     slug: p.slug,
     title: p.title,
     label: [p.tag, p.location, p.year].filter(Boolean).join(" · "),
     clips: getHeroClips(p),
+    clients: clientsOf(p),
   }));
 
-  const gridItems: FeaturedItem[] = hero.map((p) => ({
-    slug: p.slug,
-    title: p.title,
-    label: [p.tag, p.year].filter(Boolean).join(" · "),
-    poster: p.poster || posterPath(p.previewVideo),
-    tiny: p.poster ? p.poster.replace(/\.webp$/, "-tiny.webp") : posterPath(p.previewVideo, true),
-  }));
+  const gridItems: FeaturedItem[] = hero.map((p) => {
+    const first = getHeroClips(p)[0];
+    return {
+      slug: p.slug,
+      title: p.title,
+      label: [p.tag, p.year].filter(Boolean).join(" · "),
+      poster: p.poster || posterPath(first),
+      tiny: p.poster ? p.poster.replace(/\.webp$/, "-tiny.webp") : posterPath(first, true),
+      clients: clientsOf(p)?.map((c) => c.title),
+    };
+  });
 
   const rows: IndexRow[] = getIndexProjects().map((p) => ({
     slug: p.slug,

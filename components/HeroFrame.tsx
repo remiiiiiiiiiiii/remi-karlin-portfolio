@@ -13,6 +13,8 @@ export type HeroItem = {
   label: string;
   /** Every preview clip of the project in play order, e.g. ["/videos/solene-preview.mp4"]. Posters derive from the path. */
   clips: string[];
+  /** Agency hub only: its client pages, shown in brackets after the title while the row is current or hovered. */
+  clients?: { slug: string; title: string }[];
 };
 
 /** One clip of one featured project. Every clip is its own full-frame layer. */
@@ -470,7 +472,7 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
         <nav aria-label="Chosen work">
           <ol className="hd-list">
             {items.map((it, i) => (
-              <li key={it.slug} className={i === proj ? "is-current" : undefined}>
+              <li key={it.slug} className={[i === proj && "is-current", it.clients && "has-clients"].filter(Boolean).join(" ") || undefined}>
                 <Link
                   href={`/work/${it.slug}`}
                   aria-current={i === proj ? "true" : undefined}
@@ -510,6 +512,18 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
                   <span className="n">{pad(i + 1)}</span>
                   <span className="t">{it.title}</span>
                 </Link>
+                {it.clients && it.clients.length > 0 && (
+                  <span className="hd-clients" aria-label={`${it.title} clients`}>
+                    <span aria-hidden="true">(</span>
+                    {it.clients.map((c, k) => (
+                      <span key={c.slug}>
+                        {k > 0 && <span aria-hidden="true">, </span>}
+                        <Link href={`/work/${c.slug}`}>{c.title}</Link>
+                      </span>
+                    ))}
+                    <span aria-hidden="true">)</span>
+                  </span>
+                )}
               </li>
             ))}
           </ol>

@@ -87,7 +87,6 @@
       "previewVideo": "/videos/havas-kfc-1-preview.mp4",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-kfc.webp",
-      "featured": 2,
       "hidden": false,
       "agency": {
         "name": "Havas Play",
@@ -1510,14 +1509,16 @@
       "description": "Havas Play is the sports and entertainment agency of Havas, based in Paris. Between January and June 2026, Remi worked there as an editor and art director, with some filming for a few clients. The clients below are Allianz, BKT, the Fédération Française de Judo, Kellogg's, KFC, Nissan, Orange, Paris FC, Renault, Sanofi and Louis Burton, plus work made for the agency itself.",
       "previewVideo": "",
       "coverImage": "",
+      "heroClips": ["/videos/havas-kfc-1-preview.mp4", "/videos/havas-renault-1-preview.mp4", "/videos/havas-internal-3-preview.mp4", "/videos/havas-kellogs-hero-preview.mp4", "/videos/havas-internal-4-preview.mp4"],
       "thumbnail": "/images/thumbs/havas-internal.webp",
+      "featured": 2,
+      "hidden": false,
       "videos": [],
       "credits": {
         "Year": "January–June 2026",
         "Location": "Paris",
         "Roles": "Editing · Art Direction"
-      },
-      "hidden": false
+      }
     },
     {
       "slug": "modessec",

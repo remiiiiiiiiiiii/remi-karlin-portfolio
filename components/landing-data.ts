@@ -1,5 +1,5 @@
 import data from "@/data/projects.json";
-import type { Project } from "@/lib/projects";
+import { getHeroClips, type Project } from "@/lib/projects";
 
 const all = data.projects as unknown as Project[];
 
@@ -14,9 +14,14 @@ export function getFeaturedProjects(): Project[] {
     .sort((a, b) => (a.featured as number) - (b.featured as number));
 }
 
-/** Featured projects that can fill the hero frame (they need a preview clip). */
+/** Featured projects that can fill the hero frame (they need at least one hero clip). */
 export function getHeroProjects(): Project[] {
-  return getFeaturedProjects().filter((p) => !!p.previewVideo);
+  return getFeaturedProjects().filter((p) => getHeroClips(p).length > 0);
+}
+
+/** A hub page that groups agency work: other projects point at it through `agency.slug`. */
+export function isAgencyHub(p: Project): boolean {
+  return all.some((q) => q.agency?.slug === p.slug);
 }
 
 export type WorkGroup = "films" | "cases";
@@ -26,14 +31,20 @@ export const WORK_GROUPS: { key: WorkGroup; label: string }[] = [
   { key: "cases", label: "Case studies" },
 ];
 
-/** Travel films count as films in the index; only the Travel hub is listed for them. */
+/** Travel films and agency hubs count as films in the index; only the hubs are listed for them. */
 export function groupOf(p: Project): WorkGroup {
-  return p.category === "film" || p.category === "travel" ? "films" : "cases";
+  return p.category === "film" || p.category === "travel" || isAgencyHub(p) ? "films" : "cases";
 }
 
-/** Travel destinations are reached through the Travel hub, so the index lists the hub only. */
+/**
+ * Travel destinations are reached through the Travel hub and agency work through its hub
+ * (Havas Play), so the index lists the hubs only.
+ */
 function listedInIndex(p: Project): boolean {
-  return !p.hidden && !(p.category === "travel" && !p.custom);
+  if (p.hidden) return false;
+  if (p.category === "travel" && !p.custom) return false;
+  if (p.agency) return false;
+  return true;
 }
 
 /**

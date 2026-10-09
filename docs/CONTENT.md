@@ -4,14 +4,14 @@ Everything the site lists lives in `data/projects.json`. You do not edit code to
 
 ## What the homepage shows, and where each piece comes from
 
-1. **Hero (desktop)**: a full-frame video with a hover list of the featured projects. The list is the projects that have `featured`, in `featured` order (1 = first). Hovering or selecting a row plays that project's `previewVideo`, one clip at a time. This is desktop only.
+1. **Hero (desktop)**: a full-frame video with a hover list of the featured projects. The list is the projects that have `featured`, in `featured` order (1 = first). Hovering or selecting a row plays that project's clips one after the other (`heroClips` when set, else its `previewVideo` first and then the other landscape clips). A hub can be featured too: the Travel hub cycles its `heroClips`; the Havas Play hub does the same and its row shows the client pages in brackets, revealed while the row is current or hovered. This is desktop only.
 2. **Poster grid (mobile)**: the same featured projects, same order, as static 16:9 stills: the entry's `poster` when set, else the poster of its `previewVideo`. Nothing plays.
 3. **Bio**: text on the page, not in `projects.json`.
 4. **Work index**: every project that is not `hidden` (travel destinations excepted, see the table), with two filters:
 
    | Filter | Shows | Note |
    |---|---|---|
-   | Films | `category: "film"`, plus the Travel hub | Travel destinations (`category: "travel"`, no `custom`) are not listed: they live on `/work/travel` |
+   | Films | `category: "film"`, plus the Travel and Havas Play hubs | Travel destinations (`category: "travel"`, no `custom`) and agency work (entries with `agency`) are not listed: they live on `/work/travel` and `/work/havas-play` |
    | Case studies | `category: "other"` | Custom pages under `app/work/<slug>/`. Each needs a `thumbnail` |
 
    Order inside a filter is the order in `projects.json` (change it with `move`). The still of a video project is the poster of its `previewVideo`, unless the entry has a `thumbnail`, which wins. Case studies have no clip, so their still is always `thumbnail`.

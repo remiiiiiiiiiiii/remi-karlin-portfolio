@@ -459,6 +459,45 @@ button {
     color: #fff;
   }
 }
+/* Agency hub row: "(KFC, Renault, …)" after the title, revealed while the row is current, hovered or focused. */
+.hd-list li.has-clients {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 14px;
+  row-gap: 4px;
+  max-width: 100%;
+}
+.hd-clients {
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: min(52vw, 820px);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 260ms var(--ease), transform 320ms var(--ease), visibility 0s linear 260ms;
+}
+.hd-list li.is-current .hd-clients,
+.hd-list li.has-clients:hover .hd-clients,
+.hd-list li.has-clients:focus-within .hd-clients {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity 260ms var(--ease), transform 320ms var(--ease), visibility 0s;
+}
+.hd-clients a {
+  color: inherit;
+  text-underline-offset: 3px;
+  transition: color 160ms var(--ease);
+}
+.hd-clients a:hover,
+.hd-clients a:focus-visible {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+}
 .hd-side {
   display: grid;
   justify-items: end;
@@ -564,6 +603,12 @@ button {
 }
 .hm-meta {
   margin-top: 2px;
+  color: var(--text-2);
+}
+.hm-clients {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.45;
   color: var(--text-2);
 }
 
