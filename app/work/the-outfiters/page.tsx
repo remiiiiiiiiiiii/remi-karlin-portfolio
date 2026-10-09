@@ -13,9 +13,9 @@ export const metadata = pageMeta({
   path: "/work/the-outfiters",
 });
 
-const MOODBOARD_URL = "https://app.milanote.com/1XfiCd1keSSa5d/the-outfiters";
+const MOODBOARD_URL = "https://app.milanote.com/1XfiCd1keSSa5d?p=iuDdY4z8Qcs";
 // paste the src of Milanote's embed code here (Share → read-only link → Generate HTML embed code)
-const MOODBOARD_EMBED = "";
+const MOODBOARD_EMBED = "https://app.milanote.com/1XfiCd1keSSa5d?p=iuDdY4z8Qcs";
 
 const LOGO_SRC = `/images/the-outfiters-brand/${encodeURIComponent("out fiters vn (5).webp")}`;
 
