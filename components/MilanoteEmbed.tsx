@@ -14,7 +14,7 @@ export default function MilanoteEmbed({ src, title, boardUrl }: Props) {
           <iframe
             src={src}
             title={title}
-            loading="lazy"
+           
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
           />
