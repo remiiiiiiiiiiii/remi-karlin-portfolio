@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // pick-frames: propose candidate stills for a project's landing banner, then apply the one Rémi picks.
 //
-//   node scripts/pick-frames.mjs sheet [slug ...] [--count 12] [--samples 72] [--previews] [--y 0..1]
-//       Samples frames across the project's films (full local files when present, else the preview
-//       clips), scores them (exposure, contrast, sharpness), keeps the best frame in each of
-//       --count time buckets and writes a numbered contact sheet to .frames/<slug>/sheet.jpg
-//       showing each candidate at the 2.39:1 banner crop. No slug = every featured project.
+//   node scripts/pick-frames.mjs sheet [slug ...] [--count 20] [--per-film 80] [--scene 0.3] [--previews] [--y 0..1]
+//       Finds the shots of the project's films (full local files when present, else the preview
+//       clips), takes one candidate frame per shot (away from the cuts), scores them for exposure,
+//       contrast, sharpness and colour, drops near-duplicates, keeps the best --count spread over the
+//       films and writes a numbered contact sheet to .frames/<slug>/sheet.jpg showing each at the
+//       2.39:1 banner crop. No slug = every featured project.
 //
 //   node scripts/pick-frames.mjs apply <slug> <n> [<slug> <n> ...] [--y 0..1] [--dry-run]
 //       Re-extracts candidate n at full quality and writes both landing banners:
@@ -106,35 +107,97 @@ function sourcesFor(ctx, data, p, previewsOnly) {
   return out;
 }
 
-/** Spread `total` sample times evenly over the sources (each film gets the same share), at least 4 per source. */
-function samplePlan(ctx, sources, total) {
-  for (const s of sources) s.duration = probeMedia(ctx.ffmpeg, s.file).duration || 8;
-  const plan = [];
-  sources.forEach((s, si) => {
-    const n = Math.max(4, Math.round(total / sources.length));
-    const start = Math.min(0.5, s.duration * 0.02), end = s.duration * 0.97;
-    for (let k = 0; k < n; k++) plan.push({ si, at: +(start + ((k + 0.5) / n) * (end - start)).toFixed(2) });
-  });
-  return plan;
+/**
+ * Shot boundaries of a film: ffmpeg's scene-change score on a 320 px copy. Returns the shots as
+ * [start, end] pairs covering the whole duration. A film with no detectable cuts is one shot.
+ */
+function detectShots(ctx, file, duration, threshold) {
+  const r = spawnSync(ctx.ffmpeg, ["-hide_banner", "-loglevel", "info", "-threads", "8", "-i", file, "-an",
+    "-vf", `scale=320:-2,select='gt(scene,${threshold})',showinfo`, "-f", "null", "-"], { encoding: "utf8", maxBuffer: 64 << 20 });
+  const cuts = [...(r.stderr || "").matchAll(/pts_time:\s*([\d.]+)/g)].map((m) => Number(m[1])).filter((t) => t > 0.2 && t < duration - 0.2);
+  cuts.sort((a, b) => a - b);
+  const shots = [];
+  let prev = 0;
+  for (const c of cuts) { if (c - prev >= 0.3) { shots.push([prev, c]); prev = c; } }
+  shots.push([prev, duration]);
+  return shots;
 }
 
-/** Exposure / contrast / sharpness score of a tiny greyscale frame; dark, blown-out and flat frames sink. */
-function score(gray, w) {
+/**
+ * Candidate times for one film: the middle of every shot (never within 0.3 s of a cut, where fades
+ * and motion blur live), plus one more point every ~5 s inside long takes. Capped at `max` points,
+ * thinned evenly over time when there are more shots than that.
+ */
+function candidateTimes(shots, max) {
+  const pts = [];
+  for (const [a, b] of shots) {
+    const len = b - a;
+    if (len < 0.2) continue;
+    const edge = Math.min(0.3, len * 0.3);
+    const lo = a + edge, hi = b - edge;
+    if (hi - lo < 1) { pts.push(+((a + b) / 2).toFixed(2)); continue; }
+    const n = Math.max(1, Math.round((hi - lo) / 5));
+    for (let k = 0; k < n; k++) pts.push(+(lo + ((k + 0.5) / n) * (hi - lo)).toFixed(2));
+  }
+  if (pts.length <= max) return pts;
+  return Array.from({ length: max }, (_, k) => pts[Math.floor(((k + 0.5) / max) * pts.length)]);
+}
+
+/** Difference hash (9x8 gradients -> 64 bits) of a small greyscale frame; near-duplicates land within a few bits. */
+function dHash(gray, w, h) {
+  const bits = [];
+  for (let y = 0; y < 8; y++) {
+    const sy0 = Math.floor((y * h) / 8), sy1 = Math.max(sy0 + 1, Math.floor(((y + 1) * h) / 8));
+    const row = [];
+    for (let x = 0; x < 9; x++) {
+      const sx0 = Math.floor((x * w) / 9), sx1 = Math.max(sx0 + 1, Math.floor(((x + 1) * w) / 9));
+      let sum = 0, n = 0;
+      for (let yy = sy0; yy < sy1; yy++) for (let xx = sx0; xx < sx1; xx++) { sum += gray[yy * w + xx]; n++; }
+      row.push(sum / n);
+    }
+    for (let x = 0; x < 8; x++) bits.push(row[x] < row[x + 1] ? 1 : 0);
+  }
+  return bits;
+}
+const hamming = (a, b) => a.reduce((d, bit, i) => d + (bit !== b[i] ? 1 : 0), 0);
+function meanAbsDiff(a, b) {
+  let d = 0;
+  for (let i = 0; i < a.length; i++) d += Math.abs(a[i] - b[i]);
+  return d / a.length;
+}
+/** Two frames are "the same picture" when their hashes nearly agree or the pixels barely differ. */
+const similar = (x, y) => hamming(x.hash, y.hash) <= 5 || meanAbsDiff(x.gray, y.gray) < 7;
+
+/**
+ * Quality score of a frame. Exposure and contrast from the 48 px grey, sharpness as the Laplacian
+ * variance of the 160 px grey (motion blur and soft focus sink), colourfulness from a 24 px RGB.
+ * Very dark, blown-out and flat frames are penalised hard.
+ */
+function score(gray, w, big, bw, bh, rgb) {
   const n = gray.length;
   let sum = 0;
   for (let i = 0; i < n; i++) sum += gray[i];
   const mean = sum / n;
-  let varSum = 0, edge = 0, edges = 0;
-  for (let i = 0; i < n; i++) {
-    varSum += (gray[i] - mean) ** 2;
-    if ((i + 1) % w !== 0) { edge += Math.abs(gray[i] - gray[i + 1]); edges++; }
+  let varSum = 0;
+  for (let i = 0; i < n; i++) varSum += (gray[i] - mean) ** 2;
+  const std = Math.sqrt(varSum / n);
+  let lapSum = 0, lapSq = 0, cnt = 0;
+  for (let y = 1; y < bh - 1; y++) for (let x = 1; x < bw - 1; x++) {
+    const i = y * bw + x;
+    const l = 4 * big[i] - big[i - 1] - big[i + 1] - big[i - bw] - big[i + bw];
+    lapSum += l; lapSq += l * l; cnt++;
   }
-  const std = Math.sqrt(varSum / n), sharp = edge / Math.max(1, edges);
-  let s = std + 2 * sharp;
-  if (mean < 28) s *= 0.3;
-  if (mean > 228) s *= 0.4;
-  if (std < 12) s *= 0.2;
-  return { mean: +mean.toFixed(1), std: +std.toFixed(1), sharp: +sharp.toFixed(1), score: +s.toFixed(1) };
+  const lapMean = lapSum / cnt, sharp = lapSq / cnt - lapMean * lapMean;
+  let rg = [], yb = [];
+  for (let i = 0; i + 2 < rgb.length; i += 3) { rg.push(rgb[i] - rgb[i + 1]); yb.push(0.5 * (rgb[i] + rgb[i + 1]) - rgb[i + 2]); }
+  const m = (a) => a.reduce((x, y) => x + y, 0) / a.length;
+  const sd = (a) => { const mm = m(a); return Math.sqrt(m(a.map((v) => (v - mm) ** 2))); };
+  const colour = Math.sqrt(sd(rg) ** 2 + sd(yb) ** 2) + 0.3 * Math.sqrt(m(rg) ** 2 + m(yb) ** 2);
+  let s = Math.min(std, 60) / 60 + 1.4 * Math.min(sharp, 800) / 800 + 0.5 * Math.min(colour, 50) / 50;
+  if (mean < 30) s *= 0.3;
+  if (mean > 225) s *= 0.4;
+  if (std < 14) s *= 0.3;
+  return { mean: +mean.toFixed(1), std: +std.toFixed(1), sharp: +sharp.toFixed(0), colour: +colour.toFixed(1), score: +s.toFixed(3) };
 }
 
 async function pool(items, limit, fn) {
@@ -147,72 +210,89 @@ async function pool(items, limit, fn) {
   return results;
 }
 
-function meanAbsDiff(a, b) {
-  let d = 0;
-  for (let i = 0; i < a.length; i++) d += Math.abs(a[i] - b[i]);
-  return d / a.length;
-}
-
 async function makeSheet(ctx, data, p, opts) {
   const sources = sourcesFor(ctx, data, p, opts.previews);
-  const plan = samplePlan(ctx, sources, opts.samples);
   const dir = path.join(ctx.framesDir, p.slug);
   const tmp = path.join(dir, "samples");
   fs.rmSync(dir, { recursive: true, force: true });
   fs.mkdirSync(tmp, { recursive: true });
-  log(`${p.slug}: ${sources.map((s) => `${s.label} (${Math.round(s.duration)} s)`).join(", ")} -> ${plan.length} samples`);
 
-  const SM_W = 48;
+  // 1. Shots per film -> candidate times.
+  const plan = [];
+  sources.forEach((s, si) => {
+    s.duration = probeMedia(ctx.ffmpeg, s.file).duration || 8;
+    s.shots = detectShots(ctx, s.file, s.duration, opts.scene);
+    const times = candidateTimes(s.shots, opts.perFilm);
+    s.candidates = times.length;
+    for (const at of times) plan.push({ si, at });
+  });
+  log(`${p.slug}: ${sources.map((s) => `${s.label} (${Math.round(s.duration)} s, ${s.shots.length} shots, ${s.candidates} candidates)`).join(", ")}`);
+
+  // 2. One ffmpeg call per candidate: 640 px jpeg for the sheet + three tiny rasters for scoring.
+  const SM_W = 48, BIG_W = 160, RGB_W = 24;
   const samples = await pool(plan, 4, async (pt, i) => {
     const src = sources[pt.si];
-    const big = path.join(tmp, `${i}.jpg`), sm = path.join(tmp, `${i}.gray`);
+    const big = path.join(tmp, `${i}.jpg`), sm = path.join(tmp, `${i}.gray`), lg = path.join(tmp, `${i}.lgray`), rgb = path.join(tmp, `${i}.rgb`);
     await ffAsync(ctx, ["-ss", String(pt.at), "-i", src.file,
-      "-filter_complex", `[0:v]split=2[a][b];[a]scale=${TILE_W}:-2:flags=bicubic[big];[b]scale=${SM_W}:-2:flags=area,format=gray[sm]`,
+      "-filter_complex", `[0:v]split=4[a][b][c][d];[a]scale=${TILE_W}:-2:flags=bicubic[big];[b]scale=${SM_W}:-2:flags=area,format=gray[sm];[c]scale=${BIG_W}:-2:flags=area,format=gray[lg];[d]scale=${RGB_W}:-2:flags=area,format=rgb24[rgb]`,
       "-map", "[big]", "-frames:v", "1", "-q:v", "3", big,
-      "-map", "[sm]", "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", sm]);
-    const gray = fs.readFileSync(sm);
-    return { i, si: pt.si, at: pt.at, big, gray, ...score(gray, SM_W) };
+      "-map", "[sm]", "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", sm,
+      "-map", "[lg]", "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", lg,
+      "-map", "[rgb]", "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", rgb]);
+    const gray = fs.readFileSync(sm), lgray = fs.readFileSync(lg), rgbBuf = fs.readFileSync(rgb);
+    const smH = gray.length / SM_W, lgH = lgray.length / BIG_W;
+    return { i, si: pt.si, at: pt.at, big, gray, hash: dHash(gray, SM_W, smH), ...score(gray, SM_W, lgray, BIG_W, lgH, rgbBuf) };
   });
 
-  // Best frame per time bucket, skipping near-duplicates of an earlier pick.
+  // 3. Pick: each film gets a share of the count (more shots, more frames; at least 2), best scores
+  //    first, never a near-duplicate of an earlier pick, never two from the same second. Leftover
+  //    slots go to the best remaining frames of any film.
   const count = Math.min(opts.count, samples.length);
+  const bySource = sources.map((_, si) => samples.filter((s) => s.si === si).sort((a, b) => b.score - a.score));
+  const weights = sources.map((s) => Math.sqrt(Math.max(1, s.shots.length)));
+  const wsum = weights.reduce((a, b) => a + b, 0);
+  const quota = sources.map((s, si) => Math.min(bySource[si].length, Math.max(bySource[si].length ? Math.min(2, bySource[si].length) : 0, Math.round((count * weights[si]) / wsum))));
   const chosen = [];
-  for (let b = 0; b < count; b++) {
-    const lo = Math.floor((b * samples.length) / count), hi = Math.floor(((b + 1) * samples.length) / count);
-    const bucket = samples.slice(lo, hi).sort((x, y) => y.score - x.score);
-    const pick = bucket.find((s) => !chosen.some((c) => meanAbsDiff(c.gray, s.gray) < 14)) || bucket[0];
-    if (pick) chosen.push(pick);
+  const ok = (s) => !chosen.some((c) => similar(c, s) || (c.si === s.si && Math.abs(c.at - s.at) < 0.8));
+  for (let si = 0; si < sources.length; si++) {
+    let taken = 0;
+    for (const s of bySource[si]) { if (taken >= quota[si]) break; if (ok(s)) { chosen.push(s); taken++; } }
   }
+  if (chosen.length < count) {
+    for (const s of [...samples].sort((a, b) => b.score - a.score)) { if (chosen.length >= count) break; if (!chosen.includes(s) && ok(s)) chosen.push(s); }
+  }
+  chosen.sort((a, b) => a.si - b.si || a.at - b.at);
 
   const y = ctx.y ?? 0.5;
   const candidates = chosen.map((c, k) => {
     const n = k + 1;
-    const keep = path.join(dir, `${n}.jpg`);
-    fs.copyFileSync(c.big, keep);
+    fs.copyFileSync(c.big, path.join(dir, `${n}.jpg`));
     const src = sources[c.si];
-    return { n, source: src.url || path.relative(ctx.root, src.file), at: c.at, score: c.score, mean: c.mean };
+    return { n, source: src.url || path.relative(ctx.root, src.file), film: src.label.replace(/\.(mp4|mov)$/i, "").replace(/-preview$/, ""), at: c.at, score: c.score, sharp: c.sharp, mean: c.mean };
   });
   fs.rmSync(tmp, { recursive: true, force: true });
 
-  // Contact sheet: each candidate at the 2.39:1 crop, numbered, 2 columns, title bar.
-  const cols = candidates.length > 6 ? 3 : 2;
-  const rows = Math.ceil(candidates.length / cols);
-  const tw = TILE_W + GAP * 2, th = TILE_H + GAP * 2;
+  // 4. Contact sheet: every candidate at the 2.39:1 banner crop, numbered, film name bottom-left.
+  const cols = candidates.length > 12 ? 4 : candidates.length > 6 ? 3 : 2;
+  const tileW = cols === 4 ? 480 : TILE_W, tileH = Math.round(tileW / 2.39);
+  const tw = tileW + GAP * 2, th = tileH + GAP * 2;
+  const esc = (t) => String(t).replace(/[\\':%,\[\]]/g, (m) => "\\" + m);
   const inputs = candidates.flatMap((c) => ["-i", path.join(dir, `${c.n}.jpg`)]);
   const tiles = candidates.map((c, k) =>
-    `[${k}:v]scale=${TILE_W}:${TILE_H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${TILE_W}:${TILE_H}:(iw-${TILE_W})/2:(ih-${TILE_H})*${y},` +
+    `[${k}:v]scale=${tileW}:${tileH}:force_original_aspect_ratio=increase:flags=lanczos,crop=${tileW}:${tileH}:(iw-${tileW})/2:(ih-${tileH})*${y},` +
     `pad=${tw}:${th}:${GAP}:${GAP}:color=#111111,` +
-    `drawtext=fontfile=${FONT}:text='${c.n}':fontsize=30:fontcolor=white:box=1:boxcolor=black@0.55:boxborderw=10:x=${GAP + 14}:y=${GAP + 12}[t${k}]`);
+    `drawtext=fontfile=${FONT}:text='${c.n}':fontsize=26:fontcolor=white:box=1:boxcolor=black@0.55:boxborderw=8:x=${GAP + 12}:y=${GAP + 10},` +
+    `drawtext=fontfile=${FONT}:text='${esc(c.film)}  ${c.at}s':fontsize=12:fontcolor=white@0.85:box=1:boxcolor=black@0.45:boxborderw=5:x=${GAP + 10}:y=h-th-${GAP + 10}[t${k}]`);
   const layout = candidates.map((_, k) => `${(k % cols) * tw}_${Math.floor(k / cols) * th}`).join("|");
-  const title = `${p.title}   ·   ${candidates.length} frames, 2.39:1 banner crop   ·   apply: pick-frames apply ${p.slug} N`.replace(/[':\\]/g, (m) => "\\" + m);
+  const title = esc(`${p.title}   ·   ${candidates.length} frames, one per shot, 2.39:1 banner crop   ·   apply: pick-frames apply ${p.slug} N`);
   const stack = candidates.length === 1 ? `[t0]copy[grid]` : `${candidates.map((_, k) => `[t${k}]`).join("")}xstack=inputs=${candidates.length}:layout=${layout}:fill=#111111[grid]`;
   const fc = `${tiles.join(";")};${stack};[grid]pad=iw:ih+52:0:52:color=#111111,drawtext=fontfile=${FONT}:text='${title}':fontsize=22:fontcolor=white:x=${GAP + 4}:y=16[out]`;
   const sheet = path.join(dir, "sheet.jpg");
   ff(ctx, [...inputs, "-filter_complex", fc, "-map", "[out]", "-frames:v", "1", "-q:v", "4", sheet], `sheet ${p.slug}`);
 
-  const manifest = { slug: p.slug, title: p.title, y, generatedAt: new Date().toISOString(), candidates };
+  const manifest = { slug: p.slug, title: p.title, y, generatedAt: new Date().toISOString(), films: sources.map((s) => ({ file: s.url || path.relative(ctx.root, s.file), duration: s.duration, shots: s.shots.length })), candidates };
   fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
-  log(`  -> ${path.relative(ctx.root, sheet)}  (${candidates.map((c) => `${c.n}: ${path.basename(c.source)} @ ${c.at}s`).join(", ")})`);
+  log(`  -> ${path.relative(ctx.root, sheet)}  (${candidates.length} frames: ${sources.map((s, si) => `${candidates.filter((c) => chosen[c.n - 1].si === si).length} from ${s.label}`).join(", ")})`);
   return sheet;
 }
 
@@ -221,9 +301,10 @@ function cmdSheet(ctx, positionals, flags) {
   const slugs = positionals.length
     ? positionals
     : data.projects.filter((p) => typeof p.featured === "number" && !p.hidden).sort((a, b) => a.featured - b.featured).map((p) => p.slug);
-  const opts = { count: Number(flags.count || 12), samples: Number(flags.samples || 72), previews: !!flags.previews };
-  if (!(opts.count >= 1 && opts.count <= 12)) throw new UserError("--count must be between 1 and 12.");
-  if (!(opts.samples >= opts.count)) throw new UserError("--samples must be at least --count.");
+  const opts = { count: Number(flags.count || 20), perFilm: Number(flags["per-film"] || 80), scene: Number(flags.scene || 0.3), previews: !!flags.previews };
+  if (!(opts.count >= 1 && opts.count <= 40)) throw new UserError("--count must be between 1 and 40.");
+  if (!(opts.perFilm >= 2)) throw new UserError("--per-film must be at least 2.");
+  if (!(opts.scene > 0 && opts.scene < 1)) throw new UserError("--scene is the cut sensitivity, between 0 and 1 (default 0.3; lower finds more cuts).");
   return (async () => {
     const sheets = [];
     for (const slug of slugs) {
@@ -314,7 +395,7 @@ function cmdApply(ctx, positionals, flags) {
 }
 
 const USAGE = `pick-frames: choose landing banners from real frames.
-  sheet [slug ...] [--count 12] [--samples 72] [--previews] [--y 0..1]   contact sheets in .frames/<slug>/sheet.jpg
+  sheet [slug ...] [--count 20] [--per-film 80] [--scene 0.3] [--previews] [--y 0..1]   contact sheets in .frames/<slug>/sheet.jpg
   apply <slug> <n> [<slug> <n> ...] [--y 0..1] [--dry-run]              write the chosen frame as thumbnail + poster
   apply <slug> --source <file> --at <seconds> [--y 0..1]                 any other frame`;
 

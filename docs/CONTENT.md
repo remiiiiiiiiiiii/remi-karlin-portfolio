@@ -153,7 +153,7 @@ npm run pick-frames -- apply fan-yan 4 havas-kfc 6 --dry-run
 npm run pick-frames -- apply fan-yan 4 havas-kfc 6
 ```
 
-`sheet` samples 72 frames per project across its films (the full local files behind each hero clip when they are on disk, else the preview clips; `--previews` forces the clips), scores them for exposure, contrast and sharpness, keeps the best of each time bucket (`--count`, default 12; Rémi asked for 12) and writes `.frames/<slug>/sheet.jpg`: the candidates numbered, shown at the 2.39:1 crop. Send the sheets to Rémi, he answers with numbers.
+`sheet` finds the shots of each film (ffmpeg scene detection; the full local files behind the hero clips when they are on disk, else the preview clips; `--previews` forces the clips), takes one candidate frame per shot away from the cuts, scores them for exposure, contrast, sharpness and colour, drops near-duplicates (perceptual hash) and keeps the best `--count` (default 20, Rémi's choice) spread over the films. It writes `.frames/<slug>/sheet.jpg`: the candidates numbered, each at the 2.39:1 crop with the film name and timestamp. `--scene 0.2` finds more cuts in films with soft transitions. Send the sheets to Rémi, he answers with numbers.
 
 `apply <slug> <n>` re-reads that frame at full quality and writes `public/images/thumbs/<slug>.webp`, `<slug>-16x9.webp` and their `-tiny.webp`, then sets `thumbnail` and `poster`. `--y 0..1` moves the crop up or down (0.5 centre). For a frame that is not on the sheet: `apply <slug> --source /path/film.mp4 --at 12.5` (an image works too, without `--at`). `.frames/` is git-ignored; the thumbs and `data/projects.json` are what gets committed.
 
