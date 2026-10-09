@@ -118,6 +118,8 @@ function HeroLayer({ slot, index, on, clip, hold, first, canVideo, load, play, w
     draggable: false,
     style: imgStyle,
   };
+  // A still that fails to load is skipped like a clip that errors.
+  if (slot.image) Object.assign(imgProps, { onError: () => onError(index) });
   const cls = ["hd-layer", on && "is-on", clip && "is-clip", hold && "is-hold"].filter(Boolean).join(" ");
 
   return (
@@ -284,15 +286,19 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
       setWarm(-1);
       clearPrev();
       clearReveal();
-      // An incoming still has no `playing` event to wait for: show it straight away.
-      if (natural && !slots[n].image && slots[n].pi === slots[shownRef.current].pi) {
+      if (natural && slots[n].pi === slots[shownRef.current].pi) {
         setXclip(true);
-        setPrev(-1);
-        // Safety net: if the first frame never arrives, show the poster rather than the stale clip.
-        revealTimer.current = window.setTimeout(() => {
-          revealTimer.current = null;
+        if (slots[n].image) {
+          // An incoming still has no `playing` event to wait for: show it straight away, outgoing layer held underneath.
           reveal(n);
-        }, 1500);
+        } else {
+          setPrev(-1);
+          // Safety net: if the first frame never arrives, show the poster rather than the stale clip.
+          revealTimer.current = window.setTimeout(() => {
+            revealTimer.current = null;
+            reveal(n);
+          }, 1500);
+        }
       } else {
         setXclip(false);
         reveal(n);
@@ -432,15 +438,20 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
       stillFor.current = -1;
       return;
     }
-    if (!running) return;
     if (stillFor.current !== cur) {
       stillFor.current = cur;
       stillBase.current = 0;
     }
+    if (!running) return;
     stillT0.current = performance.now();
     const left = Math.max(0, STILL_MS - stillBase.current);
-    const warmTimer = window.setTimeout(() => setWarm(nextOf(cur, autoRef.current)), Math.max(0, left - 1000));
+    // Both timers re-check `cur`: a hover can move on in the gap before this effect's cleanup runs.
+    const warmTimer = window.setTimeout(() => {
+      if (curRef.current !== cur) return;
+      setWarm(nextOf(cur, autoRef.current));
+    }, Math.max(0, left - 1000));
     const timer = window.setTimeout(() => {
+      if (curRef.current !== cur) return;
       // Same as onEnded: nothing else playable (or a held single still) means stay on this one.
       const n = nextOf(cur, autoRef.current);
       if (n >= 0) go(n, true);
