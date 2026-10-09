@@ -1365,6 +1365,8 @@
       "description": "B1NBAGS is a brand I started in 2023 in Hong Kong, paused in 2024 to focus on university, and restarted in 2025. The video work focuses on selling the creative lifestyle rather than the product — high-quality reels shot on a cinema-grade camera, colour-graded with film emulations to build a consistent vintage, textured feel.",
       "previewVideo": "/videos/b1nbags-1-preview.mp4",
       "coverImage": "/images/cover-b1nbags.webp",
+      "thumbnail": "/images/thumbs/b1nbags.webp",
+      "poster": "/images/thumbs/b1nbags-16x9.webp",
       "featured": 1,
       "hidden": false,
       "videos": [
@@ -1449,14 +1451,14 @@
     {
       "slug": "brand-identity",
       "title": "Brand Identity",
-      "subtitle": "Two identities · Paris",
-      "shortDescription": "Brand identity and art direction for Halatia and The Outfiters.",
+      "subtitle": "Four identities · Paris · Hong Kong",
+      "shortDescription": "Brand identity and art direction: Halatia, The Outfiters, B1NBAGS and the Volcan'Archik campaign.",
       "tag": "Case studies",
       "category": "other",
       "year": "2025",
       "location": "Paris",
       "roles": ["Art Director", "Brand Designer"],
-      "description": "Identity work for two brands: a Parisian eau de parfum and a Vietnamese streetwear label. Logo, palette, type and the first campaign visuals for each.",
+      "description": "Identity work for a Parisian eau de parfum, a Vietnamese streetwear label, a Hong Kong clothing brand and a student campaign. Logo, palette, type and the first visuals for each.",
       "previewVideo": "",
       "coverImage": "",
       "thumbnail": "/images/thumbs/brand-identity.webp",
@@ -1466,7 +1468,19 @@
       "heroClips": ["/images/halatia/10.webp", "/images/halatia/15.webp", "/images/halatia/16.webp", "/images/the-outfiters-brand/1.webp", "/images/the-outfiters-brand/2.webp"],
       "custom": true,
       "videos": [],
-      "credits": {}
+      "credits": {},
+      "hubLinks": [
+        {
+          "slug": "b1nbags",
+          "title": "B1NBAGS",
+          "hash": "process"
+        },
+        {
+          "slug": "ruinarktefact",
+          "title": "Volcan'Archik",
+          "hash": "process"
+        }
+      ]
     },
     {
       "slug": "havas-play",
@@ -1482,9 +1496,9 @@
       "previewVideo": "",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-play.webp",
+      "poster": "/images/thumbs/havas-play-16x9.webp",
       "featured": 2,
       "hidden": false,
-      "poster": "/images/thumbs/havas-play-16x9.webp",
       "heroClips": ["/videos/havas-kfc-1-preview.mp4", "/videos/havas-internal-3-preview.mp4"],
       "videos": [],
       "credits": {
@@ -1590,6 +1604,8 @@
       "description": "Artistic director and head of communications for RUINARKTEFACT, the year-long BDE campaign at ESSEC 2024/25 — two teams of 35 competing through events and communications. Directed rap videos, event aftermovies and teasers, plus a 20-minute declaration film for the campaign. Campaign identity, mascot, and Instagram managed entirely by Remi Karlin alongside a team of 5.",
       "previewVideo": "/videos/essec-wei07-preview.mp4",
       "coverImage": "/images/cover-ruinarktefact.webp",
+      "thumbnail": "/images/thumbs/ruinarktefact.webp",
+      "poster": "/images/thumbs/ruinarktefact-16x9.webp",
       "featured": 5,
       "hidden": false,
       "videos": [

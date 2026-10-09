@@ -8,7 +8,7 @@ import type { HeroItem } from "@/components/HeroFrame";
 import WorkIndex from "@/components/WorkIndex";
 import type { IndexRow } from "@/components/WorkIndex";
 import { getHeroProjects, getIndexProjects, groupOf, isHub } from "@/components/landing-data";
-import { getHeroClips, getHubProjects, type Project } from "@/lib/projects";
+import { getHeroClips, getHubEntries, type Project } from "@/lib/projects";
 import { posterPath } from "@/lib/posters";
 import { pageMeta, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/seo";
 
@@ -26,9 +26,10 @@ export default function Page() {
   // hubs (Havas Play) show the client name, "Internal" for the agency's own page; other hubs the child's title.
   const clientsOf = (p: Project) =>
     isHub(p)
-      ? getHubProjects(p.slug).map((c) => ({
+      ? getHubEntries(p.slug).map(({ project: c, title, href }) => ({
           slug: c.slug,
-          title: c.agency?.slug === p.slug ? (c.client && c.client !== p.title ? c.client : "Internal") : c.title,
+          title: c.agency?.slug === p.slug ? (c.client && c.client !== p.title ? c.client : "Internal") : title,
+          href,
         }))
       : undefined;
 

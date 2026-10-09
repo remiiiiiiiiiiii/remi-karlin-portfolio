@@ -14,7 +14,7 @@ export type HeroItem = {
   /** Every preview clip of the project in play order, e.g. ["/videos/solene-preview.mp4"]. Posters derive from the path. A still image (.webp/.jpg/.jpeg/.png/.avif) is also allowed: it shows full-frame for STILL_MS. */
   clips: string[];
   /** Agency hub only: its client pages, shown in brackets after the title while the row is current or hovered. */
-  clients?: { slug: string; title: string }[];
+  clients?: { slug: string; title: string; href?: string }[];
 };
 
 /** One clip of one featured project. Every clip is its own full-frame layer. `image`: a still, no <video>. */
@@ -580,7 +580,7 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
                     {it.clients.map((c, k) => (
                       <span key={c.slug}>
                         {k > 0 && <span aria-hidden="true">, </span>}
-                        <Link href={`/work/${c.slug}`}>{c.title}</Link>
+                        <Link href={c.href ?? `/work/${c.slug}`}>{c.title}</Link>
                       </span>
                     ))}
                     <span aria-hidden="true">)</span>

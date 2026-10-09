@@ -58,6 +58,9 @@ export type Project = {
   /** Brand the work was made for (the agency's client). */
   client?: string;
   galleries?: ProjectGallery[];
+  /** Hub entries only: other projects' sections shown on this hub too (e.g. a film's process section), without
+   *  taking those projects out of the work index. `hash` is the anchor on their page, `title` the label here. */
+  hubLinks?: { slug: string; title?: string; hash?: string }[];
   instagram?: string;
   instagramUrl?: string;
   bannerImage?: string;
@@ -133,6 +136,19 @@ export function getAgencyProjects(
  */
 export function getHubProjects(hubSlug: string, exceptSlug?: string): Project[] {
   return childrenOf((p) => p.hub === hubSlug || p.agency?.slug === hubSlug, {}, exceptSlug);
+}
+
+/** One entry of a hub page: the project it points at, the label and the href (hub children, then `hubLinks`). */
+export type HubEntry = { project: Project; title: string; href: string };
+
+export function getHubEntries(hubSlug: string, exceptSlug?: string): HubEntry[] {
+  const hub = projects.find((p) => p.slug === hubSlug);
+  const own = getHubProjects(hubSlug, exceptSlug).map((p) => ({ project: p, title: p.title, href: `/work/${p.slug}` }));
+  const linked = (hub?.hubLinks ?? [])
+    .map((l) => ({ l, project: projects.find((p) => p.slug === l.slug) }))
+    .filter((x): x is { l: NonNullable<Project["hubLinks"]>[number]; project: Project } => !!x.project && !x.project.hidden && x.project.slug !== exceptSlug)
+    .map(({ l, project }) => ({ project, title: l.title || project.title, href: `/work/${project.slug}${l.hash ? `#${l.hash}` : ""}` }));
+  return [...own, ...linked];
 }
 
 function childrenOf(match: (p: Project) => boolean, order: Record<string, number>, exceptSlug?: string): Project[] {
