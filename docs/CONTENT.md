@@ -7,12 +7,11 @@ Everything the site lists lives in `data/projects.json`. You do not edit code to
 1. **Hero (desktop)**: a full-frame video with a hover list of the featured projects. The list is the projects that have `featured`, in `featured` order (1 = first). Hovering or selecting a row plays that project's `previewVideo`, one clip at a time. This is desktop only.
 2. **Poster grid (mobile)**: the same featured projects, same order, as static 16:9 stills: the entry's `poster` when set, else the poster of its `previewVideo`. Nothing plays.
 3. **Bio**: text on the page, not in `projects.json`.
-4. **Work index**: every project that is not `hidden`, with three filters:
+4. **Work index**: every project that is not `hidden` (travel destinations excepted, see the table), with two filters:
 
    | Filter | Shows | Note |
    |---|---|---|
-   | Films | `category: "film"` | |
-   | Travel | `category: "travel"` | |
+   | Films | `category: "film"`, plus the Travel hub | Travel destinations (`category: "travel"`, no `custom`) are not listed: they live on `/work/travel` |
    | Case studies | `category: "other"` | Custom pages under `app/work/<slug>/`. Each needs a `thumbnail` |
 
    Order inside a filter is the order in `projects.json` (change it with `move`). The still of a video project is the poster of its `previewVideo`, unless the entry has a `thumbnail`, which wins. Case studies have no clip, so their still is always `thumbnail`.
@@ -42,7 +41,7 @@ The file must exist in `public/videos` and be one of that project's own video pr
    ```
 
 3. **Run it** (same command without `--dry-run`). It parses the YouTube id, runs the preview through `scripts/optimize-media.mjs` (8 s, no audio, max 1280 px, letterbox bars cropped, poster frame picked by brightness, tiny poster), converts stills to WebP, inserts the entry at the top of its category, renumbers `featured`, checks the JSON re-parses, and prints the git diff stat. Leave out `--featured` if it should not be on the homepage hero.
-4. **Check locally**: `npx tsc --noEmit`, then the dev server (in the Claude desktop app: the "portfolio" entry in `/Users/remikarlin/OS/.claude/launch.json`; otherwise `npm run dev`). Open `/`, hover the hero row (desktop width), check the index under Films/Travel, and open `/work/<slug>`. Never run `next build` while the dev server is running: it corrupts `.next`.
+4. **Check locally**: `npx tsc --noEmit`, then the dev server (in the Claude desktop app: the "portfolio" entry in `/Users/remikarlin/OS/.claude/launch.json`; otherwise `npm run dev`). Open `/`, hover the hero row (desktop width), check the index under Films/Case studies, and open `/work/<slug>`. Never run `next build` while the dev server is running: it corrupts `.next`.
 5. **Commit and push**: commit `data` and `public` (not `git add -A`), then `npm run deploy` (= `git push origin main`). **Pushing to `main` deploys** to remikarlin.com through Vercel, so push only when you mean to ship. The scripts never commit or push.
 
 For long values put them in a file and run `node scripts/add-project.mjs --json project.json` (same keys as the flags; flags override the file).
@@ -154,7 +153,7 @@ npm run pick-frames -- apply fan-yan 4 havas-kfc 6 --dry-run
 npm run pick-frames -- apply fan-yan 4 havas-kfc 6
 ```
 
-`sheet` samples 36 frames per project across its films (the full local files behind each hero clip when they are on disk, else the preview clips; `--previews` forces the clips), scores them for exposure, contrast and sharpness, keeps the best of each time bucket (`--count`, default 6) and writes `.frames/<slug>/sheet.jpg`: the candidates numbered, shown at the 2.39:1 crop. Send the sheets to Rémi, he answers with numbers.
+`sheet` samples 72 frames per project across its films (the full local files behind each hero clip when they are on disk, else the preview clips; `--previews` forces the clips), scores them for exposure, contrast and sharpness, keeps the best of each time bucket (`--count`, default 12; Rémi asked for 12) and writes `.frames/<slug>/sheet.jpg`: the candidates numbered, shown at the 2.39:1 crop. Send the sheets to Rémi, he answers with numbers.
 
 `apply <slug> <n>` re-reads that frame at full quality and writes `public/images/thumbs/<slug>.webp`, `<slug>-16x9.webp` and their `-tiny.webp`, then sets `thumbnail` and `poster`. `--y 0..1` moves the crop up or down (0.5 centre). For a frame that is not on the sheet: `apply <slug> --source /path/film.mp4 --at 12.5` (an image works too, without `--at`). `.frames/` is git-ignored; the thumbs and `data/projects.json` are what gets committed.
 
@@ -185,7 +184,7 @@ Preview naming: one preview becomes `public/videos/<slug>-preview.mp4`, several 
 | `subtitle` | string | Line under the title, e.g. `Music video · 12:51 cover · The Strokes` |
 | `shortDescription` | string | One sentence for index rows and cards |
 | `tag` | string | Short type label, e.g. `Music Video`, `Documentary`, `Brand Identity` |
-| `category` | `film` \| `travel` \| `other` | Index filter: Films / Travel / Case studies |
+| `category` | `film` \| `travel` \| `other` | Index filter: Films (travel = hub only) / Case studies |
 | `year` | string | `"2025"` or `"2024–25"` |
 | `location` | string | |
 | `roles` | string[] | Person nouns: `Director`, `Cinematographer`, `Editor`, `Colorist` |

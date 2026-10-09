@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // pick-frames: propose candidate stills for a project's landing banner, then apply the one Rémi picks.
 //
-//   node scripts/pick-frames.mjs sheet [slug ...] [--count 6] [--samples 36] [--previews] [--y 0..1]
+//   node scripts/pick-frames.mjs sheet [slug ...] [--count 12] [--samples 72] [--previews] [--y 0..1]
 //       Samples frames across the project's films (full local files when present, else the preview
 //       clips), scores them (exposure, contrast, sharpness), keeps the best frame in each of
 //       --count time buckets and writes a numbered contact sheet to .frames/<slug>/sheet.jpg
@@ -221,7 +221,7 @@ function cmdSheet(ctx, positionals, flags) {
   const slugs = positionals.length
     ? positionals
     : data.projects.filter((p) => typeof p.featured === "number" && !p.hidden).sort((a, b) => a.featured - b.featured).map((p) => p.slug);
-  const opts = { count: Number(flags.count || 6), samples: Number(flags.samples || 36), previews: !!flags.previews };
+  const opts = { count: Number(flags.count || 12), samples: Number(flags.samples || 72), previews: !!flags.previews };
   if (!(opts.count >= 1 && opts.count <= 12)) throw new UserError("--count must be between 1 and 12.");
   if (!(opts.samples >= opts.count)) throw new UserError("--samples must be at least --count.");
   return (async () => {
@@ -314,7 +314,7 @@ function cmdApply(ctx, positionals, flags) {
 }
 
 const USAGE = `pick-frames: choose landing banners from real frames.
-  sheet [slug ...] [--count 6] [--samples 36] [--previews] [--y 0..1]   contact sheets in .frames/<slug>/sheet.jpg
+  sheet [slug ...] [--count 12] [--samples 72] [--previews] [--y 0..1]   contact sheets in .frames/<slug>/sheet.jpg
   apply <slug> <n> [<slug> <n> ...] [--y 0..1] [--dry-run]              write the chosen frame as thumbnail + poster
   apply <slug> --source <file> --at <seconds> [--y 0..1]                 any other frame`;
 

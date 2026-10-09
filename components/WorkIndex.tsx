@@ -9,7 +9,7 @@ export type IndexRow = {
   tag: string;
   location: string;
   year: string;
-  group: "films" | "travel" | "cases";
+  group: "films" | "cases";
   /** Preferred still (project thumbnail) */
   still?: string;
   /** Fallback still (preview poster) */
@@ -21,7 +21,6 @@ type Filter = "all" | IndexRow["group"];
 const FILTERS: { key: Filter; label: string }[] = [
   { key: "all", label: "All" },
   { key: "films", label: "Films" },
-  { key: "travel", label: "Travel" },
   { key: "cases", label: "Case studies" },
 ];
 
