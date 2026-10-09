@@ -1,10 +1,14 @@
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
-  title: "Other Work — Remi Karlin",
-  description: "Photography and other creative work by Remi Karlin.",
-};
+export const metadata: Metadata = pageMeta({
+  title: "Brand Identity and Art Direction — Remi Karlin",
+  description:
+    "Brand identity and art direction by Remi Karlin: Halatia, a Parisian eau de parfum, Unfold Agency, The Outfiters and the B1NBAGS process.",
+  path: "/other-work",
+});
 
 export default function OtherWorkPage() {
   return (

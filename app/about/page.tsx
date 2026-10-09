@@ -1,9 +1,14 @@
 import Footer from "@/components/Footer";
+import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
-  title: "About — Remi Karlin",
-  description: "About Remi Karlin — filmmaker, cinematographer and artistic director.",
-};
+export const metadata: Metadata = pageMeta({
+  title: "About Remi Karlin — Filmmaker and Artistic Director",
+  description:
+    "Hong Kong-raised, half French and half Chinese. Remi Karlin directs, shoots, edits and grades films, and builds brand and campaign identities.",
+  path: "/about",
+  ogType: "profile",
+});
 
 export default function AboutPage() {
   return (
@@ -17,7 +22,7 @@ export default function AboutPage() {
         <div style={{ marginBottom: 48 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/portrait.jpg"
+            src="/images/portrait.webp"
             alt="Remi Karlin"
             style={{
               width: "100%",

@@ -2,15 +2,17 @@ import Link from "next/link";
 import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import processImages from "@/data/b1nbags-process-images.json";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "B1NBAGS Process — Remi Karlin",
   description: "The creative and production process behind B1NBAGS — brand identity, screen-printing, photography, and video.",
-};
+  path: "/work/b1nbags-process",
+});
 
 const brandImages = [
-  "/images/b1nbags/banner.png",
-  "/images/b1nbags/instagram-grid.png",
+  "/images/b1nbags/banner.webp",
+  "/images/b1nbags/instagram-grid.webp",
 ];
 
 export default function B1nbagsProcessPage() {

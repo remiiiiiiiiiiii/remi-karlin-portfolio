@@ -23,6 +23,10 @@ export type Project = {
   coverImage: string;
   videos: ProjectVideoEntry[];
   credits: Record<string, string>;
+  /** 1 = first tile on the landing; absent = not on the landing */
+  featured?: number;
+  /** true = page exists but is listed nowhere */
+  hidden?: boolean;
   photoGrid?: { title: string; images: string[] };
   instagram?: string;
   instagramUrl?: string;

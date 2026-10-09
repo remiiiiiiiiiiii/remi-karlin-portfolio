@@ -4,11 +4,13 @@ import BackButton from "@/components/BackButton";
 import PhotoGallery from "@/components/PhotoGallery";
 import Footer from "@/components/Footer";
 import images from "@/data/unfold-agency-images.json";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Unfold Agency — Remi Karlin",
   description: "Brand identity for Unfold Agency — a creative agency built around the metaphor of origami.",
-};
+  path: "/work/unfold-agency",
+});
 
 export default function UnfoldAgencyPage() {
   const idx = projects.findIndex((p) => p.slug === "unfold-agency");

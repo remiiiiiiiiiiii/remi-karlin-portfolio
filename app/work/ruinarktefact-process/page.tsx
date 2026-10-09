@@ -3,19 +3,21 @@ import BackButton from "@/components/BackButton";
 import PhotoCarousel from "@/components/PhotoCarousel";
 import Footer from "@/components/Footer";
 import processImages from "@/data/ruinarktefact-process-images.json";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Ruinarktefact Process — Remi Karlin",
   description: "The creative and communications process behind VOLCAN'ARCHIK — mascot design, campaign identity, and the declaration short film.",
-};
+  path: "/work/ruinarktefact-process",
+});
 
 const campaignAssets = [
-  "/images/ruinarktefact/mascot.png",
-  "/images/ruinarktefact/campaign-3d-no-bg.png",
+  "/images/ruinarktefact/mascot.webp",
+  "/images/ruinarktefact/campaign-3d-no-bg.webp",
   "/images/ruinarktefact/campaign-3d.webp",
-  "/images/ruinarktefact/campaign-vrk-no-bg.png",
-  "/images/ruinarktefact/campaign-vrk.jpg",
-  "/images/ruinarktefact/instagram-grid.png",
+  "/images/ruinarktefact/campaign-vrk-no-bg.webp",
+  "/images/ruinarktefact/campaign-vrk.webp",
+  "/images/ruinarktefact/instagram-grid.webp",
 ];
 
 export default function RuinarktefactProcessPage() {

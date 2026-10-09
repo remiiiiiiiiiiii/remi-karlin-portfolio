@@ -1,6 +1,18 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { projects, getPreviewVideos } from "@/lib/projects";
+import {
+  SITE_URL,
+  PERSON_ID,
+  POSTER_WIDTH,
+  POSTER_HEIGHT,
+  getProjectSeo,
+  jsonLdScript,
+  pageMeta,
+  posterFor,
+  projectSection,
+} from "@/lib/seo";
 import Footer from "@/components/Footer";
 import ProjectVideo from "@/components/ProjectVideo";
 import ScrollReveal from "@/components/ScrollReveal";
@@ -8,30 +20,75 @@ import BackButton from "@/components/BackButton";
 import CyclingVideo from "@/components/CyclingVideo";
 import PhotoCarousel from "@/components/PhotoCarousel"; // used by modessec + fan-yan sections
 
+// Projects with category "other" (halatia, the-outfiters) have their own custom pages
+// under app/work/<slug>/ (static segments win over [slug]). The generic template must
+// never render them.
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return projects.filter((p) => p.category !== "other").map((p) => ({ slug: p.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const p = projects.find((x) => x.slug === params.slug);
-  if (!p) return { title: "Not found" };
-  return {
-    title: `${p.title} — Remi Karlin`,
-    description: p.shortDescription,
-  };
+  if (!p || p.category === "other") {
+    return { title: "Page not found", robots: { index: false, follow: true } };
+  }
+  const { title, description } = getProjectSeo(p);
+  const poster = posterFor(getPreviewVideos(p)[0]);
+  const meta = pageMeta({
+    title,
+    description,
+    path: `/work/${p.slug}`,
+    ogType: "video.other",
+    image: poster,
+    imageWidth: poster ? POSTER_WIDTH : undefined,
+    imageHeight: poster ? POSTER_HEIGHT : undefined,
+    imageAlt: `${p.title}, a film by Remi Karlin`,
+  });
+  // hidden projects stay reachable by URL but are kept out of search results
+  return p.hidden ? { ...meta, robots: { index: false, follow: true } } : meta;
 }
 
 export default function ProjectPage({ params }: { params: { slug: string } }) {
   const idx = projects.findIndex((p) => p.slug === params.slug);
-  if (idx === -1) notFound();
+  if (idx === -1 || projects[idx].category === "other") notFound();
   const project = projects[idx];
-  const prev = idx > 0 ? projects[idx - 1] : null;
-  const next = idx < projects.length - 1 ? projects[idx + 1] : null;
+  // prev/next only link to listed pages: hidden projects are skipped
+  const visible = projects.filter((p) => !p.hidden || p.slug === project.slug);
+  const vIdx = visible.findIndex((p) => p.slug === project.slug);
+  const prev = vIdx > 0 ? visible[vIdx - 1] : null;
+  const next = vIdx < visible.length - 1 ? visible[vIdx + 1] : null;
 
-  const heroVideo = project.videos[0];
+  const { description: seoDescription } = getProjectSeo(project);
+  const pageUrl = `${SITE_URL}/work/${project.slug}`;
+  const section = projectSection(project);
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: section.name, item: `${SITE_URL}${section.path}` },
+      { "@type": "ListItem", position: 3, name: project.title, item: pageUrl },
+    ],
+  };
+  const videoLd = project.videos
+    .filter((v) => v.youtubeId && v.youtubeId !== "YOUR_YOUTUBE_ID")
+    .map((v) => ({
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: v.title === project.title ? v.title : `${v.title} — ${project.title}`,
+      description: v.description ?? seoDescription,
+      thumbnailUrl: [`https://i.ytimg.com/vi/${v.youtubeId}/hqdefault.jpg`],
+      embedUrl: `https://www.youtube-nocookie.com/embed/${v.youtubeId}`,
+      contentUrl: `https://www.youtube.com/watch?v=${v.youtubeId}`,
+      creator: { "@id": PERSON_ID },
+      mainEntityOfPage: pageUrl,
+      inLanguage: "en",
+    }));
 
   return (
     <main className="page project-page">
+      {jsonLdScript(breadcrumbLd, "breadcrumb")}
+      {videoLd.map((d, i) => jsonLdScript(d, `video-${i}`))}
       <BackButton />
       {/* Full-viewport hero with title/info overlaid at bottom-left */}
       <div className="project-hero">
@@ -86,6 +143,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
                 localVideo={v.localVideo}
                 previewVideo={v.previewVideo}
                 title={v.title}
+                priority={i === 0}
               />
               {v.description && (
                 <div className="project-additional-video-caption">{v.description}</div>
@@ -103,7 +161,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <PhotoCarousel
               images={Array.from({ length: 29 }, (_, i) => {
                 const n = 303 + i;
-                return `/images/modessec/NDLE_2024_RK_-${n}.jpg`;
+                return `/images/modessec/NDLE_2024_RK_-${n}.webp`;
               })}
               alt="Modessec hoodie"
             />
@@ -118,16 +176,16 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
             <div className="project-section-label">Artwork product photography</div>
             <PhotoCarousel
               images={[
-                "/images/fan-yan/P1129581.jpg",
-                "/images/fan-yan/P1129582.jpg",
-                "/images/fan-yan/P1129583.jpg",
-                "/images/fan-yan/P1129585.jpg",
-                "/images/fan-yan/P1129586.jpg",
-                "/images/fan-yan/P1129587.jpg",
-                "/images/fan-yan/P1129592.jpg",
-                "/images/fan-yan/P1129595.jpg",
-                "/images/fan-yan/P1129599.jpg",
-                "/images/fan-yan/P1129600.jpg",
+                "/images/fan-yan/P1129581.webp",
+                "/images/fan-yan/P1129582.webp",
+                "/images/fan-yan/P1129583.webp",
+                "/images/fan-yan/P1129585.webp",
+                "/images/fan-yan/P1129586.webp",
+                "/images/fan-yan/P1129587.webp",
+                "/images/fan-yan/P1129592.webp",
+                "/images/fan-yan/P1129595.webp",
+                "/images/fan-yan/P1129599.webp",
+                "/images/fan-yan/P1129600.webp",
               ]}
               alt="Fan Yan lamp"
             />

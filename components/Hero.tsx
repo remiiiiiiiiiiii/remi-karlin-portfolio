@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import PreviewVideo from "./PreviewVideo";
+import { getFeaturedClips } from "./landing-data";
 
 const STRIP_SOURCES: { label: string; video: string }[][] = [
   [
@@ -38,76 +40,115 @@ const STRIP_SOURCES: { label: string; video: string }[][] = [
 ];
 
 const INTERVALS = [4000, 5500, 3500];
+const FADE_MS = 800; // matches .strip-frame opacity transition
+const PRELOAD_DELAY_MS = 1200; // let the current clip win the bandwidth first
+
+type Clip = { label: string; video: string };
+
+/** Featured clips (data/projects.json `featured`) dealt round-robin into 3 strips; else STRIP_SOURCES. */
+function buildStrips(): Clip[][] {
+  const clips = getFeaturedClips();
+  if (clips.length < 3) return STRIP_SOURCES;
+  const strips: Clip[][] = [[], [], []];
+  clips.forEach((video, i) => {
+    strips[i % 3].push({ label: video.replace(/^.*\//, "").replace(/\.[^.]+$/, ""), video });
+  });
+  return strips;
+}
+
+/**
+ * One strip. Only the current clip plays. The clip that is about to play is preloaded (src set,
+ * not playing) shortly after the current one started; the outgoing clip is kept (paused on its
+ * last frame) just for the dissolve and then unmounted.
+ */
+function Strip({
+  sources,
+  interval,
+  active,
+  index,
+}: {
+  sources: Clip[];
+  interval: number;
+  active: boolean;
+  index: number;
+}) {
+  const [idx, setIdx] = useState(0);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [warmNext, setWarmNext] = useState(false);
+  const idxRef = useRef(0);
+  const n = sources.length;
+
+  useEffect(() => {
+    if (n < 2 || !active) return;
+    let fadeTimer: number | undefined;
+    const id = window.setInterval(() => {
+      const cur = idxRef.current;
+      const nxt = (cur + 1) % n;
+      idxRef.current = nxt;
+      setPrev(cur);
+      setIdx(nxt);
+      setWarmNext(false);
+      window.clearTimeout(fadeTimer);
+      fadeTimer = window.setTimeout(() => setPrev(null), FADE_MS + 100);
+    }, interval);
+    return () => {
+      window.clearInterval(id);
+      window.clearTimeout(fadeTimer);
+    };
+  }, [n, interval, active]);
+
+  // preload only the next clip, shortly after the current one started (never while inactive)
+  useEffect(() => {
+    if (n < 2) return;
+    if (!active) {
+      setWarmNext(false);
+      return;
+    }
+    const t = window.setTimeout(() => setWarmNext(true), PRELOAD_DELAY_MS);
+    return () => window.clearTimeout(t);
+  }, [idx, n, active]);
+
+  const next = (idx + 1) % n;
+  const layers = [prev, idx, n > 1 ? next : null].filter(
+    (v, i, a): v is number => v !== null && a.indexOf(v) === i
+  );
+
+  return (
+    <div className="strip" data-strip={index}>
+      {layers.map((i) => {
+        const isCurrent = i === idx;
+        return (
+          <div
+            key={sources[i].label}
+            className={isCurrent ? "strip-frame is-current" : "strip-frame"}
+            data-label={sources[i].label}
+          >
+            <PreviewVideo
+              src={sources[i].video}
+              playing={isCurrent && active}
+              warm={active && !isCurrent && i === next && warmNext}
+              priority={i === 0 && idx === 0}
+              holdFrame
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Hero() {
-  const stripRefs = useRef<Array<HTMLDivElement | null>>([]);
   const heroNameRef = useRef<HTMLHeadingElement>(null);
   const heroFixedRef = useRef<HTMLDivElement>(null);
   const heroFadeRef = useRef<HTMLDivElement>(null);
+  const strips = useMemo(buildStrips, []);
+  const [onScreen, setOnScreen] = useState(true); // false once scrolled past the hero
+  const [tabVisible, setTabVisible] = useState(true);
 
   useEffect(() => {
-    const states = stripRefs.current.map((el, stripIdx) => {
-      if (!el) return null;
-      const sources = STRIP_SOURCES[stripIdx];
-      const layers: HTMLDivElement[] = [];
-      sources.forEach((src, i) => {
-        const layer = document.createElement("div");
-        layer.className = "strip-frame";
-        layer.dataset.label = src.label;
-        const v = document.createElement("video");
-        v.src = src.video;
-        v.muted = true;
-        v.loop = true;
-        v.playsInline = true;
-        v.setAttribute("playsinline", "");
-        v.setAttribute("muted", "");
-        v.preload = "auto";
-        v.controls = false;
-        layer.appendChild(v);
-        el.appendChild(layer);
-        layers.push(layer);
-        if (i === 0) {
-          layer.classList.add("is-current");
-          const p = v.play();
-          if (p && p.catch) p.catch(() => {});
-        }
-      });
-      return { layers, idx: 0, sources };
-    });
-
-    const tickStrip = (state: { layers: HTMLDivElement[]; idx: number; sources: typeof STRIP_SOURCES[number] }) => {
-      const cur = state.idx;
-      const nxt = (cur + 1) % state.sources.length;
-      const incoming = state.layers[nxt];
-      const outgoing = state.layers[cur];
-      const inV = incoming.querySelector("video");
-      if (inV) {
-        try {
-          inV.currentTime = 0;
-        } catch (_) {}
-        const p = inV.play();
-        if (p && p.catch) p.catch(() => {});
-      }
-      setTimeout(() => {
-        incoming.classList.add("is-current");
-        outgoing.classList.remove("is-current");
-      }, 60);
-      state.idx = nxt;
-    };
-
-    const intervals = states.map((st, i) => {
-      if (!st) return null;
-      return window.setInterval(() => tickStrip(st), INTERVALS[i]);
-    });
-
-    return () => {
-      intervals.forEach((id) => {
-        if (id) window.clearInterval(id);
-      });
-      stripRefs.current.forEach((el) => {
-        if (el) el.innerHTML = "";
-      });
-    };
+    const onVis = () => setTabVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
   // scroll-driven hero animations
@@ -142,6 +183,9 @@ export default function Hero() {
       const ft = Math.min(1, Math.max(0, (scrollEl.scrollTop - fadeStart) / (fadeEnd - fadeStart)));
       const fadeEased = 1 - Math.pow(1 - ft, 2);
       if (heroFade) heroFade.style.opacity = fadeEased.toFixed(3);
+
+      // hero is fully covered after ~1.8 viewports: stop decoding video nobody can see
+      setOnScreen(scrollEl.scrollTop < vh * 2);
     };
     scrollEl.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -151,15 +195,8 @@ export default function Hero() {
   return (
     <div className="hero" id="top">
       <div className="strips" id="strips" aria-hidden="true">
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            className="strip"
-            data-strip={i}
-            ref={(el) => {
-              stripRefs.current[i] = el;
-            }}
-          />
+        {strips.map((sources, i) => (
+          <Strip key={i} index={i} sources={sources} interval={INTERVALS[i]} active={onScreen && tabVisible} />
         ))}
       </div>
       <div className="hero-overlay" />
@@ -170,8 +207,8 @@ export default function Hero() {
           Hong Kong<span className="dot">·</span>Paris<span className="dot">·</span>Available
         </div>
         <h1 className="hero-name" ref={heroNameRef}>
-          <span>REMI</span>
-          <span>KARLIN</span>
+          <span>Remi</span>{" "}
+          <span>Karlin</span>
         </h1>
         <div className="hero-sub">
           Filmmaker<span className="sep">·</span>Cinematographer<span className="sep">·</span>Artistic Director

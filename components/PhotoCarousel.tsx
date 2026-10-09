@@ -78,6 +78,9 @@ export default function PhotoCarousel({
               <img
                 src={src}
                 alt={`${alt} ${i + 1}`}
+                // first slide loads right away; the rest only when they come into view
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
                 style={{
                   width: "100%",
                   height: "100%",

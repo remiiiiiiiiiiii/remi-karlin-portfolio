@@ -1,24 +1,27 @@
+import { getFeaturedProjects } from "@/components/landing-data";
 import projectsData from "@/data/projects.json";
 import Hero from "@/components/Hero";
 import ProjectTiles, { Tile } from "@/components/ProjectTiles";
 import Footer from "@/components/Footer";
 import { getPreviewVideos } from "@/lib/projects";
 import type { Project } from "@/lib/projects";
+import type { Metadata } from "next";
+import { pageMeta, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/seo";
+
+export const metadata: Metadata = pageMeta({
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+  path: "/",
+});
 
 export default function Page() {
-  const LANDING_ORDER = [
-    "fan-yan",
-    "solene",
-    "hong-kong",
-    "b1nbags",
-    "modessec",
-    "rmx",
-    "ruinarktefact",
-    "spain",
-  ];
+  // Fallback only: used when no project in projects.json carries a `featured` number.
+  const LANDING_ORDER = ["fan-yan", "solene", "hong-kong", "b1nbags", "modessec", "rmx", "ruinarktefact", "spain"];
+  const featured = getFeaturedProjects().map((p) => p.slug);
+  const order = featured.length ? featured : LANDING_ORDER;
 
   const projectMap = Object.fromEntries(projectsData.projects.map((p) => [p.slug, p]));
-  const tiles: Tile[] = LANDING_ORDER.map((slug) => projectMap[slug]).filter(Boolean).map((p) => ({
+  const tiles: Tile[] = order.map((slug) => projectMap[slug]).filter(Boolean).map((p) => ({
     slug: p.slug,
     title: p.title,
     subtitle: p.subtitle,

@@ -183,13 +183,34 @@ button {
 .strip-frame.is-current {
   opacity: 1;
 }
-.strip-frame video {
+.strip-frame .pv {
+  position: absolute;
+  inset: 0;
+}
+
+/* PreviewVideo: poster <img> underneath, <video> fades in over it once it is playing */
+.pv {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #050505;
+}
+.pv-img,
+.pv-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+}
+.pv-img {
+  background-size: cover; /* 24px blur-up poster set inline as background-image */
+  background-position: center;
+}
+.pv-video {
+  transition: opacity 200ms var(--ease);
 }
 
 @keyframes drift {
@@ -281,6 +302,7 @@ button {
   font-size: clamp(64px, 10vw, 120px);
   letter-spacing: -0.03em;
   line-height: 0.87;
+  text-transform: uppercase;
   color: #fff;
   margin: 0;
   will-change: transform;
@@ -351,13 +373,9 @@ button {
   position: absolute;
   inset: 0;
 }
-.tile-media video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.tile-media .pv {
   filter: saturate(0.95) contrast(1.04);
-  transition: opacity 200ms ease-out, transform 250ms ease-out, filter 200ms ease-out;
+  transition: transform 250ms ease-out, filter 200ms ease-out;
 }
 .tile-meta {
   position: absolute;
@@ -379,12 +397,19 @@ button {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 100%);
 }
 @media (hover: hover) and (pointer: fine) {
-  .tile:hover .tile-media video {
+  .tile:hover .tile-media .pv {
     transform: scale(1.03);
   }
   .tile:hover .tile-meta {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+/* touch: there is no hover, so the title and metadata are always visible */
+@media (hover: none), (pointer: coarse) {
+  .tile-meta {
+    opacity: 1;
+    transform: none;
   }
 }
 .tile-title {
@@ -644,6 +669,12 @@ body.is-hover .cursor-ring {
   object-fit: contain; /* show full frame — no cropping */
   display: block;
   border: 0;
+}
+.project-video-frame .pv-img {
+  object-fit: contain; /* poster must match the video fit so there is no jump */
+}
+.project-video-frame .pv {
+  background: transparent;
 }
 .project-video-frame iframe {
   position: absolute;
@@ -973,12 +1004,9 @@ body.is-hover .cursor-ring {
   background: #000;
   pointer-events: none;
 }
-.vw-bg video {
+.vw-bg .pv {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   filter: saturate(0.88) contrast(1.05);
 }
 .vw-bg-overlay {
@@ -1292,7 +1320,8 @@ body.is-hover .cursor-ring {
     aspect-ratio: unset;
     height: 72vw;
   }
-  .project-video-frame video {
+  .project-video-frame video,
+  .project-video-frame .pv-img {
     object-fit: cover;
   }
   .project-hero-overlay {
@@ -1337,8 +1366,11 @@ body.is-hover .cursor-ring {
     transform: none;
     transition: opacity 200ms ease;
   }
-  .tile-media video {
-    transition: opacity 200ms ease;
+  .tile-media .pv {
+    transition: none;
+  }
+  .pv-video {
+    transition: none;
   }
   .strip-frame {
     animation: none;
@@ -1349,4 +1381,55 @@ body.is-hover .cursor-ring {
   .hero-sub {
     transition: opacity 200ms ease;
   }
+}
+
+/* ProjectVideo facade */
+.pv-facade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: #000;
+  color: #fff;
+  display: block;
+  cursor: none;
+}
+.pv-facade img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* hqdefault carries 4:3 letterbox bars; cover crops them away */
+  display: block;
+  opacity: 0.85;
+  transition: opacity 250ms var(--ease);
+}
+.pv-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72px;
+  height: 72px;
+  margin: -36px 0 0 -36px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 200ms var(--ease), border-color 200ms var(--ease);
+}
+.pv-play svg {
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+  margin-left: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pv-facade:hover img { opacity: 1; }
+  .pv-facade:hover .pv-play { transform: scale(1.06); border-color: #fff; }
+}
+.pv-facade:active .pv-play { transform: scale(0.96); }
+.pv-facade:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+@media (prefers-reduced-motion: reduce) {
+  .pv-facade img, .pv-play { transition: none; }
 }

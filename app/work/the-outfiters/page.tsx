@@ -6,13 +6,15 @@ import PhotoGallery from "@/components/PhotoGallery";
 import Footer from "@/components/Footer";
 import brandImages from "@/data/outfiters-brand-images.json";
 import moodImages from "@/data/outfiters-mood-images.json";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "The Outfiters — Remi Karlin",
   description: "Artistic direction for a project selling Vietnamese streetwear to European markets.",
-};
+  path: "/work/the-outfiters",
+});
 
-const LOGO_SRC = `/images/the-outfiters-brand/${encodeURIComponent("out fiters vn (5).png")}`;
+const LOGO_SRC = `/images/the-outfiters-brand/${encodeURIComponent("out fiters vn (5).webp")}`;
 
 export default function OutfitersPage() {
   const idx = projects.findIndex((p) => p.slug === "the-outfiters");

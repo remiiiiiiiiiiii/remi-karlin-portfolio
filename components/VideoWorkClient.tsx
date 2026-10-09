@@ -1,110 +1,70 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Project } from "@/lib/projects";
 import { getPreviewVideos } from "@/lib/projects";
+import PreviewVideo from "./PreviewVideo";
+import { useCanHover, useCenterMost } from "./playback";
+
+type Flagged = Project & { hidden?: boolean };
+
+/** One background layer: poster always, plays (and cycles the project's previews) only while active. */
+function BgLayer({ project, active, leaving }: { project: Project; active: boolean; leaving: boolean }) {
+  const srcs = getPreviewVideos(project);
+  const [i, setI] = useState(0);
+  const multi = srcs.length > 1;
+  return (
+    <PreviewVideo
+      src={srcs[i % srcs.length]}
+      playing={active}
+      loop={!multi}
+      onEnded={multi ? () => setI((n) => (n + 1) % srcs.length) : undefined}
+      // hover in is instant, hover out dissolves (0.3s to another row, 0.5s when leaving the list)
+      style={{
+        opacity: active ? 1 : 0,
+        transition: active ? "none" : `opacity ${leaving ? "0.5s" : "0.3s"} ease`,
+      }}
+    />
+  );
+}
 
 export default function VideoWorkClient({
-  film,
-  travel,
+  film: filmAll,
+  travel: travelAll,
 }: {
   film: Project[];
   travel: Project[];
 }) {
+  const film = (filmAll as Flagged[]).filter((p) => !p.hidden);
+  const travel = (travelAll as Flagged[]).filter((p) => !p.hidden);
   const allProjects = [...film, ...travel];
-  const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
-  const currentSlug = useRef<string | null>(null);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const canHover = useCanHover();
+  const [hovered, setHovered] = useState<string | null>(null);
+  // layers are mounted lazily, the first time a row becomes active; nothing downloads before that
+  const [seen, setSeen] = useState<string[]>([]);
 
-  // Build per-project preview cycle lists
-  const previewCycles = useRef<Map<string, { srcs: string[]; idx: number }>>(new Map());
+  // touch: the one row closest to the centre of #scrollRoot (>=60% visible)
+  const touchActive = useCenterMost(containerRef, ".work-row", !canHover, 1, 0.6)[0] ?? null;
+  const active = canHover ? hovered : touchActive;
+
   useEffect(() => {
-    allProjects.forEach((p) => {
-      previewCycles.current.set(p.slug, {
-        srcs: getPreviewVideos(p),
-        idx: 0,
-      });
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Start every video silently and wire up cycling on ended
-  useEffect(() => {
-    videoRefs.current.forEach((v, slug) => {
-      const play = () => {
-        const p = v.play();
-        if (p?.catch) p.catch(() => {});
-      };
-      play();
-
-      const cycle = previewCycles.current.get(slug);
-      if (!cycle || cycle.srcs.length <= 1) return;
-      v.addEventListener("ended", () => {
-        cycle.idx = (cycle.idx + 1) % cycle.srcs.length;
-        const isVisible = v.style.opacity === "1";
-        if (isVisible) {
-          // Keep looping so it never freezes on the last frame during dissolve
-          v.loop = true;
-          v.style.transition = "opacity 400ms ease";
-          v.style.opacity = "0";
-          setTimeout(() => {
-            v.loop = false;
-            v.src = cycle.srcs[cycle.idx];
-            v.play().catch(() => {});
-            setTimeout(() => {
-              v.style.transition = "opacity 400ms ease";
-              v.style.opacity = "1";
-            }, 60);
-          }, 420);
-        } else {
-          v.src = cycle.srcs[cycle.idx];
-          v.play().catch(() => {});
-        }
-      });
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (active) setSeen((s) => (s.includes(active) ? s : [...s, active]));
+  }, [active]);
 
   const showVideo = useCallback((slug: string) => {
     if (hideTimer.current) {
       clearTimeout(hideTimer.current);
       hideTimer.current = null;
     }
-    if (slug === currentSlug.current) return;
-
-    // Hide outgoing — fade to black over 0.3s
-    if (currentSlug.current) {
-      const prev = videoRefs.current.get(currentSlug.current);
-      if (prev) {
-        prev.style.transition = "opacity 0.3s ease";
-        prev.style.opacity = "0";
-      }
-    }
-
-    // Show incoming — instant, no transition
-    const next = videoRefs.current.get(slug);
-    if (next) {
-      next.style.transition = "none";
-      next.style.opacity = "1";
-    }
-
-    currentSlug.current = slug;
+    setHovered(slug);
   }, []);
 
   const scheduleHide = useCallback(() => {
     if (hideTimer.current) clearTimeout(hideTimer.current);
-    hideTimer.current = setTimeout(() => {
-      if (currentSlug.current) {
-        const v = videoRefs.current.get(currentSlug.current);
-        if (v) {
-          v.style.transition = "opacity 0.5s ease";
-          v.style.opacity = "0";
-        }
-        currentSlug.current = null;
-      }
-    }, 500);
+    hideTimer.current = setTimeout(() => setHovered(null), 500);
   }, []);
 
   // Reveal-on-scroll
@@ -141,7 +101,9 @@ export default function VideoWorkClient({
       key={p.slug}
       href={`/work/${p.slug}`}
       className="work-row reveal"
-      onMouseEnter={() => showVideo(p.slug)}
+      data-key={p.slug}
+      onMouseEnter={() => canHover && showVideo(p.slug)}
+      onFocus={() => canHover && showVideo(p.slug)}
     >
       <div className="work-row-num">{String(idx + 1).padStart(2, "0")}</div>
       <div className="work-row-title-wrap">
@@ -156,23 +118,13 @@ export default function VideoWorkClient({
 
   return (
     <>
-      {/* All videos playing silently — hover is a pure opacity flip */}
+      {/* Posters mount on first hover and videos only play for the active row */}
       <div className="vw-bg" aria-hidden="true">
-        {allProjects.map((p) => (
-          <video
-            key={p.slug}
-            ref={(el) => {
-              if (el) videoRefs.current.set(p.slug, el);
-              else videoRefs.current.delete(p.slug);
-            }}
-            src={p.previewVideo}
-            muted
-            loop
-            playsInline
-            preload="auto"
-            style={{ opacity: 0 }}
-          />
-        ))}
+        {allProjects
+          .filter((p) => seen.includes(p.slug))
+          .map((p) => (
+            <BgLayer key={p.slug} project={p} active={active === p.slug} leaving={active === null} />
+          ))}
       </div>
       <div className="vw-bg-overlay" aria-hidden="true" />
       <div className="vw-top-grad" aria-hidden="true" />

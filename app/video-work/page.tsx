@@ -1,10 +1,14 @@
 import { projects } from "@/lib/projects";
 import VideoWorkClient from "@/components/VideoWorkClient";
+import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
-  title: "Video Work — Remi Karlin",
-  description: "All video work by Remi Karlin — film and direction, travel and personal.",
-};
+export const metadata: Metadata = pageMeta({
+  title: "Cinematographer Portfolio, Hong Kong — Remi Karlin",
+  description:
+    "Documentary, music video, brand and event films shot, edited and graded by Remi Karlin. Cinematography based in Hong Kong, available in Paris.",
+  path: "/video-work",
+});
 
 export default function VideoWorkPage() {
   const film = projects.filter((p) => p.category === "film");

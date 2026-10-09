@@ -18,7 +18,8 @@ export default function PhotoGallery({ images, alt = "Photo", columns = 4 }: Pro
           key={src}
           src={src}
           alt={`${alt} ${i + 1}`}
-          loading="lazy"
+          loading={i === 0 ? "eager" : "lazy"}
+          decoding="async"
           style={{
             width: "100%",
             display: "block",

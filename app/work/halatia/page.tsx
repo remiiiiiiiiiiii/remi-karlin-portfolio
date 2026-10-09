@@ -4,11 +4,13 @@ import BackButton from "@/components/BackButton";
 import PhotoGallery from "@/components/PhotoGallery";
 import Footer from "@/components/Footer";
 import images from "@/data/halatia-images.json";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Halatia — Remi Karlin",
   description: "Brand identity and art direction for Halatia Paris, a Parisian eau de parfum.",
-};
+  path: "/work/halatia",
+});
 
 export default function HalatiaPage() {
   const idx = projects.findIndex((p) => p.slug === "halatia");
