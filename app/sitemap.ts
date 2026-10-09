@@ -2,17 +2,8 @@ import type { MetadataRoute } from "next";
 import { projects } from "@/lib/projects";
 import { SITE_URL } from "@/lib/seo";
 
-// Custom pages under app/work/ that are not driven by projects.json
-const CUSTOM_WORK_PAGES = [
-  "halatia",
-  "unfold-agency",
-  "the-outfiters",
-  "b1nbags-process",
-  "ruinarktefact-process",
-];
-
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPages: MetadataRoute.Sitemap = ["", "/video-work", "/other-work", "/about"].map(
+  const staticPages: MetadataRoute.Sitemap = ["", "/about"].map(
     (p) => ({
       url: `${SITE_URL}${p}`,
       changeFrequency: "monthly",
@@ -20,7 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })
   );
 
-  const slugs = [...new Set([...projects.filter((p) => !p.hidden).map((p) => p.slug), ...CUSTOM_WORK_PAGES])];
+  // projects.json lists every work page, including the custom case-study pages under app/work/
+  const slugs = projects.filter((p) => !p.hidden).map((p) => p.slug);
   const work: MetadataRoute.Sitemap = slugs.map((slug) => ({
     url: `${SITE_URL}/work/${slug}`,
     changeFrequency: "yearly",

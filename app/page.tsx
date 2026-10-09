@@ -1,11 +1,14 @@
-import { getFeaturedProjects } from "@/components/landing-data";
-import projectsData from "@/data/projects.json";
-import Hero from "@/components/Hero";
-import ProjectTiles, { Tile } from "@/components/ProjectTiles";
-import Footer from "@/components/Footer";
-import { getPreviewVideos } from "@/lib/projects";
-import type { Project } from "@/lib/projects";
 import type { Metadata } from "next";
+import Bio from "@/components/Bio";
+import FeaturedGrid from "@/components/FeaturedGrid";
+import type { FeaturedItem } from "@/components/FeaturedGrid";
+import Footer from "@/components/Footer";
+import HeroFrame from "@/components/HeroFrame";
+import type { HeroItem } from "@/components/HeroFrame";
+import WorkIndex from "@/components/WorkIndex";
+import type { IndexRow } from "@/components/WorkIndex";
+import { getHeroProjects, getIndexProjects, groupOf } from "@/components/landing-data";
+import { posterPath } from "@/lib/posters";
 import { pageMeta, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
@@ -15,78 +18,56 @@ export const metadata: Metadata = pageMeta({
 });
 
 export default function Page() {
-  // Fallback only: used when no project in projects.json carries a `featured` number.
-  const LANDING_ORDER = ["fan-yan", "solene", "hong-kong", "b1nbags", "modessec", "rmx", "ruinarktefact", "spain"];
-  const featured = getFeaturedProjects().map((p) => p.slug);
-  const order = featured.length ? featured : LANDING_ORDER;
+  // Featured projects (numeric `featured` in data/projects.json) fill the hero, in order.
+  const hero = getHeroProjects();
 
-  const projectMap = Object.fromEntries(projectsData.projects.map((p) => [p.slug, p]));
-  const tiles: Tile[] = order.map((slug) => projectMap[slug]).filter(Boolean).map((p) => ({
+  const heroItems: HeroItem[] = hero.map((p) => ({
     slug: p.slug,
     title: p.title,
-    subtitle: p.subtitle,
+    label: [p.tag, p.location, p.year].filter(Boolean).join(" · "),
+    video: p.previewVideo,
+    poster: posterPath(p.previewVideo),
+    tiny: posterPath(p.previewVideo, true),
+  }));
+
+  const gridItems: FeaturedItem[] = hero.map((p) => ({
+    slug: p.slug,
+    title: p.title,
+    label: [p.tag, p.year].filter(Boolean).join(" · "),
+    poster: posterPath(p.previewVideo),
+    tiny: posterPath(p.previewVideo, true),
+  }));
+
+  const rows: IndexRow[] = getIndexProjects().map((p) => ({
+    slug: p.slug,
+    title: p.title,
     tag: p.tag,
+    location: p.location,
     year: p.year,
-    previewVideo: p.previewVideo,
-    previewVideos: getPreviewVideos(p as unknown as Project),
+    group: groupOf(p),
+    still: p.thumbnail || undefined,
+    fallback: p.previewVideo ? posterPath(p.previewVideo) : undefined,
   }));
 
   return (
-    <>
-      <Hero />
-
-      <main className="page">
-        <section className="hero-text" aria-hidden="true" />
-
-        <section id="work" className="work-section">
-          <div className="section-head">
-            <div className="section-eyebrow">Selected Projects</div>
-            <div className="section-meta">2023 — 2025 · {tiles.length} Works</div>
+    <main className="page home" id="main">
+      <a className="skip" href="#work">
+        Skip to work
+      </a>
+      <h1 className="vh">Remi Karlin: filmmaker, cinematographer and artistic director in Hong Kong and Paris</h1>
+      {heroItems.length > 0 && (
+        <>
+          <div className="hero-d">
+            <HeroFrame items={heroItems} />
           </div>
-          <ProjectTiles tiles={tiles} />
-        </section>
-
-        <section className="about" id="about">
-          <div>
-            <div className="about-eyebrow">About</div>
-            <div className="about-copy">
-              <p>
-                Remi Karlin is a filmmaker and cinematographer working between Hong Kong and Paris.
-                His work spans short documentary, brand films, fashion events and travel
-                cinematography, with a focus on light, texture and the quiet rhythm of a place.
-              </p>
-              <p>
-                He shoots, edits and grades end-to-end — building the visual language of each
-                project from the first scout to the final master.
-              </p>
-            </div>
+          <div className="hero-m">
+            <FeaturedGrid items={gridItems} />
           </div>
-          <dl className="credits">
-            <dt>Based</dt>
-            <dd>
-              Hong Kong / Paris
-              <small>Available worldwide</small>
-            </dd>
-            <dt>Camera</dt>
-            <dd>
-              Lumix S5II
-              <small>Lumix 20–60mm f/3.5–5.6</small>
-            </dd>
-            <dt>Post</dt>
-            <dd>
-              DaVinci Resolve
-              <small>Color · Edit · Finish</small>
-            </dd>
-            <dt>Email</dt>
-            <dd>
-              remikarlin@gmail.com
-              <small>Reply within 48h</small>
-            </dd>
-          </dl>
-        </section>
-
-        <Footer />
-      </main>
-    </>
+        </>
+      )}
+      <Bio />
+      <WorkIndex rows={rows} />
+      <Footer />
+    </main>
   );
 }

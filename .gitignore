@@ -19,3 +19,7 @@ public/images/*.pdf
 
 # Local Claude Code permissions, per machine
 .claude/settings.local.json
+
+# Untracked local tooling folders
+stop-slop/
+.impeccable/

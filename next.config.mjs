@@ -5,6 +5,13 @@ const assetCache = [
 
 const nextConfig = {
   reactStrictMode: true,
+  // /video-work and /other-work were folded into the homepage work index.
+  async redirects() {
+    return [
+      { source: "/video-work", destination: "/#work", permanent: true },
+      { source: "/other-work", destination: "/#work", permanent: true },
+    ];
+  },
   async headers() {
     return [
       { source: "/videos/:path*", headers: assetCache },

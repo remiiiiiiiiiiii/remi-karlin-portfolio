@@ -97,7 +97,7 @@ export function placeFlags(obj, changes) {
   if (featured !== undefined) flags.featured = featured;
   if (hidden !== undefined) flags.hidden = hidden;
   const keys = Object.keys(obj).filter((k) => k !== "featured" && k !== "hidden");
-  let at = keys.indexOf("coverImage") + 1;
+  let at = Math.max(keys.indexOf("coverImage"), keys.indexOf("thumbnail")) + 1;
   if (at === 0) at = keys.indexOf("videos") === -1 ? keys.length : keys.indexOf("videos");
   const out = {};
   keys.forEach((k, i) => {
@@ -106,6 +106,46 @@ export function placeFlags(obj, changes) {
   });
   if (at >= keys.length) Object.assign(out, flags);
   return out;
+}
+
+/** Set (or replace) a string field. New keys go right after coverImage; existing keys keep their place. */
+export function setField(obj, key, value) {
+  if (key in obj) return { ...obj, [key]: value };
+  const keys = Object.keys(obj);
+  const at = keys.indexOf("coverImage") + 1;
+  if (at === 0) return { ...obj, [key]: value };
+  const out = {};
+  keys.forEach((k, i) => {
+    if (i === at) out[key] = value;
+    out[k] = obj[k];
+  });
+  if (at >= keys.length) out[key] = value;
+  return out;
+}
+
+/** Entry for a category "other" case study: no videos, thumbnail instead of a preview clip. */
+export function buildCaseEntry(o, thumbnailUrl) {
+  const { roles, creditsRoles } = normalizeRoles(o.roles);
+  const credits = { Year: String(o.year), ...(o.location ? { Location: o.location } : {}) };
+  if (creditsRoles) credits.Roles = creditsRoles;
+  Object.assign(credits, o.credits || {});
+  return {
+    slug: o.slug,
+    title: o.title,
+    subtitle: o.subtitle || [o.tag, o.location].filter(Boolean).join(" · "),
+    shortDescription: o.short || firstSentence(o.description),
+    tag: o.tag,
+    category: "other",
+    year: String(o.year),
+    location: o.location || "",
+    roles,
+    description: o.description,
+    previewVideo: "",
+    coverImage: "",
+    thumbnail: thumbnailUrl,
+    videos: [],
+    credits,
+  };
 }
 
 export function insertionIndex(projects, category, position) {
@@ -203,6 +243,8 @@ export function listRows(projects) {
     featured: p.featured ?? "",
     hidden: p.hidden ? "yes" : "",
     videos: (p.videos || []).length,
+    preview: p.previewVideo ? p.previewVideo.split("/").pop() : "",
+    thumbnail: p.thumbnail ? p.thumbnail.split("/").pop() : "",
   }));
 }
 

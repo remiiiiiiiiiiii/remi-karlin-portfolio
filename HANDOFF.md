@@ -2,7 +2,7 @@
 
 Paste or attach this file at the start of a new session. It covers what a new session needs to keep editing the site without re-discovering everything.
 
-Last updated: 2026-10-08 · Last commit: `092ee33`
+Last updated: 2026-10-08 · Last commit when written: `1246ef1`
 
 ---
 
@@ -38,80 +38,80 @@ Last updated: 2026-10-08 · Last commit: `092ee33`
 
 ```
 app/
-  page.tsx                  Homepage: <Hero/> strips + "Selected Projects" tiles (LANDING_ORDER) + About
+  page.tsx                  Homepage: full-frame hero, bio, then ONE work index (see below)
   layout.tsx                Root layout (Nav, Cursor, ScrollRoot, PageTransition)
   globals.css               All design tokens + most styles
   about/page.tsx
-  video-work/page.tsx       All video work, split into film + travel by `category`
-  other-work/page.tsx       Hardcoded list of brand/process pages + "Photography: Coming soon"
-  work/[slug]/page.tsx      Generic project page for everything in projects.json
-  work/halatia/             Custom brand identity page
-  work/unfold-agency/       Custom brand identity page (same format as halatia)
-  work/the-outfiters/       Custom art direction page
-  work/b1nbags-process/     Custom process page (3 PDF slides + brand assets)
-  work/ruinarktefact-process/ Custom process page (3 PDF slides + campaign carousel)
+  work/[slug]/page.tsx      Generic project page for every video project in projects.json
+  work/halatia/             Custom case-study pages (category "other"). Same for
+  work/unfold-agency/       unfold-agency, the-outfiters, b1nbags-process,
+  work/the-outfiters/       ruinarktefact-process. A custom folder beats [slug].
+  work/b1nbags-process/
+  work/ruinarktefact-process/
 components/
-  Hero.tsx         3 vertical video strips cycling preview clips (STRIP_SOURCES, hardcoded)
-  CyclingVideo.tsx A/B crossfading preview loop used on project hero
-  ProjectTiles.tsx Homepage tiles
-  VideoWorkClient.tsx  Video-work page rows with hover previews
-  PreviewVideo.tsx (poster + on-demand clip), playback.ts, landing-data.ts (featured/hidden), ProjectVideo.tsx (YouTube facade), PhotoCarousel.tsx, PhotoGallery.tsx
-  Nav.tsx          Nav with section memory (see §7)
-  Cursor.tsx       Custom dot + ring cursor
-  BackButton.tsx   router.back(), styled by .back-btn in CSS
-  ScrollRoot.tsx   #scrollRoot fixed scroll container
-  ScrollReveal.tsx, Footer.tsx (© 2026), PageTransition.tsx (now a passthrough)
-lib/projects.ts    Types + getPreviewVideos(project)
+  HeroFrame.tsx             Desktop hero: full-frame clip + hover list of featured projects
+  FeaturedGrid.tsx          Mobile poster grid (same featured order)
+  Bio.tsx                   Homepage bio block
+  WorkIndex.tsx             The single index with Films / Travel / Case studies filters
+  PreviewVideo.tsx, playback.ts   Poster-first preview playback (see §7)
+  CyclingVideo.tsx, ProjectVideo.tsx (YouTube facade), PhotoCarousel.tsx, PhotoGallery.tsx   Project pages
+  Nav, Cursor, BackButton, ScrollRoot, ScrollReveal, Footer, PageTransition (passthrough)
+lib/projects.ts, lib/posters.ts   Types + helpers over projects.json (featured / hidden / preview selection)
 data/
-  projects.json    THE source of truth for video projects
-  *-images.json    Pre-generated image path lists for custom pages
+  projects.json             THE source of truth for every listed project
+  *-images.json             Pre-generated image path lists for the custom pages
 public/
-  videos/          All preview clips + some local full videos
-  images/<folder>/ Images per project (folder names use hyphens, never spaces)
+  videos/                   Preview clips (+ posters/) and some local full videos
+  images/<folder>/          Images per project (folder names use hyphens, never spaces)
+  images/thumbs/            <slug>.webp + <slug>-tiny.webp: 2.39:1 index stills for case studies
+scripts/                    add-project.mjs (content CLI), optimize-media.mjs (media rules), tests
 PRODUCT.md, DESIGN.md, .impeccable/design.json   Design context docs (impeccable skill)
 ```
 
+**Homepage in one paragraph.** Desktop: a full-frame hero whose hover list is the `featured` projects (in `featured` order); it plays that project's `previewVideo`, one clip at a time. Mobile: no video, a static poster grid in the same order. Below the bio sits a single work index with filters Films (`category: film`), Travel (`travel`) and Case studies (`other`). `/video-work` and `/other-work` are gone (redirects). `hidden` = not listed and noindex; the page still opens by URL.
+
 ## 5. Adding / editing content
 
-Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: the 3-step recipe (`node scripts/add-project.mjs ...`), the `featured` / `hidden` flags, the full schema, removing projects, and the Other Work (brand / process) page recipe. In a Claude Code session in `~/OS`, the `portfolio-add-work` skill drives this from a single request.
+Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it shows, the five-step recipe for a video project, the case-study recipe, `set-preview` / `set-thumbnail` / `add-case`, reorder and hide, regenerating posters, the schema. In a Claude Code session in `~/OS`, the `portfolio-add-work` skill drives this from a single request. Pushing to `main` deploys.
 
 ## 6. Current content state
 
-**Homepage "Selected Projects" (`LANDING_ORDER`):**
-fan-yan → solene → hong-kong → b1nbags → modessec → rmx → ruinarktefact → spain
-(Vietnam was deliberately removed from here but still has its own page and is on the video-work page.)
+`node scripts/add-project.mjs list` is the live truth (slug, category, featured, hidden, clip, thumbnail). At the time of writing, 19 entries:
 
-**projects.json order:** fan-yan, solene, hong-kong, france, spain, morocco, amsterdam, vietnam, venice, new-york, b1nbags, halatia, the-outfiters, modessec, rmx, ruinarktefact
+- **Featured (hero / grid order):** fan-yan, solene, hong-kong, b1nbags, ruinarktefact, modessec.
+- **Hidden:** vietnam (own page, not listed).
+- **Case studies (`other`, each with `thumbnail` and a custom page):** halatia, unfold-agency, the-outfiters, b1nbags-process, ruinarktefact-process.
 
 | Slug | Category | Notes |
 |---|---|---|
 | fan-yan | film | Mini doc on HK artist + Lamps film + product photo carousel |
 | solene | film | Music video, **cover of "12:51" by The Strokes**, filmed in **Philadelphia**, 2025. YT `5-u9BV25JG8` |
-| hong-kong | travel | 5 videos (compilation, Lantau, Cliff, Junk, SSP/Mong Kok) |
+| hong-kong | travel | 5 videos (compilation, Lantau, Cliff, Junk, SSP/Mong Kok). Hero clip is the SSP one; swap with `set-preview` |
 | france | travel | Chamonix, Sanary-sur-Mer, Avignon (YT `gOAvKEz_shI`) |
 | spain / morocco / amsterdam / vietnam | travel | Single videos |
 | venice | travel | 2025, YT `1JtN6NCqXWo` |
 | new-york | travel | 2025, YT `sgVeARSI2pg`, preview file is `newyork-preview.mp4` |
-| b1nbags | film | Brand videos only (Teaser, Vol.2, Shot Expresso). Brand/design assets live on the **B1NBAGS Process** page, not here |
+| b1nbags | film | Brand videos only (Teaser, Vol.2, Shot Expresso). Brand/design assets live on the **b1nbags-process** case study |
 | modessec / rmx | film | ESSEC association events |
-| ruinarktefact | film | Campaign films. Mascot/campaign assets live on the **Ruinarktefact Process** page |
-| halatia / the-outfiters | other | Have custom pages under `app/work/` |
-
-**Other Work page lists:** Halatia, Unfold Agency, The Outfiters, B1NBAGS Process, Ruinarktefact Process, then "Photography: Coming soon".
+| ruinarktefact | film | Campaign films. Mascot/campaign assets live on the **ruinarktefact-process** case study |
+| halatia, unfold-agency, the-outfiters, b1nbags-process, ruinarktefact-process | other | Custom pages under `app/work/`. Thumbnails are `/images/thumbs/<slug>.webp`. the-outfiters carries a `previewVideo` that is not in a `videos[]`, so `set-preview` on it needs `--force` |
 
 **Descriptions for venice / new-york are placeholder-ish** (written by Claude, short). Remi may want to rewrite them.
 
 ## 7. Technical gotchas (learned the hard way)
 
 - **Scroll happens inside `#scrollRoot`** (`position: fixed; overflow-y: auto`), not the window. Any scroll listener must target `document.getElementById("scrollRoot")`.
-- **Nav section memory:** all project pages live under `/work/...`, so `Nav.tsx` stores the last non-project path in `sessionStorage["nav-section"]` and uses it for the active state on project pages. Keep this when touching nav.
+- **Nav:** turns solid via an IntersectionObserver on `#top-sentinel` inside `#scrollRoot`; the Work link scrolls `#work` inside `#scrollRoot`.
 - **Nav flash on load:** fixed with `visible` state (false → true after 50ms) driving inline opacity. CSS-only / `<head>` style approaches failed with Next streaming. Don't "simplify" it back.
-- **Mobile dropdown:** `.nav-mobile-dropdown` must be `display:none` in base CSS and only `display:block` inside the mobile media query, or it shows on desktop.
 - **Cursor:** starts hidden and shows on the **first `mousemove`** (not `mouseenter`), snapping to position to avoid drift.
 - **Page transitions were removed** on purpose (Remi said they made the site feel slow). Keep navigation instant.
 - **Folder names with spaces break image URLs.** Always hyphenate.
 - After CSS changes, a stale browser cache can show a black screen. Hard refresh (Cmd+Shift+R).
-- Preview clips: `components/PreviewVideo.tsx` shows a WebP poster (`/videos/posters/<name>.webp`) and only sets the video `src` while a clip is meant to play or pre-warm. Hero plays 3 clips max, tiles 2 max. Never go back to `preload="auto"` on all clips.
+- **Hero plays one clip at a time, desktop only.** Mobile is a static poster grid. Preview clips go through `components/PreviewVideo.tsx`: a WebP poster (`/videos/posters/<name>.webp`) and a video `src` set only while a clip is meant to play or pre-warm. Never go back to `preload="auto"` on all clips, and never add a second playing video to the hero.
+- **Never run `next build` while `next dev` is running.** It corrupts `.next`. If that happens: stop the dev server, delete `.next`, restart. For checks use `npx tsc --noEmit`.
+- **Dev server for the Claude desktop app:** the `portfolio` configuration in `/Users/remikarlin/OS/.claude/launch.json` (`npm --prefix` this repo, `run dev`, port 3000). Outside the app, `npm run dev`.
+- **Poster, thumbnail and clip rules live in `scripts/optimize-media.mjs`** (letterbox crop, luma-based poster frame, `thumb` for 2.39:1 stills). `add-project.mjs` calls it; do not reimplement them elsewhere. After replacing a clip file: `npm run media -- --force-posters public/videos/<name>-preview.mp4`.
+- Case-study pages need both the `projects.json` entry (with `thumbnail`) and a folder under `app/work/`. `add-case` does the first and prints how to do the second.
 
 ## 8. Design system (summary; full detail in DESIGN.md)
 
@@ -129,7 +129,6 @@ fan-yan → solene → hong-kong → b1nbags → modessec → rmx → ruinarktef
 ## 10. Loose ends / ideas
 
 - Venice + New York descriptions could be richer (ask Remi for specifics).
-- "Photography: Coming soon" on Other Work is still a placeholder.
 - Untracked files in the repo root: `public/images/b1nbags process.pdf`, `public/images/ruinarktefact process.pdf` (source PDFs, already converted), `stop-slop/`, `PRODUCT.md`, `DESIGN.md`, `.impeccable/`. These were never committed; decide whether to commit or `.gitignore` them.
 - Loose root-level images in `public/images/` (e.g. `Mascotte finale (1).png`, `banner b1nbags.png`) look like originals. Check before deleting.
 - Consider moving git auth off the embedded token (see §3).

@@ -99,7 +99,7 @@
         "Colorist"
       ],
       "description": "Cinematic portraits of Hong Kong shot across the city — Lantau Peak, the harbour, the cliffs, the junk, Sham Shui Po and Mong Kok. A study of the city's light, texture and quiet rhythm.",
-      "previewVideo": "/videos/hong-kong-preview.mp4",
+      "previewVideo": "/videos/hong-kong-ssp-preview.mp4",
       "coverImage": "/images/cover-hong-kong.webp",
       "videos": [
         {
@@ -417,7 +417,7 @@
         "Editor"
       ],
       "description": "B1NBAGS is a brand I started in 2023 in Hong Kong, paused in 2024 to focus on university, and restarted in 2025. The video work focuses on selling the creative lifestyle rather than the product — high-quality reels shot on a cinema-grade camera, colour-graded with film emulations to build a consistent vintage, textured feel.",
-      "previewVideo": "/videos/b1nbags-shot-expresso-preview.mp4",
+      "previewVideo": "/videos/b1nbags-1-preview.mp4",
       "coverImage": "/images/cover-b1nbags.webp",
       "videos": [
         {
@@ -476,7 +476,29 @@
         "Location": "Paris",
         "Roles": "Brand Identity · Art Direction"
       },
-      "hidden": false
+      "hidden": false,
+      "thumbnail": "/images/thumbs/halatia.webp"
+    },
+    {
+      "slug": "unfold-agency",
+      "title": "Unfold Agency",
+      "subtitle": "Brand identity · Creative agency",
+      "shortDescription": "Brand identity for Unfold Agency built around the metaphor of origami — transforming raw ideas into structured, elevated work. Origami crane logo mark, sky blue and navy palette, League Spartan and Playfair Display typography.",
+      "tag": "Brand identity",
+      "category": "other",
+      "year": "2025",
+      "location": "Paris",
+      "roles": [
+        "Art Director",
+        "Brand Designer"
+      ],
+      "description": "Brand identity for Unfold Agency built around the metaphor of origami — transforming raw ideas into structured, elevated work. Origami crane logo mark, sky blue and navy palette, League Spartan and Playfair Display typography.",
+      "previewVideo": "",
+      "coverImage": "",
+      "videos": [],
+      "credits": {},
+      "hidden": false,
+      "thumbnail": "/images/thumbs/unfold-agency.webp"
     },
     {
       "slug": "the-outfiters",
@@ -499,7 +521,51 @@
         "Location": "Paris / Vietnam",
         "Roles": "Art Direction · Instagram"
       },
-      "hidden": false
+      "hidden": false,
+      "thumbnail": "/images/thumbs/the-outfiters.webp"
+    },
+    {
+      "slug": "b1nbags-process",
+      "title": "B1NBAGS Process",
+      "subtitle": "Brand identity · Screen-printing · Photography · Film",
+      "shortDescription": "The physical and digital creative process behind B1NBAGS — from Photoshop bitmap exports to screen-printing, Lumix S5II photography with film colour profiles, and two years of DaVinci Resolve colour grading research.",
+      "tag": "Creative process",
+      "category": "other",
+      "year": "2023–25",
+      "location": "Hong Kong",
+      "roles": [
+        "Art Director",
+        "Photographer",
+        "Colorist"
+      ],
+      "description": "The physical and digital creative process behind B1NBAGS — from Photoshop bitmap exports to screen-printing, Lumix S5II photography with film colour profiles, and two years of DaVinci Resolve colour grading research.",
+      "previewVideo": "",
+      "coverImage": "",
+      "videos": [],
+      "credits": {},
+      "hidden": false,
+      "thumbnail": "/images/thumbs/b1nbags-process.webp"
+    },
+    {
+      "slug": "ruinarktefact-process",
+      "title": "Ruinarktefact Process",
+      "subtitle": "Campaign identity · Art direction · Short film",
+      "shortDescription": "The full creative process behind the VOLCAN'ARCHIK BDE campaign — mascot design in Procreate and Illustrator, 3D name renders in Blender and Photoshop, and the production of a 20-minute declaration short film on Sony FX3.",
+      "tag": "Creative process",
+      "category": "other",
+      "year": "2024–25",
+      "location": "Cergy",
+      "roles": [
+        "Art Director",
+        "Director"
+      ],
+      "description": "The full creative process behind the VOLCAN'ARCHIK BDE campaign — mascot design in Procreate and Illustrator, 3D name renders in Blender and Photoshop, and the production of a 20-minute declaration short film on Sony FX3.",
+      "previewVideo": "",
+      "coverImage": "",
+      "videos": [],
+      "credits": {},
+      "hidden": false,
+      "thumbnail": "/images/thumbs/ruinarktefact-process.webp"
     },
     {
       "slug": "modessec",
@@ -516,7 +582,7 @@
         "Colorist"
       ],
       "description": "Visual work for Modessec — the fashion association at ESSEC. Includes the 2025 fashion show aftermovie and teaser, a 2024 teaser, and product photography for the association's hoodie release.",
-      "previewVideo": "/videos/essec-modessec-aftermovie-preview.mp4",
+      "previewVideo": "/videos/essec-modessec-teaser-preview.mp4",
       "coverImage": "/images/cover-modessec.webp",
       "videos": [
         {

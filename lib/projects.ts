@@ -19,8 +19,11 @@ export type Project = {
   location: string;
   roles: string[];
   description: string;
+  /** May be "" (category "other" projects have no clip). Guard before building a poster path. */
   previewVideo: string;
   coverImage: string;
+  /** Still for the homepage index, e.g. /images/thumbs/<slug>.webp. Falls back to the preview poster. */
+  thumbnail?: string;
   videos: ProjectVideoEntry[];
   credits: Record<string, string>;
   /** 1 = first tile on the landing; absent = not on the landing */

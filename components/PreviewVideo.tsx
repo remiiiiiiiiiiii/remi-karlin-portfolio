@@ -1,19 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { posterPath } from "@/lib/posters";
 
 /** "/videos/solene-preview.mp4" -> "/videos/posters/solene-preview.webp" */
 export function posterFor(src: string, tiny = false): string {
-  const m = src.match(/^(.*)\/([^/]+?)\.[a-z0-9]+$/i);
-  if (!m) return src;
-  return `${m[1]}/posters/${m[2]}${tiny ? "-tiny" : ""}.webp`;
+  return posterPath(src, tiny);
 }
 
 /**
  * True when the user asked for reduced motion or Save-Data. Never plays video then.
  * null = not resolved yet (SSR and first commit): treated as "do not play, do not set src".
  */
-function useStayStill(): boolean | null {
+export function useStayStill(): boolean | null {
   const [still, setStill] = useState<boolean | null>(null);
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");

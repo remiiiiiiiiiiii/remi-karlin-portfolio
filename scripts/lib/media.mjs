@@ -51,3 +51,32 @@ export function convertImage(ffmpeg, input, out) {
     "-c:v", "libwebp", "-quality", "80", "-compression_level", "6", out,
   ], `image ${path.basename(input)}`);
 }
+
+export const THUMB_W = 1280;
+export const THUMB_H = 536; // 2.39:1
+
+/** Any still -> 2.39:1 WebP (crop to fill; y = vertical anchor 0 top .. 1 bottom) at <dir>/<slug>.webp plus <slug>-tiny.webp (24 px wide). Returns both paths. */
+export function makeThumbnail(ffmpeg, input, dir, slug, y = 0.5) {
+  fs.mkdirSync(dir, { recursive: true });
+  const big = path.join(dir, `${slug}.webp`);
+  const tiny = path.join(dir, `${slug}-tiny.webp`);
+  const fill = `scale=${THUMB_W}:${THUMB_H}:force_original_aspect_ratio=increase:flags=lanczos,crop=${THUMB_W}:${THUMB_H}:(iw-${THUMB_W})/2:(ih-${THUMB_H})*${y}`;
+  run(ffmpeg, ["-y", "-i", input, "-frames:v", "1", "-vf", fill, "-c:v", "libwebp", "-quality", "80", "-compression_level", "6", big], `thumbnail ${path.basename(input)}`);
+  run(ffmpeg, ["-y", "-i", input, "-frames:v", "1", "-vf", `${fill},scale=24:10:flags=lanczos`, "-c:v", "libwebp", "-quality", "80", tiny], `thumbnail ${path.basename(input)}`);
+  return [big, tiny];
+}
+
+/** Path of the repo's optimize-media script when present; `thumb` is true when it has the thumb subcommand. */
+export function findOptimizer(root) {
+  const script = path.join(root, "scripts", "optimize-media.mjs");
+  if (!fs.existsSync(script)) return null;
+  const src = fs.readFileSync(script, "utf8");
+  return { script, thumb: /['"]thumb['"]/.test(src) };
+}
+
+/** Run optimize-media.mjs with args; its cwd is the repo root. Throws UserError on failure. */
+export function runOptimizer(opt, root, args, what) {
+  const r = spawnSync(process.execPath, [opt.script, ...args], { cwd: root, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  if (r.status !== 0) throw new UserError(`optimize-media failed (${what}): ${((r.stderr || "") + (r.stdout || "")).trim().split("\n").slice(-3).join(" | ")}`);
+  return r.stdout;
+}

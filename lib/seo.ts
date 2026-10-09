@@ -221,9 +221,7 @@ export function getProjectSeo(p: Project): ProjectSeo {
   };
 }
 
-/** Section a project's breadcrumb belongs to. */
-export function projectSection(p: Project): { name: string; path: string } {
-  return p.category === "other"
-    ? { name: "Other Work", path: "/other-work" }
-    : { name: "Video Work", path: "/video-work" };
+/** Section a project's breadcrumb belongs to: the work index on the homepage. */
+export function projectSection(_p: Project): { name: string; path: string } {
+  return { name: "Work", path: "/#work" };
 }

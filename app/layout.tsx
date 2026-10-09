@@ -63,6 +63,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Cursor />
         <Nav />
         <ScrollRoot>
+          {/* Nav turns solid once this has scrolled out of #scrollRoot */}
+          <div id="top-sentinel" aria-hidden="true" />
           <PageTransition>{children}</PageTransition>
         </ScrollRoot>
       </body>
