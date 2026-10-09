@@ -21,7 +21,9 @@ export type HeroItem = {
 type Slot = { pi: number; ci: number; src: string; poster: string; tiny: string; image: boolean };
 
 /** How long a still image stays on screen before the hero advances. */
-const STILL_MS = 5000;
+const STILL_MS = 3000;
+/** Duration of the swipe-in of a still; keep in sync with the hd-swipe animation in globals.css. */
+const STILL_SWIPE_MS = 560;
 const isImage = (src: string) => /\.(webp|jpe?g|png|avif)$/i.test(src);
 
 const pad = (n: number) => String(n).padStart(2, "0");
@@ -120,7 +122,7 @@ function HeroLayer({ slot, index, on, clip, hold, first, canVideo, load, play, w
   };
   // A still that fails to load is skipped like a clip that errors.
   if (slot.image) Object.assign(imgProps, { onError: () => onError(index) });
-  const cls = ["hd-layer", on && "is-on", clip && "is-clip", hold && "is-hold"].filter(Boolean).join(" ");
+  const cls = ["hd-layer", on && "is-on", clip && "is-clip", hold && "is-hold", slot.image && "is-still"].filter(Boolean).join(" ");
 
   return (
     <div className={cls} aria-hidden="true">
@@ -265,12 +267,13 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
       shownRef.current = n;
       setShown(n);
       setPrev(out);
+      // A still swipes in over the outgoing layer (see .hd-layer.is-still.is-on), so that layer stays longer.
       prevTimer.current = window.setTimeout(() => {
         prevTimer.current = null;
         setPrev(-1);
-      }, 260);
+      }, slots[n].image ? STILL_SWIPE_MS + 80 : 260);
     },
-    [clearPrev, clearReveal]
+    [slots, clearPrev, clearReveal]
   );
 
   /**
