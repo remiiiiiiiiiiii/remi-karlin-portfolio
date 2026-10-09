@@ -459,21 +459,24 @@ button {
     color: #fff;
   }
 }
-/* Agency hub row: "(KFC, Renault, …)" after the title, revealed while the row is current, hovered or focused. */
+/* Agency hub row: "(KFC, Renault, …)" after the title, revealed while the row is current, hovered or
+   focused. Out of the flow (absolute, one line) so the list never reflows: rows above and below stay put. */
 .hd-list li.has-clients {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 14px;
-  row-gap: 4px;
-  max-width: 100%;
+  position: relative;
 }
 .hd-clients {
+  position: absolute;
+  left: 100%;
+  bottom: 0.3em;
+  margin-left: 16px;
   font-size: 13px;
   letter-spacing: 0.01em;
   line-height: 1.5;
+  white-space: nowrap;
+  max-width: min(72vw, 900px);
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: rgba(255, 255, 255, 0.6);
-  max-width: min(52vw, 820px);
   visibility: hidden;
   opacity: 0;
   transform: translateX(-6px);
