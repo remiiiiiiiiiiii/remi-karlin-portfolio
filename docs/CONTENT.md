@@ -14,6 +14,8 @@ Everything the site lists lives in `data/projects.json`. You do not edit code to
    | Films | `category: "film"`, plus the Travel and Havas Play hubs | Travel destinations (`category: "travel"`, no `custom`) and agency work (entries with `agency`) are not listed: they live on `/work/travel` and `/work/havas-play` |
    | Case studies | `category: "other"` | Custom pages under `app/work/<slug>/`. Each needs a `thumbnail` |
 
+   A project with `hub` set (e.g. `"hub": "brand-identity"`) is reached through its hub page and is not listed in the index; the hub is listed instead, under the group of its first child. A hub's children show in brackets on its hero row when the hub is featured.
+
    Order inside a filter is the order in `projects.json` (change it with `move`). The still of a video project is the poster of its `previewVideo`, unless the entry has a `thumbnail`, which wins. Case studies have no clip, so their still is always `thumbnail`.
 
 `/video-work` and `/other-work` no longer exist (they redirect; the work index is on the homepage).

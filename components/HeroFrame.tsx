@@ -11,14 +11,18 @@ export type HeroItem = {
   title: string;
   /** "tag · location · year" */
   label: string;
-  /** Every preview clip of the project in play order, e.g. ["/videos/solene-preview.mp4"]. Posters derive from the path. */
+  /** Every preview clip of the project in play order, e.g. ["/videos/solene-preview.mp4"]. Posters derive from the path. A still image (.webp/.jpg/.jpeg/.png/.avif) is also allowed: it shows full-frame for STILL_MS. */
   clips: string[];
   /** Agency hub only: its client pages, shown in brackets after the title while the row is current or hovered. */
   clients?: { slug: string; title: string }[];
 };
 
-/** One clip of one featured project. Every clip is its own full-frame layer. */
-type Slot = { pi: number; ci: number; src: string; poster: string; tiny: string };
+/** One clip of one featured project. Every clip is its own full-frame layer. `image`: a still, no <video>. */
+type Slot = { pi: number; ci: number; src: string; poster: string; tiny: string; image: boolean };
+
+/** How long a still image stays on screen before the hero advances. */
+const STILL_MS = 5000;
+const isImage = (src: string) => /\.(webp|jpe?g|png|avif)$/i.test(src);
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const DESKTOP_QUERY = "(min-width: 769px)";
@@ -127,13 +131,13 @@ function HeroLayer({ slot, index, on, clip, hold, first, canVideo, load, play, w
         </picture>
       ) : slot.ci === 0 ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={slot.poster} loading="lazy" {...imgProps} />
+        <img src={slot.poster} loading={slot.image && load ? "eager" : "lazy"} {...imgProps} />
       ) : load ? (
         // Later clips: poster only while the clip is about to be used, so idle clips cost nothing.
         // eslint-disable-next-line @next/next/no-img-element
         <img src={slot.poster} loading="eager" {...imgProps} />
       ) : null}
-      {canVideo && (
+      {canVideo && !slot.image && (
         <video
           ref={setRef}
           src={load ? slot.src : undefined}
@@ -167,7 +171,15 @@ function HeroLayer({ slot, index, on, clip, hold, first, canVideo, load, play, w
  * and the clip number are derived from it. Auto mode walks that list; after the first interaction
  * (`auto` false) it cycles within the chosen project only.
  */
-export default function HeroFrame({ items }: { items: HeroItem[] }) {
+export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
+  // Dev-only: ?heroStills=1 appends a synthetic still-image project (client-side, after mount).
+  const [extra, setExtra] = useState<HeroItem[]>([]);
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "production" && window.location.search.includes("heroStills=1")) {
+      setExtra([{ slug: "stills-test", title: "Stills test", label: "test", clips: ["/images/thumbs/halatia.webp", "/images/thumbs/unfold-agency.webp"] }]);
+    }
+  }, []);
+  const items = useMemo(() => (extra.length ? [...baseItems, ...extra] : baseItems), [baseItems, extra]);
   const N = items.length;
   const still = useStayStill();
   const desktop = useDesktop();
@@ -181,7 +193,7 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
     items.forEach((it, pi) => {
       starts.push(slots.length);
       lens.push(it.clips.length);
-      it.clips.forEach((src, ci) => slots.push({ pi, ci, src, poster: posterPath(src), tiny: posterPath(src, true) }));
+      it.clips.forEach((src, ci) => slots.push({ pi, ci, src, poster: posterPath(src), tiny: posterPath(src, true), image: isImage(src) }));
     });
     return { slots, starts, lens };
   }, [items]);
@@ -272,7 +284,8 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
       setWarm(-1);
       clearPrev();
       clearReveal();
-      if (natural && slots[n].pi === slots[shownRef.current].pi) {
+      // An incoming still has no `playing` event to wait for: show it straight away.
+      if (natural && !slots[n].image && slots[n].pi === slots[shownRef.current].pi) {
         setXclip(true);
         setPrev(-1);
         // Safety net: if the first frame never arrives, show the poster rather than the stale clip.
@@ -405,17 +418,52 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
-  // Timecode of the playing clip, 24 fps; restarts at 0 on every clip change. Written straight to the DOM, no React renders.
   const running = canVideo && inView && tabVisible;
+
+  // Still image as the current slot: after STILL_MS advance like a clip that ended, warming the next
+  // slot 1 s before. Elapsed time is kept across pauses (out of view, tab hidden, hold) so neither the
+  // timer nor the timecode restarts; it resets when the slot changes.
+  const stillBase = useRef(0);
+  const stillT0 = useRef(0);
+  const stillFor = useRef(-1);
+  const curImage = slots[cur].image;
+  useEffect(() => {
+    if (!curImage) {
+      stillFor.current = -1;
+      return;
+    }
+    if (!running) return;
+    if (stillFor.current !== cur) {
+      stillFor.current = cur;
+      stillBase.current = 0;
+    }
+    stillT0.current = performance.now();
+    const left = Math.max(0, STILL_MS - stillBase.current);
+    const warmTimer = window.setTimeout(() => setWarm(nextOf(cur, autoRef.current)), Math.max(0, left - 1000));
+    const timer = window.setTimeout(() => {
+      // Same as onEnded: nothing else playable (or a held single still) means stay on this one.
+      const n = nextOf(cur, autoRef.current);
+      if (n >= 0) go(n, true);
+    }, left);
+    return () => {
+      window.clearTimeout(warmTimer);
+      window.clearTimeout(timer);
+      stillBase.current += performance.now() - stillT0.current;
+    };
+  }, [running, curImage, cur, auto, nextOf, go]);
+
+  // Timecode of the playing clip (or elapsed time of a still), 24 fps; restarts at 0 on every slot change. Written straight to the DOM, no React renders.
   useEffect(() => {
     if (!running) return;
     let raf = 0;
     let last = "";
     const tick = () => {
       const tc = tcRef.current;
-      const v = videos.current[curRef.current];
+      const c = curRef.current;
+      const v = videos.current[c];
       if (tc) {
-        const next = timecode(v ? v.currentTime : 0);
+        const secs = slots[c].image && stillFor.current === c ? (stillBase.current + performance.now() - stillT0.current) / 1000 : v ? v.currentTime : 0;
+        const next = timecode(secs);
         if (next !== last) {
           last = next;
           tc.textContent = next;
@@ -425,7 +473,7 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [running, cur]);
+  }, [running, cur, slots]);
 
   const proj = slots[cur].pi;
   const clipNo = slots[cur].ci;

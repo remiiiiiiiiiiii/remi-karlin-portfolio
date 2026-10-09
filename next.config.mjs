@@ -10,6 +10,9 @@ const nextConfig = {
     return [
       { source: "/video-work", destination: "/#work", permanent: true },
       { source: "/other-work", destination: "/#work", permanent: true },
+      // process pages were folded into their project pages
+      { source: "/work/b1nbags-process", destination: "/work/b1nbags#process", permanent: true },
+      { source: "/work/ruinarktefact-process", destination: "/work/ruinarktefact#process", permanent: true },
     ];
   },
   async headers() {

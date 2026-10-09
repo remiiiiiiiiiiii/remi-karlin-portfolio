@@ -7,8 +7,8 @@ import HeroFrame from "@/components/HeroFrame";
 import type { HeroItem } from "@/components/HeroFrame";
 import WorkIndex from "@/components/WorkIndex";
 import type { IndexRow } from "@/components/WorkIndex";
-import { getHeroProjects, getIndexProjects, groupOf, isAgencyHub } from "@/components/landing-data";
-import { getAgencyProjects, getHeroClips, type Project } from "@/lib/projects";
+import { getHeroProjects, getIndexProjects, groupOf, isHub } from "@/components/landing-data";
+import { getHeroClips, getHubProjects, type Project } from "@/lib/projects";
 import { posterPath } from "@/lib/posters";
 import { pageMeta, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/seo";
 
@@ -22,12 +22,13 @@ export default function Page() {
   // Featured projects (numeric `featured` in data/projects.json) fill the hero, in order.
   const hero = getHeroProjects();
 
-  // Agency hubs list their clients next to the title (hero: expand on hover; grid: one line).
+  // Hubs list their children next to the title (hero: expand on hover; grid: one line). Agency
+  // hubs (Havas Play) show the client name, "Internal" for the agency's own page; other hubs the child's title.
   const clientsOf = (p: Project) =>
-    isAgencyHub(p)
-      ? getAgencyProjects(p.slug).map((c) => ({
+    isHub(p)
+      ? getHubProjects(p.slug).map((c) => ({
           slug: c.slug,
-          title: c.client && c.client !== p.title ? c.client : "Internal",
+          title: c.agency?.slug === p.slug ? (c.client && c.client !== p.title ? c.client : "Internal") : c.title,
         }))
       : undefined;
 

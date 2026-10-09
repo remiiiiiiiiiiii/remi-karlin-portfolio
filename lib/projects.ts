@@ -53,6 +53,8 @@ export type Project = {
   photoGrid?: { title: string; images: string[] };
   /** Agency the work was made for, e.g. { name: "Havas Play", slug: "havas-play" }. slug is the hub page /work/<slug>. */
   agency?: { name: string; slug: string };
+  /** slug of the hub page this project is reached through; such projects are not listed in the work index. */
+  hub?: string;
   /** Brand the work was made for (the agency's client). */
   client?: string;
   galleries?: ProjectGallery[];
@@ -122,9 +124,21 @@ export function getAgencyProjects(
   order: Record<string, number> = {},
   exceptSlug?: string
 ): Project[] {
+  return childrenOf((p) => p.agency?.slug === agencySlug, order, exceptSlug);
+}
+
+/**
+ * Every project reached through the hub page `hubSlug`: those with `hub === hubSlug` or
+ * `agency.slug === hubSlug`. Hidden ones excluded, excluding `exceptSlug`, in projects.json order.
+ */
+export function getHubProjects(hubSlug: string, exceptSlug?: string): Project[] {
+  return childrenOf((p) => p.hub === hubSlug || p.agency?.slug === hubSlug, {}, exceptSlug);
+}
+
+function childrenOf(match: (p: Project) => boolean, order: Record<string, number>, exceptSlug?: string): Project[] {
   return projects
     .map((p, i) => ({ p, i }))
-    .filter(({ p }) => p.agency?.slug === agencySlug && !p.hidden && p.slug !== exceptSlug)
+    .filter(({ p }) => match(p) && !p.hidden && p.slug !== exceptSlug)
     .sort(
       (a, b) =>
         (order[a.p.slug] ?? Number.POSITIVE_INFINITY) - (order[b.p.slug] ?? Number.POSITIVE_INFINITY) || a.i - b.i

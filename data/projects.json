@@ -1056,6 +1056,7 @@
       "heroClips": ["/videos/newyork-preview.mp4", "/videos/spain-preview.mp4", "/videos/vietnam-preview.mp4"],
       "coverImage": "",
       "thumbnail": "/images/thumbs/travel.webp",
+      "poster": "/images/thumbs/travel-16x9.webp",
       "featured": 4,
       "custom": true,
       "videos": [],
@@ -1079,7 +1080,6 @@
       "previewVideo": "/videos/hong-kong-ssp-preview.mp4",
       "coverImage": "/images/cover-hong-kong.webp",
       "thumbnail": "/images/thumbs/hong-kong.webp",
-      "featured": 7,
       "hidden": false,
       "poster": "/images/thumbs/hong-kong-16x9.webp",
       "videos": [
@@ -1420,7 +1420,8 @@
         "Roles": "Brand Identity · Art Direction"
       },
       "hidden": false,
-      "thumbnail": "/images/thumbs/halatia.webp"
+      "thumbnail": "/images/thumbs/halatia.webp",
+      "hub": "brand-identity"
     },
     {
       "slug": "unfold-agency",
@@ -1438,7 +1439,8 @@
       "videos": [],
       "credits": {},
       "hidden": false,
-      "thumbnail": "/images/thumbs/unfold-agency.webp"
+      "thumbnail": "/images/thumbs/unfold-agency.webp",
+      "hub": "brand-identity"
     },
     {
       "slug": "the-outfiters",
@@ -1460,43 +1462,30 @@
         "Roles": "Art Direction · Instagram"
       },
       "hidden": false,
-      "thumbnail": "/images/thumbs/the-outfiters.webp"
+      "thumbnail": "/images/thumbs/the-outfiters.webp",
+      "hub": "brand-identity"
     },
     {
-      "slug": "b1nbags-process",
-      "title": "B1NBAGS Process",
-      "subtitle": "Brand identity · Screen-printing · Photography · Film",
-      "shortDescription": "The physical and digital creative process behind B1NBAGS — from Photoshop bitmap exports to screen-printing, Lumix S5II photography with film colour profiles, and two years of DaVinci Resolve colour grading research.",
-      "tag": "Creative process",
+      "slug": "brand-identity",
+      "title": "Brand Identity",
+      "subtitle": "Three identities · Paris",
+      "shortDescription": "Brand identity and art direction for Halatia, Unfold Agency and The Outfiters.",
+      "tag": "Case studies",
       "category": "other",
-      "year": "2023–25",
-      "location": "Hong Kong",
-      "roles": ["Art Director", "Photographer", "Colorist"],
-      "description": "The physical and digital creative process behind B1NBAGS — from Photoshop bitmap exports to screen-printing, Lumix S5II photography with film colour profiles, and two years of DaVinci Resolve colour grading research.",
+      "year": "2025",
+      "location": "Paris",
+      "roles": ["Art Director", "Brand Designer"],
+      "description": "Identity work for three brands: a Parisian eau de parfum, a creative agency and a Vietnamese streetwear label. Logo, palette, type and the first campaign visuals for each.",
       "previewVideo": "",
       "coverImage": "",
-      "videos": [],
-      "credits": {},
+      "thumbnail": "/images/thumbs/brand-identity.webp",
+      "featured": 7,
       "hidden": false,
-      "thumbnail": "/images/thumbs/b1nbags-process.webp"
-    },
-    {
-      "slug": "ruinarktefact-process",
-      "title": "Ruinarktefact Process",
-      "subtitle": "Campaign identity · Art direction · Short film",
-      "shortDescription": "The full creative process behind the VOLCAN'ARCHIK BDE campaign — mascot design in Procreate and Illustrator, 3D name renders in Blender and Photoshop, and the production of a 20-minute declaration short film on Sony FX3.",
-      "tag": "Creative process",
-      "category": "other",
-      "year": "2024–25",
-      "location": "Cergy",
-      "roles": ["Art Director", "Director"],
-      "description": "The full creative process behind the VOLCAN'ARCHIK BDE campaign — mascot design in Procreate and Illustrator, 3D name renders in Blender and Photoshop, and the production of a 20-minute declaration short film on Sony FX3.",
-      "previewVideo": "",
-      "coverImage": "",
+      "poster": "/images/thumbs/brand-identity-16x9.webp",
+      "heroClips": ["/images/halatia/10.webp", "/images/unfold-agency/1.webp", "/images/the-outfiters-brand/1.webp"],
+      "custom": true,
       "videos": [],
-      "credits": {},
-      "hidden": false,
-      "thumbnail": "/images/thumbs/ruinarktefact-process.webp"
+      "credits": {}
     },
     {
       "slug": "havas-play",

@@ -30,6 +30,8 @@ import ImageGallery from "@/components/ImageGallery";
 import AgencyCard from "@/components/AgencyCard";
 import PhotoCarousel from "@/components/PhotoCarousel"; // used by modessec + fan-yan sections
 import { posterPath } from "@/lib/posters";
+import B1nbagsProcess from "@/components/process/B1nbagsProcess";
+import RuinarktefactProcess from "@/components/process/RuinarktefactProcess";
 
 const VERTICAL = new Set(["9:16", "4:5"]);
 const COMPACT = new Set(["9:16", "4:5", "1:1"]);
@@ -320,6 +322,10 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
           </ScrollReveal>
         </section>
       )}
+
+      {/* Creative process — folded in from the old standalone process pages */}
+      {project.slug === "b1nbags" && <B1nbagsProcess />}
+      {project.slug === "ruinarktefact" && <RuinarktefactProcess />}
 
       {/* Image galleries (agency work: posters, stickers, portraits) */}
       {(project.galleries ?? [])

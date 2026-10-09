@@ -96,6 +96,7 @@ function heroClips(p) {
 function sourcesFor(ctx, data, p, previewsOnly) {
   const out = [];
   for (const clip of heroClips(p)) {
+    if (/\.(webp|jpe?g|png|avif)$/i.test(clip)) { log(`  (skip ${clip}: a still, not a film)`); continue; }
     const entries = data.projects.flatMap((q) => q.videos).filter((v) => v.previewVideo === clip);
     const local = entries.map((v) => onDisk(ctx, v.localVideo)).find(Boolean);
     const full = previewsOnly ? null : local || onDisk(ctx, clip.replace(/-preview\.mp4$/, ".mp4"));
@@ -103,7 +104,7 @@ function sourcesFor(ctx, data, p, previewsOnly) {
     if (!file) { log(`  (skip ${clip}: not on disk)`); continue; }
     if (!out.some((s) => s.file === file)) out.push({ file, url: full ? null : clip, label: path.basename(file) });
   }
-  if (!out.length) throw new UserError(`${p.slug}: no clip or film on disk to sample from.`);
+  if (!out.length) throw new UserError(`${p.slug}: no clip or film on disk to sample from (a hub made of stills has no frames to pick; use apply --source <image>).`);
   return out;
 }
 

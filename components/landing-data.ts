@@ -19,9 +19,17 @@ export function getHeroProjects(): Project[] {
   return getFeaturedProjects().filter((p) => getHeroClips(p).length > 0);
 }
 
-/** A hub page that groups agency work: other projects point at it through `agency.slug`. */
-export function isAgencyHub(p: Project): boolean {
-  return all.some((q) => q.agency?.slug === p.slug);
+/** A hub page that groups other projects: they point at it through `agency.slug` or `hub`. */
+export function isHub(p: Project): boolean {
+  return all.some((q) => q.agency?.slug === p.slug || q.hub === p.slug);
+}
+
+/** @deprecated Use isHub. */
+export const isAgencyHub = isHub;
+
+/** The first project that points at hub `p`, in projects.json order (hidden ones included). */
+function firstChild(p: Project): Project | undefined {
+  return all.find((q) => q.agency?.slug === p.slug || q.hub === p.slug);
 }
 
 export type WorkGroup = "films" | "cases";
@@ -31,19 +39,25 @@ export const WORK_GROUPS: { key: WorkGroup; label: string }[] = [
   { key: "cases", label: "Case studies" },
 ];
 
-/** Travel films and agency hubs count as films in the index; only the hubs are listed for them. */
+/**
+ * Travel films count as films in the index; only the travel hub is listed for them. A hub takes
+ * the group of its first child (Havas Play stays under Films, Brand Identity lands under Case studies).
+ */
 export function groupOf(p: Project): WorkGroup {
-  return p.category === "film" || p.category === "travel" || isAgencyHub(p) ? "films" : "cases";
+  const child = firstChild(p);
+  if (child) return groupOf(child);
+  return p.category === "film" || p.category === "travel" ? "films" : "cases";
 }
 
 /**
  * Travel destinations are reached through the Travel hub and agency work through its hub
- * (Havas Play), so the index lists the hubs only.
+ * (Havas Play, Brand Identity), so the index lists the hubs only.
  */
 function listedInIndex(p: Project): boolean {
   if (p.hidden) return false;
   if (p.category === "travel" && !p.custom) return false;
   if (p.agency) return false;
+  if (p.hub) return false;
   return true;
 }
 
