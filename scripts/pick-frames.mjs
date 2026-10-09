@@ -380,6 +380,7 @@ function cmdApply(ctx, positionals, flags) {
       // Keep key order stable: thumbnail/poster next to previewVideo when new.
       const next = {};
       for (const [k, v] of Object.entries(p)) {
+        if (k === "thumbnail" || k === "poster") continue; // re-inserted below, never copied back over the new value
         next[k] = v;
         if (k === "coverImage") { next.thumbnail = thumbnail; next.poster = poster; }
       }

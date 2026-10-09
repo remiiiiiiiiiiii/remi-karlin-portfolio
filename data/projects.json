@@ -1078,6 +1078,8 @@
       "description": "Cinematic portraits of Hong Kong shot across the city — Lantau Peak, the harbour, the cliffs, the junk, Sham Shui Po and Mong Kok. A study of the city's light, texture and quiet rhythm.",
       "previewVideo": "/videos/hong-kong-ssp-preview.mp4",
       "coverImage": "/images/cover-hong-kong.webp",
+      "thumbnail": "/images/thumbs/hong-kong.webp",
+      "poster": "/images/thumbs/hong-kong-16x9.webp",
       "featured": 5,
       "hidden": false,
       "videos": [
@@ -1509,8 +1511,9 @@
       "description": "Havas Play is the sports and entertainment agency of Havas, based in Paris. Between January and June 2026, Remi worked there as an editor and art director, with some filming for a few clients. The clients below are Allianz, BKT, the Fédération Française de Judo, Kellogg's, KFC, Nissan, Orange, Paris FC, Renault, Sanofi and Louis Burton, plus work made for the agency itself.",
       "previewVideo": "",
       "coverImage": "",
-      "heroClips": ["/videos/havas-kfc-1-preview.mp4", "/videos/havas-renault-1-preview.mp4", "/videos/havas-internal-3-preview.mp4", "/videos/havas-kellogs-hero-preview.mp4", "/videos/havas-internal-4-preview.mp4"],
-      "thumbnail": "/images/thumbs/havas-internal.webp",
+      "thumbnail": "/images/thumbs/havas-play.webp",
+      "poster": "/images/thumbs/havas-play-16x9.webp",
+      "heroClips": ["/videos/havas-kfc-1-preview.mp4", "/videos/havas-internal-3-preview.mp4"],
       "featured": 2,
       "hidden": false,
       "videos": [],
@@ -1533,6 +1536,8 @@
       "description": "Visual work for Modessec — the fashion association at ESSEC. Includes the 2025 fashion show aftermovie and teaser, a 2024 teaser, and product photography for the association's hoodie release.",
       "previewVideo": "/videos/essec-modessec-teaser-preview.mp4",
       "coverImage": "/images/cover-modessec.webp",
+      "thumbnail": "/images/thumbs/modessec.webp",
+      "poster": "/images/thumbs/modessec-16x9.webp",
       "featured": 8,
       "hidden": false,
       "videos": [
@@ -1575,6 +1580,8 @@
       "description": "Promotional and event films for RMX, the DJ association at ESSEC. Includes a short promo and an aftermovie from a school event.",
       "previewVideo": "/videos/essec-rmx-2-preview.mp4",
       "coverImage": "/images/cover-rmx.webp",
+      "thumbnail": "/images/thumbs/rmx.webp",
+      "poster": "/images/thumbs/rmx-16x9.webp",
       "featured": 3,
       "hidden": false,
       "videos": [
