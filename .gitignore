@@ -22,3 +22,6 @@ public/images/*.pdf
 # Untracked local tooling folders
 stop-slop/
 .impeccable/
+
+# pick-frames candidate stills (scripts/pick-frames.mjs)
+.frames/

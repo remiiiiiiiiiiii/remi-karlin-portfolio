@@ -77,7 +77,7 @@ PRODUCT.md, DESIGN.md, .impeccable/design.json   Design context docs (impeccable
 
 ## 5. Adding / editing content
 
-Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it shows, the five-step recipe for a video project, the case-study recipe, `set-preview` / `set-thumbnail` / `add-case`, agency work and the Havas hub (`--agency`, `--full`, `--pending`, `set-youtube`, `add-gallery`), vertical and square films, reorder and hide, regenerating posters, the schema. In a Claude Code session in `~/OS`, the `portfolio-add-work` skill drives this from a single request. Pushing to `main` deploys.
+Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it shows, the five-step recipe for a video project, the case-study recipe, `set-preview` / `set-thumbnail` / `add-case`, agency work and the Havas hub (`--agency`, `--full`, `--pending`, `set-youtube`, `add-gallery`), vertical and square films, reorder and hide, regenerating posters, choosing landing banners from film frames (`pick-frames`), the schema. In a Claude Code session in `~/OS`, the `portfolio-add-work` skill drives this from a single request. Pushing to `main` deploys.
 
 ## 6. Current content state
 

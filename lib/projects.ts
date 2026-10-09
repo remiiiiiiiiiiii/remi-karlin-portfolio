@@ -38,6 +38,8 @@ export type Project = {
   coverImage: string;
   /** Still for the homepage index, e.g. /images/thumbs/<slug>.webp. Falls back to the preview poster. */
   thumbnail?: string;
+  /** 16:9 still for the phone grid, e.g. /images/thumbs/<slug>-16x9.webp (+ -tiny.webp). Falls back to the preview poster. */
+  poster?: string;
   videos: ProjectVideoEntry[];
   credits: Record<string, string>;
   /** 1 = first tile on the landing; absent = not on the landing */

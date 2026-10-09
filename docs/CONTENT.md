@@ -5,7 +5,7 @@ Everything the site lists lives in `data/projects.json`. You do not edit code to
 ## What the homepage shows, and where each piece comes from
 
 1. **Hero (desktop)**: a full-frame video with a hover list of the featured projects. The list is the projects that have `featured`, in `featured` order (1 = first). Hovering or selecting a row plays that project's `previewVideo`, one clip at a time. This is desktop only.
-2. **Poster grid (mobile)**: the same featured projects, same order, as static posters. Nothing plays.
+2. **Poster grid (mobile)**: the same featured projects, same order, as static 16:9 stills: the entry's `poster` when set, else the poster of its `previewVideo`. Nothing plays.
 3. **Bio**: text on the page, not in `projects.json`.
 4. **Work index**: every project that is not `hidden`, with three filters:
 
@@ -135,7 +135,7 @@ The poster of a pending film uses the same box. When the first clip of a project
 | `hide <slug>` / `unhide <slug>` | Not listed anywhere (hero, grid, index) and `noindex`, while `/work/<slug>` keeps working. Hiding also unfeatures |
 | `move <slug> <position>` | Reorder in `projects.json` (1 = very first). Sets the order inside each index filter and the prev/next links |
 | `set-preview <slug> <file>` | Pick which existing clip represents the project (see above) |
-| `set-thumbnail <slug> <image>` | New index still, 2.39:1 WebP |
+| `set-thumbnail <slug> <image>` | New index still, 2.39:1 WebP (for both banners from a film frame, see `pick-frames`) |
 | `add-video <slug> --youtube "URL\|title" [--preview file]` | Append a video (and its clip, named `<slug>-N-preview.mp4`) to an existing project. Also takes `--full "file\|title"` and `--pending "Title"`, `--aspect` |
 | `set-youtube <slug> <n\|title> <url>` | Fill the YouTube id of a (pending) video; keeps `localVideo` |
 | `add-gallery <slug> --title T --image f...` | WebP images into `public/images/<slug>/`, appended to `galleries[]` |
@@ -143,6 +143,20 @@ The poster of a pending film uses the same box. When the first clip of a project
 | `remove <slug> [--delete-media]` | Delete the entry; with the flag also the clip, posters, thumbnail and images no other project uses |
 
 A project only works in the hero if it has a `previewVideo`. Reversible way to pull something: `hide`. Permanent: `remove --delete-media` (dry run first). Custom pages under `app/work/<slug>/` and hand-written links are not touched by `remove`.
+
+## Choosing the landing banners from real frames
+
+The banner of a project is two stills made from one chosen frame: `thumbnail` (2.39:1, the work index) and `poster` (16:9, the phone grid). The desktop hero is not a still, it plays the clips. `scripts/pick-frames.mjs` proposes frames so nobody has to scrub each film:
+
+```bash
+npm run pick-frames -- sheet                 # every featured project; or: sheet fan-yan hong-kong
+npm run pick-frames -- apply fan-yan 4 havas-kfc 6 --dry-run
+npm run pick-frames -- apply fan-yan 4 havas-kfc 6
+```
+
+`sheet` samples 36 frames per project across its films (the full local files behind each hero clip when they are on disk, else the preview clips; `--previews` forces the clips), scores them for exposure, contrast and sharpness, keeps the best of each time bucket (`--count`, default 6) and writes `.frames/<slug>/sheet.jpg`: the candidates numbered, shown at the 2.39:1 crop. Send the sheets to Rémi, he answers with numbers.
+
+`apply <slug> <n>` re-reads that frame at full quality and writes `public/images/thumbs/<slug>.webp`, `<slug>-16x9.webp` and their `-tiny.webp`, then sets `thumbnail` and `poster`. `--y 0..1` moves the crop up or down (0.5 centre). For a frame that is not on the sheet: `apply <slug> --source /path/film.mp4 --at 12.5` (an image works too, without `--at`). `.frames/` is git-ignored; the thumbs and `data/projects.json` are what gets committed.
 
 ## Swapping a clip: regenerate its poster
 

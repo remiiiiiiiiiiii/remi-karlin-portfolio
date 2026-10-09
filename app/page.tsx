@@ -33,8 +33,8 @@ export default function Page() {
     slug: p.slug,
     title: p.title,
     label: [p.tag, p.year].filter(Boolean).join(" · "),
-    poster: posterPath(p.previewVideo),
-    tiny: posterPath(p.previewVideo, true),
+    poster: p.poster || posterPath(p.previewVideo),
+    tiny: p.poster ? p.poster.replace(/\.webp$/, "-tiny.webp") : posterPath(p.previewVideo, true),
   }));
 
   const rows: IndexRow[] = getIndexProjects().map((p) => ({
