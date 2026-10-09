@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { posterPath } from "@/lib/posters";
 import { useStayStill } from "./PreviewVideo";
 import { useCanHover } from "./playback";
 
@@ -10,13 +11,12 @@ export type HeroItem = {
   title: string;
   /** "tag · location · year" */
   label: string;
-  /** Preview clip, e.g. /videos/solene-preview.mp4 */
-  video: string;
-  /** 1280x720 poster */
-  poster: string;
-  /** ~24px blur-up that sits under the poster */
-  tiny: string;
+  /** Every preview clip of the project in play order, e.g. ["/videos/solene-preview.mp4"]. Posters derive from the path. */
+  clips: string[];
 };
+
+/** One clip of one featured project. Every clip is its own full-frame layer. */
+type Slot = { pi: number; ci: number; src: string; poster: string; tiny: string };
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const DESKTOP_QUERY = "(min-width: 769px)";
@@ -41,14 +41,18 @@ function useDesktop(): boolean {
 }
 
 type LayerProps = {
-  item: HeroItem;
+  slot: Slot;
   index: number;
   on: boolean;
-  /** First layer: eager poster. */
+  /** Same-project clip change: this layer is the incoming one (sits on top, no blur). */
+  clip: boolean;
+  /** Same-project clip change: this layer is the outgoing one (stays opaque under the incoming one). */
+  hold: boolean;
+  /** Very first layer: eager poster. */
   first: boolean;
   /** The <video> element exists at all (desktop, motion allowed, after hydration). */
   canVideo: boolean;
-  /** This clip may hold a src (current, or the one about to play). */
+  /** This clip may hold a src (current, next, or the one fading out). */
   load: boolean;
   /** This clip is meant to be playing right now. */
   play: boolean;
@@ -56,16 +60,18 @@ type LayerProps = {
   warming: boolean;
   loop: boolean;
   register: (index: number, el: HTMLVideoElement | null) => void;
+  onPlaying: (index: number) => void;
   onEnded: (index: number) => void;
   onError: (index: number) => void;
   onTime: (index: number, v: HTMLVideoElement) => void;
 };
 
 /**
- * One full-frame layer. The poster <img> is server-rendered; the <video> only exists after
- * hydration (canVideo) and only carries a src while it is the current or the warming clip.
+ * One full-frame layer. The poster <img> is server-rendered for the first clip of every project
+ * (other clips mount theirs only while they load); the <video> only exists after hydration
+ * (canVideo) and only carries a src while it is the current, the warming or the outgoing clip.
  */
-function HeroLayer({ item, index, on, first, canVideo, load, play, warming, loop, register, onEnded, onError, onTime }: LayerProps) {
+function HeroLayer({ slot, index, on, clip, hold, first, canVideo, load, play, warming, loop, register, onPlaying, onEnded, onError, onTime }: LayerProps) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const [started, setStarted] = useState(false);
 
@@ -97,7 +103,7 @@ function HeroLayer({ item, index, on, first, canVideo, load, play, warming, loop
     if (v && v.currentSrc) v.load();
   }, [load]);
 
-  const imgStyle = { backgroundImage: `url(${item.tiny})` };
+  const imgStyle = { backgroundImage: `url(${slot.tiny})` };
   const imgProps = {
     alt: "",
     width: 1280,
@@ -106,24 +112,29 @@ function HeroLayer({ item, index, on, first, canVideo, load, play, warming, loop
     draggable: false,
     style: imgStyle,
   };
+  const cls = ["hd-layer", on && "is-on", clip && "is-clip", hold && "is-hold"].filter(Boolean).join(" ");
 
   return (
-    <div className={on ? "hd-layer is-on" : "hd-layer"} aria-hidden="true">
+    <div className={cls} aria-hidden="true">
       {first ? (
         // Only desktop widths fetch the full poster; phones get the 24px blur-up for this hidden branch.
         <picture>
-          <source media={DESKTOP_QUERY} srcSet={item.poster} />
+          <source media={DESKTOP_QUERY} srcSet={slot.poster} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={item.tiny} loading="eager" fetchPriority="high" {...imgProps} />
+          <img src={slot.tiny} loading="eager" fetchPriority="high" {...imgProps} />
         </picture>
-      ) : (
+      ) : slot.ci === 0 ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={item.poster} loading="lazy" {...imgProps} />
-      )}
+        <img src={slot.poster} loading="lazy" {...imgProps} />
+      ) : load ? (
+        // Later clips: poster only while the clip is about to be used, so idle clips cost nothing.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={slot.poster} loading="eager" {...imgProps} />
+      ) : null}
       {canVideo && (
         <video
           ref={setRef}
-          src={load ? item.video : undefined}
+          src={load ? slot.src : undefined}
           muted
           playsInline
           loop={loop}
@@ -131,7 +142,10 @@ function HeroLayer({ item, index, on, first, canVideo, load, play, warming, loop
           controls={false}
           disablePictureInPicture
           tabIndex={-1}
-          onPlaying={() => setStarted(true)}
+          onPlaying={() => {
+            setStarted(true);
+            onPlaying(index);
+          }}
           onEnded={() => onEnded(index)}
           onError={() => onError(index)}
           onTimeUpdate={(e) => onTime(index, e.currentTarget)}
@@ -143,9 +157,13 @@ function HeroLayer({ item, index, on, first, canVideo, load, play, warming, loop
 }
 
 /**
- * Desktop hero: the whole first viewport is the current featured clip. Titles bottom-left
- * swap it on hover or focus. Phones never mount a <video>: the CSS hides this section and
- * `desktop` stays false below 769px.
+ * Desktop hero: the whole first viewport is the current featured clip. Each project plays all of
+ * its preview clips in turn; titles bottom-left swap the project on hover or focus. Phones never
+ * mount a <video>: the CSS hides this section and `desktop` stays false below 769px.
+ *
+ * State is one flat clip index (`cur`) over [project 1 clip 1.., project 2 clip 1.., ..]; the project
+ * and the clip number are derived from it. Auto mode walks that list; after the first interaction
+ * (`auto` false) it cycles within the chosen project only.
  */
 export default function HeroFrame({ items }: { items: HeroItem[] }) {
   const N = items.length;
@@ -154,11 +172,27 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
   const canHover = useCanHover();
   const canVideo = desktop && still === false;
 
+  const { slots, starts, lens } = useMemo(() => {
+    const slots: Slot[] = [];
+    const starts: number[] = [];
+    const lens: number[] = [];
+    items.forEach((it, pi) => {
+      starts.push(slots.length);
+      lens.push(it.clips.length);
+      it.clips.forEach((src, ci) => slots.push({ pi, ci, src, poster: posterPath(src), tiny: posterPath(src, true) }));
+    });
+    return { slots, starts, lens };
+  }, [items]);
+  const T = slots.length;
+
+  // cur: the clip that plays. shown: the clip that is visible (differs from cur only while a
+  // same-project clip waits for its first frame). prev: the clip fading out. warm: the next clip.
   const [cur, setCur] = useState(0);
+  const [shown, setShown] = useState(0);
   const [auto, setAuto] = useState(N > 1);
   const [warm, setWarm] = useState(-1);
-  // Outgoing clip keeps its src for the crossfade, then drops it.
   const [prev, setPrev] = useState(-1);
+  const [xclip, setXclip] = useState(false);
   const [inView, setInView] = useState(true);
   const [tabVisible, setTabVisible] = useState(true);
 
@@ -166,8 +200,10 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
   const tcRef = useRef<HTMLParagraphElement>(null);
   const videos = useRef<(HTMLVideoElement | null)[]>([]);
   const curRef = useRef(0);
+  const shownRef = useRef(0);
   const autoRef = useRef(N > 1);
   const prevTimer = useRef<number | null>(null);
+  const revealTimer = useRef<number | null>(null);
   const intentTimer = useRef<number | null>(null);
   const failed = useRef<Set<number>>(new Set());
 
@@ -177,10 +213,23 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
       intentTimer.current = null;
     }
   }, []);
+  const clearPrev = useCallback(() => {
+    if (prevTimer.current !== null) {
+      window.clearTimeout(prevTimer.current);
+      prevTimer.current = null;
+    }
+  }, []);
+  const clearReveal = useCallback(() => {
+    if (revealTimer.current !== null) {
+      window.clearTimeout(revealTimer.current);
+      revealTimer.current = null;
+    }
+  }, []);
 
   useEffect(
     () => () => {
       if (prevTimer.current !== null) window.clearTimeout(prevTimer.current);
+      if (revealTimer.current !== null) window.clearTimeout(revealTimer.current);
       if (intentTimer.current !== null) window.clearTimeout(intentTimer.current);
     },
     []
@@ -190,57 +239,129 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
     videos.current[i] = el;
   }, []);
 
-  const go = useCallback(
-    (i: number) => {
-      const n = ((i % N) + N) % N;
-      if (n === curRef.current) return;
-      const old = curRef.current;
-      curRef.current = n;
-      setCur(n);
-      setPrev(old);
-      if (prevTimer.current !== null) window.clearTimeout(prevTimer.current);
+  // Make clip n the visible one; the previously visible clip fades out for 260 ms.
+  const reveal = useCallback(
+    (n: number) => {
+      if (n !== curRef.current || shownRef.current === n) return;
+      clearReveal();
+      clearPrev();
+      const out = shownRef.current;
+      shownRef.current = n;
+      setShown(n);
+      setPrev(out);
       prevTimer.current = window.setTimeout(() => {
         prevTimer.current = null;
         setPrev(-1);
       }, 260);
-      setWarm((w) => (w === n ? -1 : w));
     },
-    [N]
+    [clearPrev, clearReveal]
   );
 
-  // The viewer took over: stop auto-advancing and loop the current clip.
+  /**
+   * Switch the playing clip to n. A natural advance inside the same project keeps the outgoing
+   * clip on screen until the incoming one has fired `playing` (see onPlaying); anything else
+   * (another project, or a viewer's choice) crossfades straight away.
+   */
+  const go = useCallback(
+    (n: number, natural: boolean) => {
+      if (n === curRef.current) return;
+      curRef.current = n;
+      setCur(n);
+      setWarm(-1);
+      clearPrev();
+      clearReveal();
+      if (natural && slots[n].pi === slots[shownRef.current].pi) {
+        setXclip(true);
+        setPrev(-1);
+        // Safety net: if the first frame never arrives, show the poster rather than the stale clip.
+        revealTimer.current = window.setTimeout(() => {
+          revealTimer.current = null;
+          reveal(n);
+        }, 1500);
+      } else {
+        setXclip(false);
+        reveal(n);
+      }
+    },
+    [slots, clearPrev, clearReveal, reveal]
+  );
+
+  const goProject = useCallback(
+    (p: number) => {
+      const n = ((p % N) + N) % N;
+      if (n === slots[curRef.current].pi || lens[n] === 0) return;
+      go(starts[n], false);
+    },
+    [N, slots, starts, lens, go]
+  );
+
+  // Next playable clip after `from`: the whole list while auto-advancing, the project's own clips
+  // (wrapping to its first) once held. -1 when nothing else is left (the rest failed to load).
+  const nextOf = useCallback(
+    (from: number, isAuto: boolean): number => {
+      if (isAuto) {
+        for (let k = 1; k < T; k++) {
+          const n = (from + k) % T;
+          if (!failed.current.has(n)) return n;
+        }
+        return -1;
+      }
+      const pi = slots[from].pi;
+      const s = starts[pi];
+      const len = lens[pi];
+      for (let k = 1; k < len; k++) {
+        const n = s + ((from - s + k) % len);
+        if (!failed.current.has(n)) return n;
+      }
+      return -1;
+    },
+    [T, slots, starts, lens]
+  );
+
+  // The viewer took over: stay on this project and keep cycling its clips.
   const hold = useCallback(() => {
     if (!autoRef.current) return;
     autoRef.current = false;
     setAuto(false);
     setWarm(-1);
-    const v = videos.current[curRef.current];
+    const c = curRef.current;
+    const v = videos.current[c];
     if (v) {
-      v.loop = true;
+      if (lens[slots[c].pi] === 1) v.loop = true;
       if (v.ended) {
+        v.currentTime = 0;
         const p = v.play();
         if (p && p.catch) p.catch(() => {});
       }
     }
-  }, []);
+  }, [slots, lens]);
 
-  // Next clip that has not failed to load; stays put if every other clip failed.
-  const advance = useCallback(() => {
-    for (let k = 1; k < N; k++) {
-      const n = (curRef.current + k) % N;
-      if (!failed.current.has(n)) return go(n);
-    }
-  }, [N, go]);
+  // First frame of a clip is on screen: now the same-project switch can show it.
+  const onPlaying = useCallback(
+    (i: number) => {
+      reveal(i);
+    },
+    [reveal]
+  );
 
   const onEnded = useCallback(
     (i: number) => {
-      if (i === curRef.current && autoRef.current) advance();
+      if (i !== curRef.current) return;
+      const n = nextOf(i, autoRef.current);
+      if (n >= 0) return go(n, true);
+      // Nothing else playable: replay this one.
+      const v = videos.current[i];
+      if (v) {
+        v.currentTime = 0;
+        const p = v.play();
+        if (p && p.catch) p.catch(() => {});
+      }
     },
-    [advance]
+    [nextOf, go]
   );
 
   // A clip that 404s or cannot decode never fires `ended`: treat the error like it.
-  // Current clip: advance if auto, otherwise stay on its poster. Other clips: remember so auto-advance skips them.
+  // Current clip: skip to the next playable one, or stay on its poster if there is none. Other clips: remember so we skip them.
   const onError = useCallback(
     (i: number) => {
       failed.current.add(i);
@@ -248,18 +369,19 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
         setWarm((w) => (w === i ? -1 : w));
         return;
       }
-      if (autoRef.current) advance();
+      const n = nextOf(i, autoRef.current);
+      if (n >= 0) go(n, true);
     },
-    [advance]
+    [nextOf, go]
   );
 
-  // 1 s before the current clip ends (auto-advance only) the next clip gets its src.
+  // 1 s before the current clip ends the next clip (whichever mode) gets its src.
   const onTime = useCallback(
     (i: number, v: HTMLVideoElement) => {
-      if (i !== curRef.current || !autoRef.current || !v.duration) return;
-      if (v.duration - v.currentTime <= 1) setWarm((curRef.current + 1) % N);
+      if (i !== curRef.current || shownRef.current !== i || !v.duration) return;
+      if (v.duration - v.currentTime <= 1) setWarm(nextOf(i, autoRef.current));
     },
-    [N]
+    [nextOf]
   );
 
   // Pause when the hero leaves the scroll area (threshold .35) and when the tab is hidden.
@@ -281,7 +403,7 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
-  // Timecode of the playing clip, 24 fps. Written straight to the DOM, no React renders.
+  // Timecode of the playing clip, 24 fps; restarts at 0 on every clip change. Written straight to the DOM, no React renders.
   const running = canVideo && inView && tabVisible;
   useEffect(() => {
     if (!running) return;
@@ -303,23 +425,36 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
     return () => cancelAnimationFrame(raf);
   }, [running, cur]);
 
-  const item = items[cur];
+  const proj = slots[cur].pi;
+  const clipNo = slots[cur].ci;
+  const item = items[proj];
 
+  // Test hooks: data-project / data-clip (0-based) / data-src on the .hero-d wrapper (the section if there is none).
+  useEffect(() => {
+    const host = heroRef.current?.closest<HTMLElement>(".hero-d") ?? heroRef.current;
+    if (!host) return;
+    host.dataset.project = String(proj);
+    host.dataset.clip = String(clipNo);
+    host.dataset.src = slots[cur].src;
+  }, [proj, clipNo, cur, slots]);
   return (
     <section className="hd" ref={heroRef} aria-label="Chosen work">
-      {items.map((it, i) => (
+      {slots.map((sl, i) => (
         <HeroLayer
-          key={it.slug}
-          item={it}
+          key={`${sl.pi}:${sl.src}`}
+          slot={sl}
           index={i}
-          on={i === cur}
+          on={i === shown}
+          clip={xclip && i === cur}
+          hold={xclip && i === prev}
           first={i === 0}
           canVideo={canVideo}
-          load={canVideo && (i === cur || i === warm || (i === prev && warm < 0))}
+          load={canVideo && (i === cur || i === warm || i === shown || i === prev)}
           play={running && i === cur}
           warming={i === warm && i !== cur}
-          loop={!auto}
+          loop={!auto && lens[sl.pi] === 1}
           register={register}
+          onPlaying={onPlaying}
           onEnded={onEnded}
           onError={onError}
           onTime={onTime}
@@ -335,10 +470,10 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
         <nav aria-label="Chosen work">
           <ol className="hd-list">
             {items.map((it, i) => (
-              <li key={it.slug} className={i === cur ? "is-current" : undefined}>
+              <li key={it.slug} className={i === proj ? "is-current" : undefined}>
                 <Link
                   href={`/work/${it.slug}`}
-                  aria-current={i === cur ? "true" : undefined}
+                  aria-current={i === proj ? "true" : undefined}
                   onMouseEnter={() => {
                     if (!canHover) return;
                     // Hover intent: sweeping across titles must not swap and fetch each clip.
@@ -346,7 +481,7 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
                     intentTimer.current = window.setTimeout(() => {
                       intentTimer.current = null;
                       hold();
-                      go(i);
+                      goProject(i);
                     }, 80);
                   }}
                   onMouseLeave={clearIntent}
@@ -361,14 +496,14 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
                     if (!kb) return;
                     clearIntent();
                     hold();
-                    go(i);
+                    goProject(i);
                   }}
                   onClick={(e) => {
                     // Touch: the first tap on another title swaps the frame, a tap on the current one opens it.
-                    if (!canHover && i !== curRef.current) {
+                    if (!canHover && i !== slots[curRef.current].pi) {
                       e.preventDefault();
                       hold();
-                      go(i);
+                      goProject(i);
                     }
                   }}
                 >
@@ -387,20 +522,20 @@ export default function HeroFrame({ items }: { items: HeroItem[] }) {
               aria-label="Previous work"
               onClick={() => {
                 hold();
-                go(curRef.current - 1);
+                goProject(slots[curRef.current].pi - 1);
               }}
             >
               Prev
             </button>
             <span className="hd-count" aria-live="polite">
-              {cur + 1} / {N}
+              {proj + 1} / {N}
             </span>
             <button
               type="button"
               aria-label="Next work"
               onClick={() => {
                 hold();
-                go(curRef.current + 1);
+                goProject(slots[curRef.current].pi + 1);
               }}
             >
               Next

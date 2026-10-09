@@ -350,6 +350,17 @@ button {
   opacity: 1;
   filter: none;
 }
+/* Same-project clip change: the incoming clip fades in on top of the outgoing one, which stays
+   opaque underneath until the fade is done (no dip towards black, no blur). */
+.hd-layer.is-clip {
+  z-index: 1;
+  filter: none;
+}
+.hd-layer.is-hold {
+  opacity: 1;
+  filter: none;
+  transition: none;
+}
 .hd-layer picture {
   display: contents;
 }
