@@ -93,16 +93,18 @@ function heroIsPortrait(project: Project): boolean {
   return !!v?.aspect && VERTICAL.has(v.aspect);
 }
 
-// Projects with category "other" (halatia, the-outfiters) have their own custom pages
-// under app/work/<slug>/ (static segments win over [slug]). The generic template must
-// never render them.
+// Projects with category "other" (halatia, the-outfiters) and projects flagged `custom` (the
+// Travel hub) have their own pages under app/work/<slug>/ (static segments win over [slug]).
+// The generic template must never render them.
+const hasOwnPage = (p: Project) => p.category === "other" || !!p.custom;
+
 export function generateStaticParams() {
-  return projects.filter((p) => p.category !== "other").map((p) => ({ slug: p.slug }));
+  return projects.filter((p) => !hasOwnPage(p)).map((p) => ({ slug: p.slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const p = projects.find((x) => x.slug === params.slug);
-  if (!p || p.category === "other") {
+  if (!p || hasOwnPage(p)) {
     return { title: "Page not found", robots: { index: false, follow: true } };
   }
   const { title, description } = getProjectSeo(p);
@@ -130,7 +132,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
 export default function ProjectPage({ params }: { params: { slug: string } }) {
   const idx = projects.findIndex((p) => p.slug === params.slug);
-  if (idx === -1 || projects[idx].category === "other") notFound();
+  if (idx === -1 || hasOwnPage(projects[idx])) notFound();
   const project = projects[idx];
   // prev/next only link to listed pages: hidden projects are skipped
   const visible = projects.filter((p) => !p.hidden || p.slug === project.slug);

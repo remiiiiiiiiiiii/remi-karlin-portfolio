@@ -44,6 +44,10 @@ export type Project = {
   featured?: number;
   /** true = page exists but is listed nowhere */
   hidden?: boolean;
+  /** true = the project has its own page under app/work/<slug>/ (a hub). The generic [slug] template skips it (no static params, 404). */
+  custom?: boolean;
+  /** Explicit preview paths the homepage hero cycles for this project. When set it replaces the derived list (previewVideo need not be first). */
+  heroClips?: string[];
   photoGrid?: { title: string; images: string[] };
   /** Agency the work was made for, e.g. { name: "Havas Play", slug: "havas-play" }. slug is the hub page /work/<slug>. */
   agency?: { name: string; slug: string };
@@ -81,9 +85,10 @@ export function getPreviewVideos(project: Project): string[] {
 /**
  * Clips for the full-bleed 16:9 desktop hero. Vertical (9:16, 4:5) clips would be cropped to a
  * thin slice, so they are left out; the project's own previewVideo always stays first. Clips with
- * no aspect info are kept.
+ * no aspect info are kept. An explicit `heroClips` list wins over all of that.
  */
 export function getHeroClips(project: Project): string[] {
+  if (project.heroClips && project.heroClips.length > 0) return [...new Set(project.heroClips)];
   return getPreviewVideos(project).filter((src, i) => {
     if (i === 0) return true;
     const aspect = project.videos.find((v) => v.previewVideo === src)?.aspect;

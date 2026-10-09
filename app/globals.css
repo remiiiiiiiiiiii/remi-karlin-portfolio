@@ -1503,6 +1503,56 @@ body.is-hover .cursor-ring {
   }
 }
 
+/* Travel hub */
+.travel-head {
+  margin-bottom: 28px;
+}
+.travel-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.travel-title a {
+  color: #fff;
+}
+.travel-title a:hover {
+  color: var(--text-2);
+}
+.travel-sub {
+  margin-top: 10px;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.travel-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px 24px;
+  align-items: start;
+}
+.travel-grid .travel-film {
+  margin-top: 0;
+  min-width: 0;
+}
+.travel-grid .project-additional-video-title {
+  font-size: 15px;
+}
+@media (min-width: 1024px) {
+  .travel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .travel-grid .travel-film--wide {
+    grid-column: 1 / -1;
+  }
+  .travel-grid .travel-film--wide .project-additional-video-title {
+    font-size: 20px;
+  }
+}
+
 /* Havas hub */
 .havas-intro {
   max-width: 1200px;

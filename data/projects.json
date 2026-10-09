@@ -436,7 +436,6 @@
       "previewVideo": "/videos/havas-sanofi-1-preview.mp4",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-sanofi.webp",
-      "featured": 4,
       "hidden": false,
       "agency": {
         "name": "Havas Play",
@@ -1044,6 +1043,30 @@
       "hidden": false
     },
     {
+      "slug": "travel",
+      "title": "Travel",
+      "subtitle": "Eight places, one camera",
+      "shortDescription": "All the travel films in one place.",
+      "tag": "Travel films",
+      "category": "travel",
+      "year": "2024–25",
+      "location": "Hong Kong · France · Spain · Morocco · Amsterdam · Vietnam · Venice · New York",
+      "roles": ["Cinematographer", "Editor", "Colorist"],
+      "description": "Personal films shot while travelling, from Hong Kong to New York. All of them were filmed on a Lumix S5II and graded in DaVinci Resolve.",
+      "previewVideo": "/videos/newyork-preview.mp4",
+      "heroClips": ["/videos/newyork-preview.mp4", "/videos/spain-preview.mp4", "/videos/vietnam-preview.mp4"],
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/travel.webp",
+      "featured": 4,
+      "custom": true,
+      "videos": [],
+      "credits": {
+        "Camera": "Lumix S5II",
+        "Lens": "Lumix 20–60mm f/3.5–5.6",
+        "Post": "DaVinci Resolve"
+      }
+    },
+    {
       "slug": "hong-kong",
       "title": "Hong Kong",
       "subtitle": "Cinematic portraits of the city",
@@ -1264,7 +1287,7 @@
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
       },
-      "hidden": true
+      "hidden": false
     },
     {
       "slug": "venice",
