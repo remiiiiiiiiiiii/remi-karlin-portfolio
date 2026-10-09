@@ -13,7 +13,7 @@
       "description": "A mini documentary portrait of Hong Kong–based artist Fan Yan. Shot, edited and graded end-to-end. The project also includes a series of artwork product photography stills, a lamps short film, and a short film to advertise the artist's products.",
       "previewVideo": "/videos/fan-yan-2-preview.mp4",
       "coverImage": "/images/cover-fan-yan.webp",
-      "featured": 1,
+      "featured": 6,
       "hidden": false,
       "videos": [
         {
@@ -1079,9 +1079,9 @@
       "previewVideo": "/videos/hong-kong-ssp-preview.mp4",
       "coverImage": "/images/cover-hong-kong.webp",
       "thumbnail": "/images/thumbs/hong-kong.webp",
-      "poster": "/images/thumbs/hong-kong-16x9.webp",
-      "featured": 5,
+      "featured": 7,
       "hidden": false,
+      "poster": "/images/thumbs/hong-kong-16x9.webp",
       "videos": [
         {
           "title": "Hong Kong — Full Compilation",
@@ -1365,7 +1365,7 @@
       "description": "B1NBAGS is a brand I started in 2023 in Hong Kong, paused in 2024 to focus on university, and restarted in 2025. The video work focuses on selling the creative lifestyle rather than the product — high-quality reels shot on a cinema-grade camera, colour-graded with film emulations to build a consistent vintage, textured feel.",
       "previewVideo": "/videos/b1nbags-1-preview.mp4",
       "coverImage": "/images/cover-b1nbags.webp",
-      "featured": 6,
+      "featured": 1,
       "hidden": false,
       "videos": [
         {
@@ -1512,10 +1512,10 @@
       "previewVideo": "",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-play.webp",
-      "poster": "/images/thumbs/havas-play-16x9.webp",
-      "heroClips": ["/videos/havas-kfc-1-preview.mp4", "/videos/havas-internal-3-preview.mp4"],
       "featured": 2,
       "hidden": false,
+      "poster": "/images/thumbs/havas-play-16x9.webp",
+      "heroClips": ["/videos/havas-kfc-1-preview.mp4", "/videos/havas-internal-3-preview.mp4"],
       "videos": [],
       "credits": {
         "Year": "January–June 2026",
@@ -1537,9 +1537,9 @@
       "previewVideo": "/videos/essec-modessec-teaser-preview.mp4",
       "coverImage": "/images/cover-modessec.webp",
       "thumbnail": "/images/thumbs/modessec.webp",
-      "poster": "/images/thumbs/modessec-16x9.webp",
-      "featured": 8,
+      "featured": 3,
       "hidden": false,
+      "poster": "/images/thumbs/modessec-16x9.webp",
       "videos": [
         {
           "title": "Modessec — Fashion Show Teaser 2025",
@@ -1581,9 +1581,9 @@
       "previewVideo": "/videos/essec-rmx-2-preview.mp4",
       "coverImage": "/images/cover-rmx.webp",
       "thumbnail": "/images/thumbs/rmx.webp",
-      "poster": "/images/thumbs/rmx-16x9.webp",
-      "featured": 3,
+      "featured": 8,
       "hidden": false,
+      "poster": "/images/thumbs/rmx-16x9.webp",
       "videos": [
         {
           "title": "RMX — Short Promo",
@@ -1620,7 +1620,7 @@
       "description": "Artistic director and head of communications for RUINARKTEFACT, the year-long BDE campaign at ESSEC 2024/25 — two teams of 35 competing through events and communications. Directed rap videos, event aftermovies and teasers, plus a 20-minute declaration film for the campaign. Campaign identity, mascot, and Instagram managed entirely by Remi Karlin alongside a team of 5.",
       "previewVideo": "/videos/essec-wei07-preview.mp4",
       "coverImage": "/images/cover-ruinarktefact.webp",
-      "featured": 7,
+      "featured": 5,
       "hidden": false,
       "videos": [
         {
