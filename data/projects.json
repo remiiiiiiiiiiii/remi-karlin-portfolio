@@ -85,6 +85,1032 @@
       "hidden": false
     },
     {
+      "slug": "havas-kfc",
+      "title": "KFC",
+      "subtitle": "Product film and stills film · Havas Play",
+      "shortDescription": "A product film and a stills film for KFC, made at Havas Play.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Filmmaker",
+        "Editor",
+        "Art Director"
+      ],
+      "description": "A product film for KFC and a second film built from stills, made at Havas Play. Filmed, edited and art directed in Paris during the internship.",
+      "previewVideo": "/videos/havas-kfc-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-kfc.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "KFC",
+      "videos": [
+        {
+          "title": "KFC film",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-kfc-1.mp4",
+          "previewVideo": "/videos/havas-kfc-1-preview.mp4",
+          "aspect": "3:2",
+          "hosting": "self",
+          "durationSec": 19.03
+        },
+        {
+          "title": "Photos slow",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-kfc-2.mp4",
+          "previewVideo": "/videos/havas-kfc-2-preview.mp4",
+          "aspect": "1:1",
+          "hosting": "self",
+          "durationSec": 16.43
+        }
+      ],
+      "credits": {
+        "Client": "KFC",
+        "Roles": "Filming · Editing · Art Direction"
+      },
+      "featured": 3,
+      "hidden": false
+    },
+    {
+      "slug": "havas-renault",
+      "title": "Renault",
+      "subtitle": "One-minute film · Havas Play",
+      "shortDescription": "A one-minute film for Renault, made at Havas Play.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Filmmaker",
+        "Editor",
+        "Art Director"
+      ],
+      "description": "A one-minute film for Renault, made at Havas Play. Filmed, edited and art directed in Paris during the internship.",
+      "previewVideo": "/videos/havas-renault-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-renault.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Renault",
+      "videos": [
+        {
+          "title": "Renault film",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-renault-1-preview.mp4",
+          "aspect": "16:9",
+          "hosting": "youtube",
+          "pending": true,
+          "durationSec": 60.12
+        }
+      ],
+      "credits": {
+        "Client": "Renault",
+        "Roles": "Filming · Editing · Art Direction"
+      },
+      "featured": 4,
+      "hidden": false
+    },
+    {
+      "slug": "havas-kellogs",
+      "title": "Kellogg's",
+      "subtitle": "Tasty Krunchy · Social films · Havas Play",
+      "shortDescription": "ASMR-style social films for Kellogg's Tasty Krunchy, made at Havas Play.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Filmmaker",
+        "Editor",
+        "Art Director"
+      ],
+      "description": "Short social films for Kellogg's Tasty Krunchy, built around close shots and the sound of the snack in the manner of ASMR. Filmed, edited and art directed at Havas Play, delivered as short social cuts.",
+      "previewVideo": "/videos/havas-kellogs-hero-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-kellogs.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Kellogg's",
+      "videos": [
+        {
+          "title": "Tasty Krunchy 10s",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-kellogs-1.mp4",
+          "previewVideo": "/videos/havas-kellogs-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "variants": [
+            "Kellogs/1x1 10s Tasty Krunchy .mp4",
+            "Kellogs/1x1 6s Tasty Krunchy .mp4",
+            "Kellogs/9x16 6s Tasty Krunchy .mp4"
+          ],
+          "durationSec": 9.98
+        },
+        {
+          "title": "ASMR 10s",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-kellogs-2.mp4",
+          "previewVideo": "/videos/havas-kellogs-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "variants": [
+            "Kellogs/1x1 10s ASMR.mp4",
+            "Kellogs/1x1 6s ASMR.mp4",
+            "Kellogs/9x16 6s ASMR.mp4"
+          ],
+          "durationSec": 10.41
+        }
+      ],
+      "credits": {
+        "Client": "Kellogg's",
+        "Roles": "Filming · Editing · Art Direction"
+      },
+      "featured": 5,
+      "hidden": false
+    },
+    {
+      "slug": "havas-nissan",
+      "title": "Nissan",
+      "subtitle": "Juke social series · Havas Play",
+      "shortDescription": "A social series for the Nissan Juke: ASMR films, a One Piece film and calendar posts.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "A social series for the Nissan Juke, made at Havas Play. It mixes ASMR films, a film around One Piece and calendar-style posts, edited and art directed as social cuts.",
+      "previewVideo": "/videos/havas-nissan-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-nissan.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Nissan",
+      "videos": [
+        {
+          "title": "ASMR",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-1.mp4",
+          "previewVideo": "/videos/havas-nissan-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 29.74
+        },
+        {
+          "title": "ESC",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-2.mp4",
+          "previewVideo": "/videos/havas-nissan-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 12.12
+        },
+        {
+          "title": "Looking for Juke",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-3.mp4",
+          "previewVideo": "/videos/havas-nissan-3-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 15.04
+        },
+        {
+          "title": "One Piece",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-4.mp4",
+          "previewVideo": "/videos/havas-nissan-4-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 9.98
+        },
+        {
+          "title": "Photoshop",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-5.mp4",
+          "previewVideo": "/videos/havas-nissan-5-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 12.5
+        },
+        {
+          "title": "Post bien-être",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-6.mp4",
+          "previewVideo": "/videos/havas-nissan-6-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 13.99
+        },
+        {
+          "title": "Dino",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-7.mp4",
+          "previewVideo": "/videos/havas-nissan-7-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 27.41
+        },
+        {
+          "title": "Pont de mai, pause",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-nissan-8.mp4",
+          "previewVideo": "/videos/havas-nissan-8-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 8.02
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Visuals",
+          "images": [
+            {
+              "path": "/images/havas/nissan/carnet-de-vacances-v1.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/nissan/nissan-je-taime.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/nissan/v2-pont-calendrier-slide-1.webp",
+              "width": 1080,
+              "height": 1350
+            }
+          ]
+        }
+      ],
+      "credits": {
+        "Client": "Nissan",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-allianz",
+      "title": "Allianz",
+      "subtitle": "Winter sports social content · Havas Play",
+      "shortDescription": "Winter sports social content for Allianz: slalom, paragliding, a day in the life, stickers and cards.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "Social content around winter sports for Allianz, made at Havas Play. Films on slalom and paragliding and a day in the life, alongside emoji stickers and \"did you know\" cards, edited and art directed for social formats.",
+      "previewVideo": "/videos/havas-allianz-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-allianz.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Allianz",
+      "videos": [
+        {
+          "title": "Slalom",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-allianz-1.mp4",
+          "previewVideo": "/videos/havas-allianz-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 13.48
+        },
+        {
+          "title": "Para",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-allianz-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "pending": true,
+          "durationSec": 74.13
+        },
+        {
+          "title": "Day in the life",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-allianz-3-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "pending": true,
+          "durationSec": 88
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Emoji",
+          "images": [
+            {
+              "path": "/images/havas/allianz/skieur-v5.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/allianz/snowboarder-v5.webp",
+              "width": 1080,
+              "height": 1350
+            }
+          ]
+        },
+        {
+          "title": "Did you know",
+          "images": [
+            {
+              "path": "/images/havas/allianz/1-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/allianz/2-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/allianz/3-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/allianz/4-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350
+            }
+          ]
+        }
+      ],
+      "credits": {
+        "Client": "Allianz",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-sanofi",
+      "title": "Sanofi",
+      "subtitle": "Athlete films · Havas Play",
+      "shortDescription": "Athlete films for Sanofi: a reveal, Paul Ricard, Mikkel, and a logo animation.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "A set of athlete films for Sanofi, made at Havas Play: a reveal film, one shot at Paul Ricard and one with Mikkel, plus a logo animation. Edited and art directed in Paris.",
+      "previewVideo": "/videos/havas-sanofi-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-sanofi.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Sanofi",
+      "videos": [
+        {
+          "title": "Mikkel",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-sanofi-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "pending": true,
+          "durationSec": 100.82
+        },
+        {
+          "title": "Paul Ricard",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-sanofi-2.mp4",
+          "previewVideo": "/videos/havas-sanofi-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 19.16
+        },
+        {
+          "title": "Animation Sanofi",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-sanofi-3.mp4",
+          "previewVideo": "/videos/havas-sanofi-3-preview.mp4",
+          "aspect": "1:1",
+          "hosting": "self",
+          "durationSec": 10.07
+        },
+        {
+          "title": "Reveal",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-sanofi-4.mp4",
+          "previewVideo": "/videos/havas-sanofi-4-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 15.59
+        }
+      ],
+      "credits": {
+        "Client": "Sanofi",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-bkt",
+      "title": "BKT",
+      "subtitle": "Football sponsorship · Social content · Havas Play",
+      "shortDescription": "Match-day films and social posts for BKT, the tyre brand, around its football sponsorship.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "Social content for BKT, the tyre brand, around its football sponsorship. Match-day \"actions\" films and social posts, edited and art directed at Havas Play.",
+      "previewVideo": "/videos/havas-bkt-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-bkt.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "BKT",
+      "videos": [
+        {
+          "title": "Action 1",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-bkt-1.mp4",
+          "previewVideo": "/videos/havas-bkt-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "variants": [
+            "bkt/actions/ACTION_1_1200x1200.mp4"
+          ],
+          "durationSec": 29.8
+        },
+        {
+          "title": "Action 2",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-bkt-2.mp4",
+          "previewVideo": "/videos/havas-bkt-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "variants": [
+            "bkt/actions/ACTION_2_1200x1200.mp4"
+          ],
+          "durationSec": 28.29
+        },
+        {
+          "title": "Action 3",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-bkt-3.mp4",
+          "previewVideo": "/videos/havas-bkt-3-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "variants": [
+            "bkt/actions/ACTION_3_1200x1200.mp4"
+          ],
+          "durationSec": 35.75
+        },
+        {
+          "title": "L'Action",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-bkt-4-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "pending": true,
+          "variants": [
+            "bkt/actions/L'ACTION_1200x1200.mp4"
+          ],
+          "durationSec": 74.26
+        },
+        {
+          "title": "Social video 1",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-bkt-5.mp4",
+          "previewVideo": "/videos/havas-bkt-5-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 19.39
+        },
+        {
+          "title": "Social video 2",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-bkt-6.mp4",
+          "previewVideo": "/videos/havas-bkt-6-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 19.39
+        },
+        {
+          "title": "Social video 3",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-bkt-7.mp4",
+          "previewVideo": "/videos/havas-bkt-7-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 16.26
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Social media",
+          "images": [
+            {
+              "path": "/images/havas/bkt/p1-bkt-1.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p1-bkt-2.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p1-bkt-3-v2.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p2-bkt-1-v2.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p2-bkt-2-v2.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p4-bkt-1.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p4-bkt-2.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p5-bkt-1-v3.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/p5-bkt-2-v3.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/v3-concours-bkt-ballon-1x1.webp",
+              "width": 1080,
+              "height": 1080
+            },
+            {
+              "path": "/images/havas/bkt/v3-concours-bkt-ballon-9x16.webp",
+              "width": 900,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/bkt/v6-vip-box-4x5.webp",
+              "width": 1200,
+              "height": 1500
+            },
+            {
+              "path": "/images/havas/bkt/v8-vip-box-9x16.webp",
+              "width": 900,
+              "height": 1600
+            }
+          ]
+        }
+      ],
+      "credits": {
+        "Client": "BKT",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-paris-fc",
+      "title": "Paris FC",
+      "subtitle": "The Kop · Film · Havas Play",
+      "shortDescription": "A film for Paris FC about the Kop, made at Havas Play.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "A film for Paris FC about the Kop, edited and art directed at Havas Play.",
+      "previewVideo": "/videos/havas-paris-fc-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-paris-fc.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Paris FC",
+      "videos": [
+        {
+          "title": "Kop",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-paris-fc-1.mp4",
+          "previewVideo": "/videos/havas-paris-fc-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 26.67
+        }
+      ],
+      "credits": {
+        "Client": "Paris FC",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-tor",
+      "title": "Orange",
+      "subtitle": "Team Orange Running · event films",
+      "shortDescription": "Finish-line and teaser films and contest visuals for Team Orange Running, a running event by Orange.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "Films and visuals for Team Orange Running, a running event by Orange, made at Havas Play. A finish-line film and teaser films, plus visuals for a contest, edited and art directed in Paris.",
+      "previewVideo": "/videos/havas-tor-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-tor.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Orange",
+      "videos": [
+        {
+          "title": "Finish line",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-tor-1.mp4",
+          "previewVideo": "/videos/havas-tor-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 20.74
+        },
+        {
+          "title": "Teaser",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-tor-2.mp4",
+          "previewVideo": "/videos/havas-tor-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 20.61
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Visuals",
+          "images": [
+            {
+              "path": "/images/havas/tor/artboard-1.webp",
+              "width": 1600,
+              "height": 572
+            },
+            {
+              "path": "/images/havas/tor/artboard-1d.webp",
+              "width": 640,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/tor/artboard-1h.webp",
+              "width": 1600,
+              "height": 800
+            },
+            {
+              "path": "/images/havas/tor/tor-arche-6.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/tor/tor-je-taime-v3.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/tor/concours-tor-2-copy.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/tor/concours-tor-4.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/tor/mur-b-v2.webp",
+              "width": 1600,
+              "height": 572
+            }
+          ]
+        }
+      ],
+      "credits": {
+        "Client": "Orange",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-ffj",
+      "title": "Fédération Française de Judo",
+      "subtitle": "FFJ · poster series",
+      "shortDescription": "A poster series for the French judo federation, made at Havas Play.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "A series of posters for the Fédération Française de Judo (FFJ), art directed at Havas Play.",
+      "previewVideo": "",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-ffj.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Fédération Française de Judo",
+      "videos": [],
+      "galleries": [
+        {
+          "title": "Posters",
+          "images": [
+            {
+              "path": "/images/havas/ffj/60x80-master-1.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/ffj/a4-master-2.webp",
+              "width": 1132,
+              "height": 1600
+            }
+          ]
+        }
+      ],
+      "credits": {
+        "Client": "Fédération Française de Judo",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-louis-burton",
+      "title": "Louis Burton",
+      "subtitle": "Two vertical films · Havas Play",
+      "shortDescription": "Two vertical films for Louis Burton, made at Havas Play.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "Two vertical films for Louis Burton, edited and art directed at Havas Play.",
+      "previewVideo": "/videos/havas-louis-burton-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-louis-burton.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Louis Burton",
+      "videos": [
+        {
+          "title": "Louis Burton film",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-louis-burton-1.mp4",
+          "previewVideo": "/videos/havas-louis-burton-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 39.66
+        },
+        {
+          "title": "Cut v6",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-louis-burton-2.mp4",
+          "previewVideo": "/videos/havas-louis-burton-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 14.7
+        }
+      ],
+      "credits": {
+        "Client": "Louis Burton",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
+      "slug": "havas-internal",
+      "title": "Havas Play, internal",
+      "subtitle": "Work for the agency itself · Havas Play",
+      "shortDescription": "Work made for Havas Play itself: showreel, Ce Créa 2026, posters, portraits and more.",
+      "tag": "Agency work",
+      "category": "film",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "Work made for the agency itself: the Havas Play showreel, the Ce Créa 2026 film, a Sephora crew film and a BKT x M6N piece, plus an interns poster, profile portraits and awards posters. Edited and art directed during the internship.",
+      "previewVideo": "/videos/havas-internal-1-preview.mp4",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-internal.webp",
+      "agency": {
+        "name": "Havas Play",
+        "slug": "havas-play"
+      },
+      "client": "Havas Play",
+      "videos": [
+        {
+          "title": "VD BKT x M6N",
+          "youtubeId": "",
+          "localVideo": "/videos/full/havas-internal-1.mp4",
+          "previewVideo": "/videos/havas-internal-1-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "self",
+          "durationSec": 36.54
+        },
+        {
+          "title": "Showreel",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-internal-2-preview.mp4",
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "pending": true,
+          "durationSec": 61.1
+        },
+        {
+          "title": "Ce Créa 2026",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-internal-3-preview.mp4",
+          "aspect": "16:9",
+          "hosting": "youtube",
+          "pending": true,
+          "durationSec": 144.19
+        },
+        {
+          "title": "Sephora crew",
+          "youtubeId": "",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-internal-4-preview.mp4",
+          "aspect": "16:9",
+          "hosting": "youtube",
+          "pending": true,
+          "durationSec": 47.98
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Photos and posters",
+          "images": [
+            {
+              "path": "/images/havas/internal/affiche-stagios-vrai.webp",
+              "width": 1132,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/internal/dsc00103.webp",
+              "width": 1600,
+              "height": 900
+            },
+            {
+              "path": "/images/havas/internal/dsc07743.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/internal/dsc07892.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/internal/dsc08601.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/internal/dsc09011.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/havas/internal/dsc09313.webp",
+              "width": 1200,
+              "height": 1600
+            }
+          ]
+        },
+        {
+          "title": "Awards posters",
+          "images": [
+            {
+              "path": "/images/havas/internal/awards/16x9-banniere-firecatchers-1.webp",
+              "width": 1600,
+              "height": 900
+            },
+            {
+              "path": "/images/havas/internal/awards/fire-clios-v2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/firecatchers-one-show-result-2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/firecatchers-one-show-result-3.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/lvmh-clios-v2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/a-and-ad-1.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/clio-awards-results-3.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/fab-cannes.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/gerety-shortlist-v2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/new-york-festivals-results-v2.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/new-york-festivals-v4.webp",
+              "width": 1080,
+              "height": 1350
+            },
+            {
+              "path": "/images/havas/internal/awards/new-york-festivals.webp",
+              "width": 1080,
+              "height": 1350
+            }
+          ]
+        }
+      ],
+      "credits": {
+        "Client": "Havas Play",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
       "slug": "hong-kong",
       "title": "Hong Kong",
       "subtitle": "Cinematic portraits of the city",
@@ -141,7 +1167,7 @@
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
       },
-      "featured": 3,
+      "featured": 6,
       "hidden": false
     },
     {
@@ -451,7 +1477,7 @@
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve · Photoshop"
       },
-      "featured": 4,
+      "featured": 7,
       "hidden": false
     },
     {
@@ -568,6 +1594,31 @@
       "thumbnail": "/images/thumbs/ruinarktefact-process.webp"
     },
     {
+      "slug": "havas-play",
+      "title": "Havas Play",
+      "subtitle": "Internship · Editor & Art Director · Paris · January to June 2026",
+      "shortDescription": "Internship at Havas Play, Paris: editing, art direction and some filming for sports and entertainment brands.",
+      "tag": "Agency",
+      "category": "other",
+      "year": "2026",
+      "location": "Paris",
+      "roles": [
+        "Editor",
+        "Art Director"
+      ],
+      "description": "Havas Play is the sports and entertainment agency of Havas, based in Paris. Between January and June 2026, Remi worked there as an editor and art director, with some filming for a few clients. The clients below are Allianz, BKT, the Fédération Française de Judo, Kellogg's, KFC, Nissan, Orange, Paris FC, Renault, Sanofi and Louis Burton, plus work made for the agency itself.",
+      "previewVideo": "",
+      "coverImage": "",
+      "thumbnail": "/images/thumbs/havas-internal.webp",
+      "videos": [],
+      "credits": {
+        "Year": "January–June 2026",
+        "Location": "Paris",
+        "Roles": "Editing · Art Direction"
+      },
+      "hidden": false
+    },
+    {
       "slug": "modessec",
       "title": "Modessec",
       "subtitle": "Fashion show · ESSEC 2025",
@@ -610,7 +1661,7 @@
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
       },
-      "featured": 6,
+      "featured": 9,
       "hidden": false
     },
     {
@@ -707,7 +1758,7 @@
         "Lenses": "Lumix 20–60mm f/3.5–5.6 · Sony GM 24–70",
         "Post": "DaVinci Resolve · Premiere Pro · After Effects"
       },
-      "featured": 5,
+      "featured": 8,
       "hidden": false
     }
   ]

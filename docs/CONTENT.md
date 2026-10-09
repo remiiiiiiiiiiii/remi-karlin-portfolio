@@ -73,18 +73,72 @@ Case studies are brand or process pages with their own code. Three parts: the en
 
 Change a thumbnail later: `node scripts/add-project.mjs set-thumbnail halatia /path/to/new.jpg` (replaces the file, same URL). It also works on a video project to override the clip poster in the index.
 
+## Agency work and the Havas hub
+
+Work made for an agency is a normal project entry with two extra fields: `agency: { name, slug }` and `client`. The hub is a custom page (`app/work/havas-play/`, listed itself as a case-study entry). It lists every visible project whose `agency.slug` is `havas-play`, ordered by `order` in `data/havas-copy.json`; a client without an `order` goes after the numbered ones, in `projects.json` order. The client page is the generic `/work/<slug>` page and links back to the hub through `agency`. So: set `agency` and the client shows up on the hub, nothing else to wire.
+
+**Add a new client page** (slug `havas-<client>`; never `havas-play`, which is the hub):
+
+```bash
+node scripts/add-project.mjs --slug havas-nissan --title "Nissan" --category film --tag "Agency" \
+  --year 2026 --location "Paris" --roles "Editing,Art direction" \
+  --agency "Havas Play|havas-play" --client "Nissan" \
+  --description "..." --short "..." \
+  --full "/path/nissan-30s.mp4|Nissan, 30 s" --pending "Nissan, long cut" \
+  --preview "/path/nissan-clip.mp4" --dry-run
+```
+
+- A film of 40 s or less goes on the site: `--full` encodes it to `public/videos/full/<slug>-<n>.mp4` (H.264 CRF 26, long edge 1920, AAC 128k, faststart) and sets `localVideo`, `hosting: "self"`, `aspect` and `durationSec` from the file. Above 40 s the script warns: upload to YouTube instead.
+- A longer film: add it as `--pending "Title"` (shows the poster with "Full film coming soon"), then send the file to YouTube.
+- `--client` and `--agency` are only for `add` / `add-case`. Optional: add the slug to `clients` in `data/havas-copy.json` to fix its position on the hub and give it hub copy.
+
+**Fill the YouTube ids of pending films** once Rémi has uploaded them:
+
+```bash
+node scripts/add-project.mjs list                      # "pending" column = films still waiting, per project
+node scripts/add-project.mjs set-youtube havas-renault 1 "https://youtu.be/XXXXXXXXXXX"
+node scripts/add-project.mjs set-youtube havas-sanofi "Mikkel" "https://youtu.be/YYYYYYYYYYY"   # or by title
+```
+
+The video is `n` (1-based, order on the page) or a title / fragment of one. It sets `youtubeId`, removes `pending`, and keeps `localVideo` if there is one. An id that is already set needs `--force`. After a pending film gets its id the facade appears, no other change. The importer `scripts/import-havas.mjs` builds entries from its manifest; do not re-run it to fill ids, use `set-youtube`.
+
+Add a film to an existing client: `add-video <slug> --full "file.mp4|title"` (or `--youtube "URL|title"`, or `--pending "Title"`); previews go through `--preview`.
+
+**Add galleries** (stills, boards, behind the scenes) to any project:
+
+```bash
+node scripts/add-project.mjs add-gallery havas-kfc --title "Stills" --image a.jpg --image b.png
+```
+
+Each image becomes a WebP with a long edge of at most 1600 px in `public/images/<slug>/`, and `{ path, width, height }` is appended to the gallery with that title (a new `galleries[]` entry if the title is new). Use another `--title` for a second gallery. Conversion uses `optimize-media image` when that command exists, otherwise the embedded ffmpeg.
+
+## Vertical and square films
+
+`aspect` on a video entry (`9:16`, `16:9`, `1:1`, `4:5`, `3:2`, `other`) tells the page how big to draw the player. `--full` reads it from the file with ffprobe (within 4 % of a named ratio, else `other`); override with `--aspect` on `add` / `add-video`. On the project page:
+
+| `aspect` | Player |
+|---|---|
+| `16:9`, `other`, unset | Full-width 16:9 player, as before |
+| `9:16`, `4:5` | Portrait box at that ratio, at most 80 vh tall |
+| `1:1` | Square box, at most 720 px wide, centred |
+| `3:2` | 3:2 box at full width |
+
+The poster of a pending film uses the same box. When the first clip of a project is vertical, the project hero puts the clip on the right and keeps the text on the left. Mixed formats on one project are fine: each video has its own `aspect`. `durationSec` and `variants` (other cuts such as `["6s", "10s"]`, shown as "Also cut as ...") appear in the video caption when present; `durationSec` is set by `--full`, `variants` by hand in `projects.json`.
+
 ## Reorder, feature, hide
 
 | Command | What it does |
 |---|---|
-| `list` | Table of slug, category, featured, hidden, videos, preview clip, thumbnail |
+| `list` | Table of slug, category, featured, hidden, videos, pending (films waiting for YouTube), preview clip, thumbnail |
 | `feature <slug> <n>` | Make it the n-th item in the hero list and mobile grid (1 = first). Others shift, numbering stays 1..N |
 | `unfeature <slug>` | Take it off the hero; the rest renumber |
 | `hide <slug>` / `unhide <slug>` | Not listed anywhere (hero, grid, index) and `noindex`, while `/work/<slug>` keeps working. Hiding also unfeatures |
 | `move <slug> <position>` | Reorder in `projects.json` (1 = very first). Sets the order inside each index filter and the prev/next links |
 | `set-preview <slug> <file>` | Pick which existing clip represents the project (see above) |
 | `set-thumbnail <slug> <image>` | New index still, 2.39:1 WebP |
-| `add-video <slug> --youtube "URL\|title" [--preview file]` | Append a video (and its clip, named `<slug>-N-preview.mp4`) to an existing project |
+| `add-video <slug> --youtube "URL\|title" [--preview file]` | Append a video (and its clip, named `<slug>-N-preview.mp4`) to an existing project. Also takes `--full "file\|title"` and `--pending "Title"`, `--aspect` |
+| `set-youtube <slug> <n\|title> <url>` | Fill the YouTube id of a (pending) video; keeps `localVideo` |
+| `add-gallery <slug> --title T --image f...` | WebP images into `public/images/<slug>/`, appended to `galleries[]` |
 | `add-case ...` | New case study entry (see recipe) |
 | `remove <slug> [--delete-media]` | Delete the entry; with the flag also the clip, posters, thumbnail and images no other project uses |
 
@@ -104,9 +158,9 @@ Choosing a different existing clip with `set-preview` needs none of this. `npm r
 
 ## `add` options
 
-`--slug` (lowercase, hyphens), `--title`, `--category`, `--tag`, `--year` (`2025` or `2024–25`), `--description` are required. Optional: `--subtitle` (default "tag · location"), `--short` (default: first sentence of the description), `--location`, `--roles` (comma list; `Direction`/`Director`, `Cinematography`, `Editing`, `Colour`/`Color` are mapped to both forms), `--credit "Camera=Sony A7"` (repeatable; overrides default credits), `--youtube "URL|title"` (repeatable; any URL form, `?si=` dropped), `--preview file` (repeatable, matched to `--youtube` in order), `--image file` (repeatable), `--thumbnail image` (index still override), `--featured N`, `--position N` (default: top of its category group), `--force` (overwrite existing media), `--root dir`.
+`--slug` (lowercase, hyphens), `--title`, `--category`, `--tag`, `--year` (`2025` or `2024–25`), `--description` are required. Optional: `--subtitle` (default "tag · location"), `--short` (default: first sentence of the description), `--location`, `--roles` (comma list; `Direction`/`Director`, `Cinematography`, `Editing`, `Colour`/`Color` are mapped to both forms), `--credit "Camera=Sony A7"` (repeatable; overrides default credits), `--youtube "URL|title"` (repeatable; any URL form, `?si=` dropped), `--preview file` (repeatable, matched to `--youtube` in order), `--image file` (repeatable), `--thumbnail image` (index still override), `--full "film.mp4|title"` (repeatable; self-hosted full film, see the Havas section), `--pending "Title"` (repeatable; film awaiting YouTube), `--aspect 9:16|16:9|1:1|4:5|3:2|other`, `--agency "Name|slug"`, `--client "Name"`, `--featured N`, `--position N` (default: top of its category group), `--force` (overwrite existing media), `--root dir`.
 
-Preview naming: one preview becomes `public/videos/<slug>-preview.mp4`, several become `<slug>-1-preview.mp4`, `<slug>-2-preview.mp4`... Posters go to `public/videos/posters/<preview-basename>.webp` and `...-tiny.webp`. Stills go to `public/images/<slug>/<name>.webp`; the first becomes `coverImage` and all go in `photoGrid`.
+Preview naming: one preview becomes `public/videos/<slug>-preview.mp4`, several become `<slug>-1-preview.mp4`, `<slug>-2-preview.mp4`... Posters go to `public/videos/posters/<preview-basename>.webp` and `...-tiny.webp`. Stills go to `public/images/<slug>/<name>.webp`; the first becomes `coverImage` and all go in `photoGrid`. Videos are listed in this order: `--youtube`, `--full`, `--pending`; `--preview` clips pair with them in that order. Full films are numbered by their place in `videos[]`: `public/videos/full/<slug>-<n>.mp4`.
 
 ## Schema reference (`data/projects.json` → `{ "projects": [ ... ] }`)
 
@@ -127,9 +181,12 @@ Preview naming: one preview becomes `public/videos/<slug>-preview.mp4`, several 
 | `thumbnail` | string, optional | `/images/thumbs/<slug>.webp` (2.39:1, 1280x536, with a `-tiny.webp` sibling). Required for `category: "other"`; on a video project it overrides the poster in the index. Sits right after `coverImage` |
 | `featured` | number, optional | Position in the hero list and mobile grid, 1 = first. Absent = not featured. Always dense 1..N (the script maintains it) |
 | `hidden` | boolean, optional | `true` = not listed, `noindex`, page still reachable by URL. Absent or `false` = visible |
-| `videos` | array | Each `{ title, youtubeId, localVideo, previewVideo, description? }`. `localVideo` is `""` when only on YouTube; `previewVideo` is `""` if none. Case studies: `[]` |
+| `videos` | array | Each `{ title, youtubeId, localVideo, previewVideo, description?, hosting?, aspect?, pending?, variants?, durationSec? }`. `localVideo` is `""` when only on YouTube; `previewVideo` is `""` if none. Case studies: `[]`. New fields: `hosting` `"self"` (native player on `localVideo`, `/videos/full/<slug>-<n>.mp4`) or `"youtube"`; `aspect` (see above); `pending: true` while `hosting` is `"youtube"` and `youtubeId` is `""`; `variants` string[]; `durationSec` number |
 | `credits` | object | Free key/value shown on the page: `Year`, `Location`, `Roles` (activity nouns joined with ` · `), `Camera`, `Lens`, `Post`. Video defaults: Camera `Lumix S5II`, Lens `Lumix 20–60mm f/3.5–5.6`, Post `DaVinci Resolve`. `add-case` adds no camera defaults |
 | `photoGrid` | `{ title, images[] }`, optional | Stills gallery |
+| `galleries` | `[{ title, images: [{ path, width?, height? }] }]`, optional | Titled galleries, made by `add-gallery`; sits just before `credits` |
+| `agency` | `{ name, slug }`, optional | Agency the work was made for, e.g. `{ "name": "Havas Play", "slug": "havas-play" }`. `slug` is the hub page `/work/<slug>`; the hub lists every project with this slug. Sits after `location` |
+| `client` | string, optional | Brand the work was made for, e.g. `KFC`. Sits after `agency` |
 | `instagram`, `instagramUrl`, `bannerImage`, `instagramGridImage`, `campaignBody`, `mascotImage`, `campaignDesignImage` | strings, optional | Used by the campaign-style pages. Not set by the script; edit by hand |
 
 Array order matters: it sets the order inside each index filter and the prev/next links.

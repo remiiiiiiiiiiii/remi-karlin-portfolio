@@ -2,7 +2,7 @@
 export class UserError extends Error {}
 
 const BOOLEAN = new Set(["dry-run", "force", "delete-media", "help", "hidden"]);
-export const REPEATABLE = new Set(["youtube", "preview", "image", "credit"]);
+export const REPEATABLE = new Set(["youtube", "preview", "image", "credit", "full", "pending"]);
 
 export function parseArgs(argv) {
   const flags = {};

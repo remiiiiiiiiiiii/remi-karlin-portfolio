@@ -8,7 +8,7 @@ import type { HeroItem } from "@/components/HeroFrame";
 import WorkIndex from "@/components/WorkIndex";
 import type { IndexRow } from "@/components/WorkIndex";
 import { getHeroProjects, getIndexProjects, groupOf } from "@/components/landing-data";
-import { getPreviewVideos } from "@/lib/projects";
+import { getHeroClips } from "@/lib/projects";
 import { posterPath } from "@/lib/posters";
 import { pageMeta, HOME_TITLE, HOME_DESCRIPTION } from "@/lib/seo";
 
@@ -26,7 +26,7 @@ export default function Page() {
     slug: p.slug,
     title: p.title,
     label: [p.tag, p.location, p.year].filter(Boolean).join(" · "),
-    clips: getPreviewVideos(p),
+    clips: getHeroClips(p),
   }));
 
   const gridItems: FeaturedItem[] = hero.map((p) => ({

@@ -1,18 +1,31 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { posterPath } from "@/lib/posters";
 
 type Props = {
   youtubeId?: string;
-  /** Accepted for API compatibility but ignored: local files are not deployed. */
+  /** Self-hosted film (e.g. /videos/full/<slug>-<n>.mp4). Used when there is no youtubeId. */
   localVideo?: string;
   previewVideo?: string;
   title?: string;
+  /** "9:16" | "4:5" | "1:1" | "16:9" | "3:2" | "other". Sizes the native player and the pending poster. */
+  aspect?: string;
+  /** YouTube film that is not uploaded yet: poster plus a small label, no player. */
+  pending?: boolean;
   /** First video on the page: mount the player once it scrolls into view. */
   priority?: boolean;
 };
 
-export default function ProjectVideo({ youtubeId, previewVideo, title, priority = false }: Props) {
+export default function ProjectVideo({
+  youtubeId,
+  localVideo,
+  previewVideo,
+  title,
+  aspect,
+  pending = false,
+  priority = false,
+}: Props) {
   const hasYouTube = !!youtubeId && youtubeId !== "YOUR_YOUTUBE_ID";
   const [active, setActive] = useState(false);
   const [autoplay, setAutoplay] = useState(false);
@@ -96,7 +109,40 @@ export default function ProjectVideo({ youtubeId, previewVideo, title, priority 
     );
   }
 
-  // No YouTube id: muted preview loop
+  const poster = previewVideo ? posterPath(previewVideo) : undefined;
+  const aspectKey = aspect || "16:9";
+
+  // Self-hosted film: native player, never autoplays, nothing downloads until the first play.
+  if (localVideo) {
+    return (
+      <div className="pv-native" data-aspect={aspectKey} aria-label={title}>
+        <video
+          src={localVideo}
+          poster={poster}
+          controls
+          playsInline
+          preload="none"
+          controlsList="nodownload"
+          aria-label={title || "Video"}
+        />
+      </div>
+    );
+  }
+
+  // YouTube film that is not uploaded yet: poster and a label, no player.
+  if (pending) {
+    return (
+      <div className="pv-native pv-pending" data-aspect={aspectKey} aria-label={title}>
+        {poster && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={poster} alt="" loading="lazy" decoding="async" draggable={false} />
+        )}
+        <span className="pv-pending-label">Full film coming soon</span>
+      </div>
+    );
+  }
+
+  // Neither: muted preview loop
   return (
     <div className="project-video-frame" aria-label={title}>
       <video src={previewVideo} muted loop playsInline autoPlay preload="auto" />

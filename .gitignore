@@ -8,8 +8,7 @@ next-env.d.ts
 
 # Full-quality videos are too large for git (11 GB).
 # Only the small preview clips (*-preview.mp4) are committed.
-# Host full videos on a CDN (Cloudflare R2 / Bunny.net) and update
-# the localVideo paths in data/projects.json to point there.
+# Full films of 40 s or less live tracked under public/videos/full/ (12 MB each at most); longer films go on YouTube.
 public/videos/*.mp4
 public/videos/*.mov
 !public/videos/*-preview.mp4

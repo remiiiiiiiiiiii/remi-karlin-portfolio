@@ -2,7 +2,7 @@
 
 Paste or attach this file at the start of a new session. It covers what a new session needs to keep editing the site without re-discovering everything.
 
-Last updated: 2026-10-08 · Last commit when written: `1246ef1`
+Last updated: 2026-10-09 · Last commit when written: `c5c2a53` (+ Havas Play work, not yet committed)
 
 ---
 
@@ -43,6 +43,8 @@ app/
   globals.css               All design tokens + most styles
   about/page.tsx
   work/[slug]/page.tsx      Generic project page for every video project in projects.json
+  work/havas-play/          Custom hub page for the Havas Play internship: lists every project whose
+                            agency.slug is "havas-play" (order and copy in data/havas-copy.json)
   work/halatia/             Custom case-study pages (category "other"). Same for
   work/unfold-agency/       unfold-agency, the-outfiters, b1nbags-process,
   work/the-outfiters/       ruinarktefact-process. A custom folder beats [slug].
@@ -62,6 +64,9 @@ data/
   *-images.json             Pre-generated image path lists for the custom pages
 public/
   videos/                   Preview clips (+ posters/) and some local full videos
+  videos/full/              Self-hosted full films, <slug>-<n>.mp4 (H.264 CRF 26, long edge <= 1920, AAC 128k,
+                            faststart). Git-tracked, so each stays <= 40 s / ~12 MB. Made by add-project --full
+  images/<slug>/            Also holds gallery images (WebP, long edge <= 1600) listed in projects.json galleries[]
   images/<folder>/          Images per project (folder names use hyphens, never spaces)
   images/thumbs/            <slug>.webp + <slug>-tiny.webp: 2.39:1 index stills for case studies
 scripts/                    add-project.mjs (content CLI), optimize-media.mjs (media rules), tests
@@ -72,13 +77,13 @@ PRODUCT.md, DESIGN.md, .impeccable/design.json   Design context docs (impeccable
 
 ## 5. Adding / editing content
 
-Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it shows, the five-step recipe for a video project, the case-study recipe, `set-preview` / `set-thumbnail` / `add-case`, reorder and hide, regenerating posters, the schema. In a Claude Code session in `~/OS`, the `portfolio-add-work` skill drives this from a single request. Pushing to `main` deploys.
+Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it shows, the five-step recipe for a video project, the case-study recipe, `set-preview` / `set-thumbnail` / `add-case`, agency work and the Havas hub (`--agency`, `--full`, `--pending`, `set-youtube`, `add-gallery`), vertical and square films, reorder and hide, regenerating posters, the schema. In a Claude Code session in `~/OS`, the `portfolio-add-work` skill drives this from a single request. Pushing to `main` deploys.
 
 ## 6. Current content state
 
-`node scripts/add-project.mjs list` is the live truth (slug, category, featured, hidden, clip, thumbnail). At the time of writing, 19 entries:
+`node scripts/add-project.mjs list` is the live truth (slug, category, featured, hidden, clip, thumbnail). At the time of writing, 32 entries:
 
-- **Featured (hero / grid order):** fan-yan, solene, hong-kong, b1nbags, ruinarktefact, modessec.
+- **Featured (hero / grid order):** fan-yan, solene, havas-kfc, havas-renault, havas-kellogs, hong-kong, b1nbags, ruinarktefact, modessec.
 - **Hidden:** vietnam (own page, not listed).
 - **Case studies (`other`, each with `thumbnail` and a custom page):** halatia, unfold-agency, the-outfiters, b1nbags-process, ruinarktefact-process.
 
@@ -96,6 +101,21 @@ Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it 
 | ruinarktefact | film | Campaign films. Mascot/campaign assets live on the **ruinarktefact-process** case study |
 | halatia, unfold-agency, the-outfiters, b1nbags-process, ruinarktefact-process | other | Custom pages under `app/work/`. Thumbnails are `/images/thumbs/<slug>.webp`. the-outfiters carries a `previewVideo` that is not in a `videos[]`, so `set-preview` on it needs `--force` |
 
+**Havas Play (agency work, Jan–Jun 2026).** The hub page `/work/havas-play` and one client page per brand (slugs `havas-<client>`, each with `agency: { name: "Havas Play", slug: "havas-play" }` and `client`) exist; they were created by the manifest importer `scripts/import-havas.mjs`. Short films are self-hosted in `public/videos/full/`. **Films still pending a YouTube upload** (longer than 40 s; the page shows the poster and "Full film coming soon" until the id is filled with `set-youtube`; `list` shows the count per project):
+
+| Film | Length |
+|---|---|
+| Allianz, paragliding | 74 s |
+| Allianz, day in the life | 88 s |
+| BKT, L'Action | 74 s |
+| Renault | 60 s |
+| Sanofi, Mikkel | 100 s |
+| Havas showreel | 61 s |
+| Ce Créa | 144 s |
+| Sephora, crew | 48 s |
+
+When Rémi has uploaded one: `node scripts/add-project.mjs set-youtube <slug> <n|title> <url>`, check the page, commit `data`, push.
+
 **Descriptions for venice / new-york are placeholder-ish** (written by Claude, short). Remi may want to rewrite them.
 
 ## 7. Technical gotchas (learned the hard way)
@@ -111,6 +131,7 @@ Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it 
 - **Never run `next build` while `next dev` is running.** It corrupts `.next`. If that happens: stop the dev server, delete `.next`, restart. For checks use `npx tsc --noEmit`.
 - **Dev server for the Claude desktop app:** the `portfolio` configuration in `/Users/remikarlin/OS/.claude/launch.json` (`npm --prefix` this repo, `run dev`, port 3000). Outside the app, `npm run dev`.
 - **Poster, thumbnail and clip rules live in `scripts/optimize-media.mjs`** (letterbox crop, luma-based poster frame, `thumb` for 2.39:1 stills). `add-project.mjs` calls it; do not reimplement them elsewhere. After replacing a clip file: `npm run media -- --force-posters public/videos/<name>-preview.mp4`.
+- **Full films are git-tracked** under `public/videos/full/` and every deploy ships them. Keep each one at 40 s or less and about 12 MB or less (`add-project --full` warns above 40 s and above 12 MB); longer films go to YouTube (`--pending`, then `set-youtube`). `optimize-media` never touches that folder. Never commit the originals.
 - Case-study pages need both the `projects.json` entry (with `thumbnail`) and a folder under `app/work/`. `add-case` does the first and prints how to do the second.
 
 ## 8. Design system (summary; full detail in DESIGN.md)

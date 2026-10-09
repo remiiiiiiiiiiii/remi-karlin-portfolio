@@ -6,13 +6,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { parseArgs, UserError } from "./lib/args.mjs";
-import { parseYoutubeSpec } from "./lib/youtube.mjs";
+import { parseYoutubeSpec, parseYoutubeId } from "./lib/youtube.mjs";
 import os from "node:os";
-import { findFfmpeg, encodePreview, makePosters, convertImage, makeThumbnail, findOptimizer, runOptimizer } from "./lib/media.mjs";
+import { findFfmpeg, encodePreview, encodeFull, makePosters, convertImage, makeThumbnail, probeMedia, findOptimizer, runOptimizer } from "./lib/media.mjs";
 import { load, save } from "./lib/store.mjs";
 import {
   CATEGORIES, buildEntry, insertionIndex, setFeatured, unsetFeatured, setHidden,
   moveTo, densify, findIndex, listRows, formatTable, validateSlug, setField, buildCaseEntry,
+  FULL_MAX_SEC, classifyAspect, parseAspect, parseAgency, parseFullSpec, isPending, pendingCount, setBefore,
 } from "./lib/ops.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -24,8 +25,16 @@ const HELP = `Usage: node scripts/add-project.mjs <command> [options]
                   [--description D] [--short D] [--credit "Camera=Sony A7"] (repeatable)
                   [--youtube "URL|Video title"] (repeatable) [--preview clip.mp4] (repeatable, pairs with --youtube in order)
                   [--image still.jpg] (repeatable) [--featured N] [--position N (1 = very first)]
+                  [--full "film.mp4|title"] (repeatable) self-host a full film: /videos/full/<slug>-<n>.mp4, H.264 CRF 26,
+                      long edge <= 1920, AAC 128k, faststart; sets localVideo, hosting, aspect, durationSec. Warns above ${FULL_MAX_SEC} s
+                  [--pending "Title"] (repeatable) a film that will go on YouTube later (no id yet; fill it with set-youtube)
+                  [--aspect 9:16|16:9|1:1|4:5|3:2|other] (override the detected aspect of the new videos)
+                  [--agency "Havas Play|havas-play"] [--client "KFC"]
                   [--json file.json] [--force] [--dry-run]
-  add-video <slug> --youtube "URL|title" [--preview clip.mp4] [--dry-run]
+  add-video <slug> [--youtube "URL|title"] [--full "film.mp4|title"] [--pending "Title"] [--aspect A] [--preview clip.mp4] [--dry-run]
+  set-youtube <slug> <n|title> <url>   fill the YouTube id of video n (1-based) or the one whose title matches; clears pending,
+                              keeps localVideo (--force replaces an id that is already set)
+  add-gallery <slug> --title "Stills" --image still.jpg (repeatable)   WebP, long edge 1600, into public/images/<slug>/, appended to galleries[]
   feature <slug> <n>     put project n-th on the landing (1 = first tile); others shift to stay 1..N
   unfeature <slug>
   hide <slug> | unhide <slug>
@@ -37,10 +46,10 @@ const HELP = `Usage: node scripts/add-project.mjs <command> [options]
                               (--y = vertical crop anchor: 0 top, 0.5 centre (default), 1 bottom)
   add-case        --slug s --title T --tag "Brand Identity" --year 2025 --description D --thumbnail image.jpg
                   [--subtitle S] [--location L] [--roles "Art Director,Brand Designer"] [--short D]
-                  [--credit "Key=Value"] (repeatable) [--position N] [--y 0..1] [--force]
+                  [--credit "Key=Value"] (repeatable) [--agency "Name|slug"] [--client C] [--position N] [--y 0..1] [--force]
                   adds a category "other" entry; the custom page app/work/<slug>/ is still yours to create
   remove <slug> [--delete-media]
-  list            slug, category, featured, hidden, videos, preview clip, thumbnail
+  list            slug, category, featured, hidden, videos, pending (videos waiting for YouTube), preview clip, thumbnail
 
 Global: --root <dir> (default: the repo this script lives in), --dry-run (print the plan, change nothing).`;
 
@@ -100,10 +109,19 @@ function processPreview(ctx, job, track) {
   const [big, tiny] = makePosters(ffmpeg, job.out, postersDir); track(big); track(tiny);
 }
 
-/** Encode previews + posters and convert images. Records created files for rollback. */
-function runMedia(ctx, previewJobs, imageJobs) {
+/** Encode previews + posters, full films and images. Records created files for rollback. */
+function runMedia(ctx, previewJobs, imageJobs, fullJobs = []) {
   const track = (f) => ctx.created.push(f);
   for (const j of previewJobs) processPreview(ctx, j, track);
+  if (fullJobs.length) {
+    const ffmpeg = findFfmpeg();
+    for (const j of fullJobs) {
+      encodeFull(ffmpeg, j.src, j.out); track(j.out);
+      const mb = fs.statSync(j.out).size / 1048576;
+      log(`  full film: ${path.relative(ctx.root, j.out)} (${mb.toFixed(1)} MB)`);
+      if (mb > 12) log(`  note: ${mb.toFixed(1)} MB is over the ~12 MB guideline: the file is committed to git. Trim the film or host it on YouTube.`);
+    }
+  }
   if (imageJobs.length) {
     const ffmpeg = findFfmpeg();
     for (const j of imageJobs) { convertImage(ffmpeg, j.src, j.out); track(j.out); }
@@ -129,6 +147,41 @@ function checkTargets(ctx, outs) {
   }
 }
 
+// ---------- full films / pending videos ----------
+/**
+ * --full files and --pending titles -> video objects (+ encode jobs for the full films).
+ * `first` = how many videos the project already lists (or are planned before these), so files are numbered <slug>-<n>.mp4.
+ * `bump` (add-video): skip numbers whose file already exists. Without it (add) an existing file is an error later (checkTargets).
+ */
+function planExtraVideos(ctx, { slug, projectTitle, first, total, full, pending, aspect, bump, taken }) {
+  const videos = [], jobs = [], notes = [];
+  const specs = (full || []).map(parseFullSpec);
+  const ffmpeg = specs.length ? findFfmpeg() : null;
+  let n = first;
+  for (const s of specs) {
+    ensureExists(s.file, "Full film source");
+    const info = probeMedia(ffmpeg, s.file);
+    const dur = Math.round(info.duration);
+    n++;
+    let url = `/videos/full/${slug}-${n}.mp4`;
+    while (bump && (taken.has(url) || fs.existsSync(toAbs(ctx, url)))) url = `/videos/full/${slug}-${++n}.mp4`;
+    taken.add(url);
+    const title = s.title || (total === 1 ? projectTitle : `${projectTitle} ${n}`);
+    videos.push({ title, youtubeId: "", localVideo: url, hosting: "self", aspect: aspect || classifyAspect(info.width, info.height), durationSec: dur });
+    jobs.push({ src: s.file, out: toAbs(ctx, url) });
+    notes.push(`${path.basename(s.file)}: ${info.width}x${info.height}, ${dur} s -> aspect ${videos.at(-1).aspect}`);
+    if (dur > FULL_MAX_SEC) {
+      notes.push(`WARNING: ${path.basename(s.file)} is ${dur} s, over the ${FULL_MAX_SEC} s rule for self-hosting. Upload it to YouTube and use set-youtube instead (add it with --pending "${title}" now). It will be encoded and committed as is.`);
+    }
+  }
+  for (const title of pending || []) {
+    const t = String(title).trim();
+    if (!t) throw new UserError('--pending needs a title, e.g. --pending "Renault 60 s".');
+    videos.push({ title: t, youtubeId: "", localVideo: "", hosting: "youtube", ...(aspect ? { aspect } : {}), pending: true });
+  }
+  return { videos, jobs, notes };
+}
+
 // ---------- add ----------
 function readJsonOptions(file) {
   ensureExists(file, "--json file");
@@ -140,17 +193,20 @@ function readJsonOptions(file) {
     short: j.short ?? j.shortDescription, featured: j.featured, position: j.position,
     youtube: arr(j.youtube ?? j.videos), preview: arr(j.preview ?? j.previews), image: arr(j.image ?? j.images),
     credits: j.credits || {}, thumbnail: j.thumbnail,
+    full: arr(j.full), pending: arr(j.pending), aspect: j.aspect, agency: j.agency, client: j.client,
   };
 }
 
 function collectAddOptions(flags) {
-  const base = flags.json ? readJsonOptions(flags.json) : { youtube: [], preview: [], image: [], credits: {} };
+  const base = flags.json ? readJsonOptions(flags.json) : { youtube: [], preview: [], image: [], credits: {}, full: [], pending: [] };
   const o = { ...base };
-  for (const k of ["slug", "title", "subtitle", "category", "tag", "year", "location", "roles", "description", "featured", "position", "thumbnail"]) {
+  for (const k of ["slug", "title", "subtitle", "category", "tag", "year", "location", "roles", "description", "featured", "position", "thumbnail", "aspect", "agency", "client"]) {
     if (flags[k] !== undefined) o[k] = flags[k];
   }
   if (flags.short !== undefined) o.short = flags.short;
-  for (const k of ["youtube", "preview", "image"]) if (flags[k]) o[k] = flags[k];
+  for (const k of ["youtube", "preview", "image", "full", "pending"]) if (flags[k]) o[k] = flags[k];
+  o.agency = parseAgency(o.agency);
+  o.aspect = parseAspect(o.aspect);
   o.credits = { ...(base.credits || {}) };
   for (const c of flags.credit || []) {
     const eq = c.indexOf("=");
@@ -183,15 +239,21 @@ function cmdAdd(ctx, flags) {
   specs.forEach((s, i) => {
     if (seen.has(s.youtubeId)) throw new UserError(`Duplicate YouTube id ${s.youtubeId}.`);
     seen.add(s.youtubeId);
-    s.title ||= specs.length === 1 ? o.title : `${o.title} ${i + 1}`;
+    s.title ||= specs.length + o.full.length + o.pending.length === 1 ? o.title : `${o.title} ${i + 1}`;
+    if (o.aspect) s.aspect = o.aspect;
   });
-  o.videos = specs;
+  const extra = planExtraVideos(ctx, {
+    slug: o.slug, projectTitle: o.title, first: specs.length, total: specs.length + o.full.length + o.pending.length,
+    full: o.full, pending: o.pending, aspect: o.aspect, bump: false, taken: new Set(),
+  });
+  o.videos = [...specs, ...extra.videos];
+  const fullJobs = extra.jobs;
 
   // previews
   const previews = o.preview;
   previews.forEach((p) => ensureExists(p, "Preview source"));
-  if (previews.length > Math.max(specs.length, 1)) {
-    throw new UserError(`${previews.length} previews but ${specs.length} YouTube video(s). Each extra preview needs a --youtube; add it later with add-video.`);
+  if (previews.length > Math.max(o.videos.length, 1)) {
+    throw new UserError(`${previews.length} previews but ${o.videos.length} video(s). Each extra preview needs a video; add it later with add-video.`);
   }
   const previewJobs = previews.map((src, i) => ({
     src,
@@ -205,14 +267,16 @@ function cmdAdd(ctx, flags) {
     return { src, out: ctx.pub("images", o.slug, sanitizeImageName(src, used)) };
   });
 
-  checkTargets(ctx, [...previewJobs.map((j) => j.out), ...imageJobs.map((j) => j.out)]);
+  checkTargets(ctx, [...previewJobs.map((j) => j.out), ...imageJobs.map((j) => j.out), ...fullJobs.map((j) => j.out)]);
 
   const media = { previews: previewJobs.map((j) => toPublicUrl(ctx, j.out)), images: imageJobs.map((j) => toPublicUrl(ctx, j.out)) };
   const entry = buildEntry(o, media);
   const index = insertionIndex(projects, o.category, o.position);
 
   const warnings = [];
-  if (!specs.length) warnings.push("no YouTube video given: the project page will have no player");
+  if (!o.videos.length) warnings.push("no video given (--youtube, --full or --pending): the project page will have no player");
+  extra.notes.forEach((w) => warnings.push(w));
+  if (o.videos.some((v) => v.pending)) warnings.push('pending film(s): fill the YouTube id later with "set-youtube <slug> <n|title> <url>"');
   if (!previews.length) warnings.push("no preview clip given: tiles and hero will have no motion (add one later with add-video)");
   if (!o.location) warnings.push("no --location");
   if (!o.short) warnings.push("--short not given: used the first sentence of the description");
@@ -227,13 +291,14 @@ function cmdAdd(ctx, flags) {
   log(`Planned entry for "${o.slug}" (position ${index + 1} of ${next.length} in projects.json):`);
   log(JSON.stringify(next.find((p) => p.slug === o.slug), null, 2));
   for (const j of previewJobs) log(`  preview: ${j.src} -> ${path.relative(ctx.root, j.out)} (+ posters)`);
+  for (const j of fullJobs) log(`  full:    ${j.src} -> ${path.relative(ctx.root, j.out)}`);
   for (const j of imageJobs) log(`  image:   ${j.src} -> ${path.relative(ctx.root, j.out)}`);
   featureChanges.forEach((l) => log("  " + l));
   warnings.forEach((w) => log("  note: " + w));
   if (ctx.dryRun) return false;
 
   try {
-    runMedia(ctx, previewJobs, imageJobs);
+    runMedia(ctx, previewJobs, imageJobs, fullJobs);
     data.projects = next;
     save(ctx.root, data);
   } catch (e) {
@@ -246,43 +311,55 @@ function cmdAdd(ctx, flags) {
 
 // ---------- add-video ----------
 function cmdAddVideo(ctx, slug, flags) {
-  if (!slug) throw new UserError("Usage: add-video <slug> --youtube \"URL|title\" [--preview file]");
+  if (!slug) throw new UserError("Usage: add-video <slug> [--youtube \"URL|title\"] [--full \"film.mp4|title\"] [--pending \"Title\"] [--preview file]");
+  if (flags.agency !== undefined || flags.client !== undefined) throw new UserError("--agency / --client belong to a whole project: use them with add or add-case.");
   const data = load(ctx.root);
   const idx = findIndex(data.projects, slug);
   const project = data.projects[idx];
+  const aspect = parseAspect(flags.aspect);
   const specs = (flags.youtube || []).map(parseYoutubeSpec);
-  if (!specs.length) throw new UserError("add-video needs --youtube \"URL|title\".");
+  const fulls = flags.full || [];
+  const pendings = flags.pending || [];
+  if (!specs.length && !fulls.length && !pendings.length) throw new UserError('add-video needs --youtube "URL|title", --full "film.mp4|title" or --pending "Title".');
   const previews = flags.preview || [];
   previews.forEach((p) => ensureExists(p, "Preview source"));
-  if (previews.length > specs.length) throw new UserError(`${previews.length} previews but ${specs.length} YouTube video(s).`);
 
-  const existingIds = new Set(project.videos.map((v) => v.youtubeId));
-  const taken = new Set(data.projects.flatMap((p) => [p.previewVideo, ...p.videos.map((v) => v.previewVideo)]).filter(Boolean));
-  let n = project.videos.length + 1;
-  const previewJobs = [];
+  const existingIds = new Set(project.videos.map((v) => v.youtubeId).filter(Boolean));
+  const taken = new Set(data.projects.flatMap((p) => [p.previewVideo, ...p.videos.flatMap((v) => [v.previewVideo, v.localVideo])]).filter(Boolean));
+  const before = project.videos.length;
   const newVideos = specs.map((s, i) => {
     if (existingIds.has(s.youtubeId)) throw new UserError(`"${slug}" already has video ${s.youtubeId}.`);
     existingIds.add(s.youtubeId);
-    let previewVideo = "";
-    if (previews[i]) {
-      let url;
-      do { url = `/videos/${slug}-${n++}-preview.mp4`; } while (taken.has(url) || fs.existsSync(toAbs(ctx, url)));
-      taken.add(url);
-      previewJobs.push({ src: previews[i], out: toAbs(ctx, url) });
-      previewVideo = url;
-    }
-    return { title: s.title || `${project.title} ${project.videos.length + i + 1}`, youtubeId: s.youtubeId, localVideo: "", previewVideo };
+    return { title: s.title || `${project.title} ${before + i + 1}`, youtubeId: s.youtubeId, localVideo: "", previewVideo: "", ...(aspect ? { aspect } : {}) };
+  });
+  const extra = planExtraVideos(ctx, {
+    slug, projectTitle: project.title, first: before + specs.length, total: before + specs.length + fulls.length + pendings.length + 1,
+    full: fulls, pending: pendings, aspect, bump: true, taken,
+  });
+  for (const v of extra.videos) newVideos.push({ title: v.title, youtubeId: v.youtubeId, localVideo: v.localVideo, previewVideo: "", ...pick(v, ["hosting", "aspect", "durationSec", "pending"]) });
+  if (previews.length > newVideos.length) throw new UserError(`${previews.length} previews but ${newVideos.length} new video(s).`);
+
+  let n = before + 1;
+  const previewJobs = [];
+  previews.forEach((src, i) => {
+    let url;
+    do { url = `/videos/${slug}-${n++}-preview.mp4`; } while (taken.has(url) || fs.existsSync(toAbs(ctx, url)));
+    taken.add(url);
+    previewJobs.push({ src, out: toAbs(ctx, url) });
+    newVideos[i].previewVideo = url;
   });
 
   log(ctx.dryRun ? "DRY RUN: nothing will be written.\n" : "");
   log(`Planned new video(s) for "${slug}":`);
   log(JSON.stringify(newVideos, null, 2));
   for (const j of previewJobs) log(`  preview: ${j.src} -> ${path.relative(ctx.root, j.out)} (+ posters)`);
+  for (const j of extra.jobs) log(`  full:    ${j.src} -> ${path.relative(ctx.root, j.out)}`);
+  extra.notes.forEach((w) => log("  note: " + w));
   if (!project.previewVideo && newVideos[0].previewVideo) log("  note: project had no previewVideo, using the first new one");
   if (ctx.dryRun) return false;
 
   try {
-    runMedia(ctx, previewJobs, []);
+    runMedia(ctx, previewJobs, [], extra.jobs);
     project.videos.push(...newVideos);
     if (!project.previewVideo && newVideos[0].previewVideo) project.previewVideo = newVideos[0].previewVideo;
     save(ctx.root, data);
@@ -291,6 +368,106 @@ function cmdAddVideo(ctx, slug, flags) {
     throw e;
   }
   log(`\nAdded ${newVideos.length} video(s) to "${slug}" (now ${project.videos.length}).`);
+  return true;
+}
+
+const pick = (obj, keys) => Object.fromEntries(keys.filter((k) => obj[k] !== undefined).map((k) => [k, obj[k]]));
+
+// ---------- set-youtube ----------
+/** Video by 1-based number, else by exact title, else by unique title fragment (case-insensitive). */
+function findVideo(project, ref) {
+  const vids = project.videos || [];
+  const s = String(ref).trim();
+  if (/^\d+$/.test(s) && Number(s) >= 1 && Number(s) <= vids.length) return Number(s) - 1;
+  const lc = s.toLowerCase();
+  const exact = vids.map((v, i) => i).filter((i) => String(vids[i].title).toLowerCase() === lc);
+  if (exact.length === 1) return exact[0];
+  const part = vids.map((v, i) => i).filter((i) => String(vids[i].title).toLowerCase().includes(lc));
+  if (part.length === 1) return part[0];
+  const list = vids.map((v, i) => `    ${i + 1}. ${v.title}${isPending(v) ? " (pending)" : ""}`).join("\n");
+  throw new UserError(`${part.length > 1 ? "More than one" : "No"} video of "${project.slug}" matches "${ref}". Its videos:\n${list || "    (none)"}`);
+}
+
+function cmdSetYoutube(ctx, slug, ref, url, flags) {
+  if (!slug || !ref || !url) throw new UserError('Usage: set-youtube <slug> <n|title> <youtube-url>');
+  const id = parseYoutubeId(url);
+  const data = load(ctx.root);
+  const project = data.projects[findIndex(data.projects, slug)];
+  const vi = findVideo(project, ref);
+  const v = project.videos[vi];
+  if (project.videos.some((o, i) => i !== vi && o.youtubeId === id)) throw new UserError(`"${slug}" already uses ${id} on another video.`);
+  if (v.youtubeId && v.youtubeId !== id && !ctx.force) throw new UserError(`Video ${vi + 1} of "${slug}" already has YouTube id ${v.youtubeId}. Pass --force to replace it.`);
+  const wasPending = isPending(v);
+  const next = { ...v, youtubeId: id };
+  delete next.pending;
+  project.videos[vi] = next;
+  log(`${slug} video ${vi + 1} "${v.title}": youtubeId ${v.youtubeId || "(empty)"} -> ${id}${wasPending ? ", no longer pending" : ""}`);
+  if (next.localVideo) log(`  localVideo kept: ${next.localVideo} (hosting: ${next.hosting || "not set"})`);
+  const left = pendingCount(project);
+  if (left) log(`  "${slug}" still has ${left} pending film(s).`);
+  if (ctx.dryRun) { log("DRY RUN: nothing written."); return false; }
+  save(ctx.root, data);
+  return true;
+}
+
+// ---------- add-gallery ----------
+/** One still -> WebP, long edge 1600: optimize-media's `image` command when it has one (falls back to ffmpeg if that fails), else embedded ffmpeg. */
+function processGalleryImage(ctx, src, out, track) {
+  const opt = findOptimizer(ctx.root);
+  track(out);
+  if (opt && opt.image) {
+    try {
+      runOptimizer(opt, ctx.root, ["image", path.resolve(src), out], `image ${path.basename(src)}`);
+      if (fs.existsSync(out)) return;
+    } catch (e) {
+      log(`  note: ${e.message}; using the embedded ffmpeg instead`);
+    }
+  }
+  convertImage(findFfmpeg(), src, out);
+}
+
+function cmdAddGallery(ctx, slug, flags) {
+  if (!slug) throw new UserError('Usage: add-gallery <slug> --title "..." --image file.jpg [--image ...]');
+  const title = String(flags.title || "").trim();
+  if (!title) throw new UserError('add-gallery needs --title "Gallery title".');
+  const srcs = flags.image || [];
+  if (!srcs.length) throw new UserError("add-gallery needs at least one --image.");
+  srcs.forEach((f) => ensureExists(f, "Image"));
+  const data = load(ctx.root);
+  const idx = findIndex(data.projects, slug);
+  const project = data.projects[idx];
+  const dir = ctx.pub("images", slug);
+
+  // names already taken in /images/<slug>/
+  const used = new Set(fs.existsSync(dir) ? fs.readdirSync(dir).map((f) => f.replace(/\.[^.]+$/, "")) : []);
+  const jobs = srcs.map((src) => {
+    const name = sanitizeImageName(src, used);
+    return { src, out: path.join(dir, name) };
+  });
+
+  const existing = (project.galleries || []).findIndex((g) => g.title.toLowerCase() === title.toLowerCase());
+  log(ctx.dryRun ? "DRY RUN: nothing will be written.\n" : "");
+  log(`${existing === -1 ? "New gallery" : "Adding to gallery"} "${title}" on "${slug}":`);
+  for (const j of jobs) log(`  image: ${j.src} -> ${path.relative(ctx.root, j.out)}`);
+  if (ctx.dryRun) return false;
+
+  try {
+    const track = (f) => ctx.created.push(f);
+    const images = jobs.map((j) => {
+      processGalleryImage(ctx, j.src, j.out, track);
+      const info = probeMedia(findFfmpeg(), j.out);
+      return { path: toPublicUrl(ctx, j.out), width: info.width, height: info.height };
+    });
+    const galleries = [...(project.galleries || [])];
+    if (existing === -1) galleries.push({ title, images });
+    else galleries[existing] = { ...galleries[existing], images: [...galleries[existing].images, ...images] };
+    data.projects[idx] = setBefore(project, "galleries", galleries, "credits");
+    save(ctx.root, data);
+  } catch (e) {
+    rollback(ctx);
+    throw e;
+  }
+  log(`\nAdded ${jobs.length} image(s) to gallery "${title}" of "${slug}".`);
   return true;
 }
 
@@ -394,8 +571,8 @@ function cmdAddCase(ctx, flags) {
   if (missing.length) throw new UserError(`Missing required: ${missing.map((m) => "--" + m).join(", ")}`);
   if (!/^\d{4}(\s*[–-]\s*\d{2,4})?$/.test(String(o.year))) throw new UserError(`--year must look like 2025 or 2024–25, got "${o.year}"`);
   if (o.category && o.category !== "other") throw new UserError('add-case always creates category "other"; use "add" for film/travel projects.');
-  if (o.youtube.length || o.preview.length || o.image.length || o.featured !== undefined) {
-    throw new UserError("add-case takes no --youtube/--preview/--image/--featured: case studies have a thumbnail and a custom page, not a clip.");
+  if (o.youtube.length || o.preview.length || o.image.length || o.full.length || o.pending.length || o.featured !== undefined) {
+    throw new UserError("add-case takes no --youtube/--full/--pending/--preview/--image/--featured: case studies have a thumbnail and a custom page, not a clip.");
   }
 
   // thumbnail: an image to convert, or a thumbs URL that is already in public/
@@ -464,6 +641,7 @@ function referencedUrls(p) {
     p.previewVideo, p.coverImage, p.thumbnail, p.bannerImage, p.instagramGridImage, p.mascotImage, p.campaignDesignImage,
     ...(p.videos || []).flatMap((v) => [v.previewVideo, v.localVideo]),
     ...((p.photoGrid && p.photoGrid.images) || []),
+    ...(p.galleries || []).flatMap((g) => (g.images || []).map((i) => (typeof i === "string" ? i : i.path))),
   ].filter((u) => typeof u === "string" && u.startsWith("/"));
 }
 
@@ -520,7 +698,7 @@ function gitSummary(ctx) {
 // ---------- main ----------
 function main() {
   const { flags, positionals } = parseArgs(process.argv.slice(2));
-  const known = new Set(["add", "add-case", "add-video", "set-preview", "set-thumbnail", "feature", "unfeature", "hide", "unhide", "move", "remove", "list", "help"]);
+  const known = new Set(["add", "add-case", "add-video", "set-youtube", "add-gallery", "set-preview", "set-thumbnail", "feature", "unfeature", "hide", "unhide", "move", "remove", "list", "help"]);
   let cmd = positionals[0];
   let args = positionals.slice(1);
   if (!cmd || !known.has(cmd)) {
@@ -537,6 +715,8 @@ function main() {
     case "set-preview": changed = cmdSetPreview(ctx, args[0], args[1], flags); break;
     case "set-thumbnail": changed = cmdSetThumbnail(ctx, args[0], args[1], flags); break;
     case "add-video": changed = cmdAddVideo(ctx, args[0], flags); break;
+    case "set-youtube": changed = cmdSetYoutube(ctx, args[0], args[1], args[2], flags); break;
+    case "add-gallery": changed = cmdAddGallery(ctx, args[0], flags); break;
     case "feature":
       if (!args[0] || !args[1]) throw new UserError("Usage: feature <slug> <n>");
       changed = mutate(ctx, (ps) => setFeatured(ps, args[0], args[1])); break;
@@ -551,7 +731,13 @@ function main() {
       if (!args[0] || !args[1]) throw new UserError("Usage: move <slug> <position>");
       changed = mutate(ctx, (ps) => { const r = moveTo(ps, args[0], args[1]); return [`moved ${args[0]}: ${r.from} -> ${r.to}`]; }); break;
     case "remove": changed = cmdRemove(ctx, args[0], flags); break;
-    case "list": log(formatTable(listRows(load(ctx.root).projects))); return;
+    case "list": {
+      const ps = load(ctx.root).projects;
+      log(formatTable(listRows(ps)));
+      const pending = ps.reduce((n, p) => n + pendingCount(p), 0);
+      if (pending) log(`\n${pending} film(s) waiting for a YouTube upload. Fill with: set-youtube <slug> <n|title> <url>`);
+      return;
+    }
   }
   if (changed) gitSummary(ctx);
 }

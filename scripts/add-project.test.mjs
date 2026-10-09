@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { findFfmpeg } from "./lib/media.mjs";
 import { parseYoutubeId } from "./lib/youtube.mjs";
+import { classifyAspect, parseAgency, pendingCount } from "./lib/ops.mjs";
 import { serialize } from "./lib/store.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -32,6 +33,19 @@ for (const out of [clip, clip2]) {
   assert.equal(r.status, 0, "could not generate test clip");
 }
 assert.equal(spawnSync(ffmpeg, ["-y", "-loglevel", "error", "-f", "lavfi", "-i", "testsrc=size=800x600", "-frames:v", "1", still]).status, 0);
+/** Test film with a sine track: size WxH, d seconds. */
+const makeFilm = (out, size, d) => assert.equal(spawnSync(ffmpeg, [
+  "-y", "-loglevel", "error", "-f", "lavfi", "-i", `testsrc=size=${size}:rate=24:duration=${d}`,
+  "-f", "lavfi", "-i", `sine=frequency=440:duration=${d}`, "-pix_fmt", "yuv420p", "-shortest", out,
+]).status, 0, "could not generate test film");
+const landscape = path.join(tmp, "landscape.mp4");
+const vertical = path.join(tmp, "vertical.mp4");
+const longFilm = path.join(tmp, "long.mp4");
+makeFilm(landscape, "640x360", 2);
+makeFilm(vertical, "360x640", 2);
+makeFilm(longFilm, "160x90", 41);
+const still2 = path.join(tmp, "Second.PNG");
+assert.equal(spawnSync(ffmpeg, ["-y", "-loglevel", "error", "-f", "lavfi", "-i", "testsrc=size=2400x1200", "-frames:v", "1", still2]).status, 0);
 
 const runIn = (r0, ...args) => {
   const r = spawnSync("node", [CLI, "--root", r0, ...args], { encoding: "utf8" });
@@ -87,10 +101,23 @@ test("serializer keeps the repo's JSON style (inline string arrays, 2-space inde
   assert.equal(serialize(sample), expected);
 });
 
+test("aspect classification and agency parsing", () => {
+  assert.equal(classifyAspect(1920, 1080), "16:9");
+  assert.equal(classifyAspect(1080, 1920), "9:16");
+  assert.equal(classifyAspect(1080, 1080), "1:1");
+  assert.equal(classifyAspect(1080, 1350), "4:5");
+  assert.equal(classifyAspect(1620, 1080), "3:2");
+  assert.equal(classifyAspect(2048, 858), "other");
+  assert.deepEqual(parseAgency("Havas Play|havas-play"), { name: "Havas Play", slug: "havas-play" });
+  assert.deepEqual(parseAgency("Havas Play"), { name: "Havas Play", slug: "havas-play" });
+  assert.throws(() => parseAgency("Havas|Bad Slug"));
+  assert.equal(pendingCount({ videos: [{ pending: true }, { hosting: "youtube", youtubeId: "" }, { youtubeId: "x" }] }), 2);
+});
+
 test("list prints the table", () => {
   const r = run("list");
   assert.equal(r.code, 0);
-  assert.match(r.out, /slug\s+category\s+featured\s+hidden\s+videos\s+preview\s+thumbnail/);
+  assert.match(r.out, /slug\s+category\s+featured\s+hidden\s+videos\s+pending\s+preview\s+thumbnail/);
   assert.match(r.out, /fan-yan\s+film/);
 });
 
@@ -345,8 +372,189 @@ test("remove --delete-media deletes a case's thumbnail pair, but not one another
   assert.ok(!exists("images", "thumbs", "case-one-tiny.webp"));
 });
 
+
+// ---- self-hosted full films, aspect, agency, pending, set-youtube, galleries ----
+const agencyArgs = ["--agency", "Havas Play|havas-play", "--client", "KFC"];
+
+test("add --full --dry-run probes the film, warns above 40 s, and writes nothing", () => {
+  const before = hash();
+  const r = run("add", ...baseArgs("film-x"), ...agencyArgs, "--full", `${vertical}|Vertical cut`, "--dry-run");
+  assert.equal(r.code, 0, r.all);
+  assert.match(r.out, /aspect 9:16/);
+  assert.match(r.out, /"agency": \{\s+"name": "Havas Play",\s+"slug": "havas-play"/);
+  assert.match(r.out, /\/videos\/full\/film-x-1\.mp4/);
+  assert.doesNotMatch(r.out, /WARNING/);
+  const long = run("add", ...baseArgs("film-x"), "--full", longFilm, "--dry-run");
+  assert.equal(long.code, 0, long.all);
+  assert.match(long.out, /WARNING: long\.mp4 is 41 s, over the 40 s rule/);
+  assert.match(long.out, /set-youtube/);
+  assert.equal(hash(), before);
+  assert.ok(!exists("videos", "full", "film-x-1.mp4"));
+});
+
+test("add --full encodes into /videos/full, sets hosting/aspect/durationSec, agency and client", () => {
+  const r = run("add", ...baseArgs("film-x"), ...agencyArgs, "--full", `${vertical}|Vertical cut`,
+    "--full", landscape, "--pending", "Long cut", "--preview", clip);
+  assert.equal(r.code, 0, r.all);
+  const p = get("film-x");
+  assert.deepEqual(p.agency, { name: "Havas Play", slug: "havas-play" });
+  assert.equal(p.client, "KFC");
+  const keys = Object.keys(p);
+  assert.equal(keys[keys.indexOf("location") + 1], "agency");
+  assert.equal(keys[keys.indexOf("location") + 2], "client");
+  assert.equal(p.videos.length, 3);
+  assert.deepEqual(p.videos[0], {
+    title: "Vertical cut", youtubeId: "", localVideo: "/videos/full/film-x-1.mp4", previewVideo: "/videos/film-x-preview.mp4",
+    hosting: "self", aspect: "9:16", durationSec: 2,
+  });
+  assert.equal(p.videos[1].title, "Test Film 2");
+  assert.equal(p.videos[1].localVideo, "/videos/full/film-x-2.mp4");
+  assert.equal(p.videos[1].aspect, "16:9");
+  assert.deepEqual(p.videos[2], { title: "Long cut", youtubeId: "", localVideo: "", previewVideo: "", hosting: "youtube", pending: true });
+  assert.equal(dims(path.join(root, "public", "videos", "full", "film-x-1.mp4")), "360x640");
+  const info = spawnSync(ffmpeg, ["-hide_banner", "-i", path.join(root, "public", "videos", "full", "film-x-1.mp4")], { encoding: "utf8" }).stderr;
+  assert.match(info, /Video: h264/);
+  assert.match(info, /Audio: aac/);
+  assert.match(r.out, /full film: public\/videos\/full\/film-x-1\.mp4/);
+});
+
+test("--full caps the long edge at 1920", () => {
+  const big = path.join(tmp, "big.mp4");
+  makeFilm(big, "2560x1440", 1);
+  const r = run("add-video", "film-x", "--full", big);
+  assert.equal(r.code, 0, r.all);
+  const v = get("film-x").videos[3];
+  assert.equal(v.localVideo, "/videos/full/film-x-4.mp4");
+  assert.equal(v.aspect, "16:9");
+  assert.equal(dims(path.join(root, "public", "videos", "full", "film-x-4.mp4")), "1920x1080");
+});
+
+test("--aspect overrides the detected aspect and is validated", () => {
+  assert.notEqual(run("add-video", "film-x", "--full", landscape, "--aspect", "2:1").code, 0);
+  const r = run("add-video", "film-x", "--full", landscape, "--aspect", "other");
+  assert.equal(r.code, 0, r.all);
+  const v = get("film-x").videos[4];
+  assert.equal(v.aspect, "other");
+  assert.equal(v.localVideo, "/videos/full/film-x-5.mp4");
+});
+
+test("add-video --pending and --youtube in one call, numbering continues", () => {
+  const r = run("add-video", "film-x", "--youtube", "9bZkp7q19f0|On YouTube", "--pending", "Waiting");
+  assert.equal(r.code, 0, r.all);
+  const vs = get("film-x").videos;
+  assert.equal(vs[5].youtubeId, "9bZkp7q19f0");
+  assert.equal(vs[6].pending, true);
+  assert.notEqual(run("add-video", "film-x").code, 0, "needs a video source");
+  assert.notEqual(run("add-video", "film-x", "--pending", "x", "--agency", "A|a").code, 0, "agency is per project");
+});
+
+test("list shows the pending count per project", () => {
+  const r = run("list");
+  assert.match(r.out, /film-x\s+film\s+\d*\s+7\s+2\s/);
+  const totalPending = data().reduce((n, p) => n + pendingCount(p), 0);
+  assert.ok(totalPending >= 2, "film-x alone has 2 pending");
+  assert.match(r.out, new RegExp(`${totalPending} film\\(s\\) waiting for a YouTube upload`));
+  assert.doesNotMatch(run("list").out.split("\n").find((l) => /\balpha\b/.test(l)), /pending/);
+});
+
+test("set-youtube fills the id by number or title, clears pending, keeps localVideo", () => {
+  const before = hash();
+  assert.equal(run("set-youtube", "film-x", "3", "https://youtu.be/AAAAAAAAAAA?si=x", "--dry-run").code, 0);
+  assert.equal(hash(), before);
+  const r = run("set-youtube", "film-x", "3", "https://youtu.be/AAAAAAAAAAA?si=x");
+  assert.equal(r.code, 0, r.all);
+  assert.match(r.out, /no longer pending/);
+  const v = get("film-x").videos[2];
+  assert.deepEqual(v, { title: "Long cut", youtubeId: "AAAAAAAAAAA", localVideo: "", previewVideo: "", hosting: "youtube" });
+  assert.equal(pendingCount(get("film-x")), 1);
+  // by title (case-insensitive fragment), on a self-hosted film: localVideo stays
+  assert.equal(run("set-youtube", "film-x", "vertical", "https://www.youtube.com/watch?v=BBBBBBBBBBB").code, 0);
+  const w = get("film-x").videos[0];
+  assert.equal(w.youtubeId, "BBBBBBBBBBB");
+  assert.equal(w.localVideo, "/videos/full/film-x-1.mp4");
+  assert.equal(w.hosting, "self");
+  // pending title
+  assert.equal(run("set-youtube", "film-x", "Waiting", "CCCCCCCCCCC").code, 0);
+  assert.equal(pendingCount(get("film-x")), 0);
+  assert.equal(get("film-x").videos[6].pending, undefined);
+  // the copied data has pending films of its own: only the total must have dropped by film-x's 2
+  const left = data().reduce((n, p) => n + pendingCount(p), 0);
+  const out = run("list").out;
+  if (left) assert.match(out, new RegExp(`${left} film\\(s\\) waiting for a YouTube upload`));
+  else assert.doesNotMatch(out, /waiting for a YouTube upload/);
+  assert.doesNotMatch(out.split("\n").find((l) => /\bfilm-x\b/.test(l)), /\s2\s+film-x-preview/);
+});
+
+test("set-youtube refuses duplicates, silent overwrites, unknown videos and bad links", () => {
+  assert.match(run("set-youtube", "film-x", "1", "AAAAAAAAAAA").all, /already uses/);
+  assert.match(run("set-youtube", "film-x", "1", "DDDDDDDDDDD").all, /already has YouTube id BBBBBBBBBBB/);
+  assert.equal(run("set-youtube", "film-x", "1", "DDDDDDDDDDD", "--force").code, 0);
+  assert.equal(get("film-x").videos[0].youtubeId, "DDDDDDDDDDD");
+  const amb = run("set-youtube", "film-x", "Test Film", "EEEEEEEEEEE");
+  assert.notEqual(amb.code, 0);
+  assert.match(amb.all, /More than one video/);
+  assert.match(amb.all, /1\. Vertical cut/);
+  assert.notEqual(run("set-youtube", "film-x", "99", "EEEEEEEEEEE").code, 0);
+  assert.notEqual(run("set-youtube", "film-x", "2", "https://example.com/x").code, 0);
+  assert.notEqual(run("set-youtube", "nope", "1", "EEEEEEEEEEE").code, 0);
+});
+
+test("a failed --full encode leaves no partial state", () => {
+  const before = hash();
+  const bad = path.join(tmp, "bad-film.mp4");
+  fs.writeFileSync(bad, "not a video");
+  assert.notEqual(run("add-video", "film-x", "--full", bad).code, 0);
+  assert.equal(hash(), before);
+  assert.notEqual(run("add", ...baseArgs("broken-full"), "--full", bad).code, 0);
+  assert.equal(hash(), before);
+});
+
+test("add-gallery converts to WebP (<= 1600 wide), records size, merges by title, places galleries before credits", () => {
+  const before = hash();
+  assert.equal(run("add-gallery", "film-x", "--title", "Stills", "--image", still, "--dry-run").code, 0);
+  assert.equal(hash(), before);
+  const r = run("add-gallery", "film-x", "--title", "Stills", "--image", still, "--image", still2);
+  assert.equal(r.code, 0, r.all);
+  const p = get("film-x");
+  assert.deepEqual(p.galleries, [{ title: "Stills", images: [
+    { path: "/images/film-x/my-still-01.webp", width: 800, height: 600 },
+    { path: "/images/film-x/second.webp", width: 1600, height: 800 },
+  ] }]);
+  const keys = Object.keys(p);
+  assert.equal(keys[keys.indexOf("credits") - 1], "galleries");
+  assert.equal(dims(path.join(root, "public", "images", "film-x", "second.webp")), "1600x800");
+  // same title again: appended, name made unique; another title: second gallery
+  assert.equal(run("add-gallery", "film-x", "--title", "stills", "--image", still).code, 0);
+  assert.equal(get("film-x").galleries.length, 1);
+  assert.equal(get("film-x").galleries[0].images[2].path, "/images/film-x/my-still-01-2.webp");
+  assert.equal(run("add-gallery", "film-x", "--title", "Behind the scenes", "--image", still2).code, 0);
+  assert.equal(get("film-x").galleries.length, 2);
+  assert.notEqual(run("add-gallery", "film-x", "--image", still).code, 0, "title required");
+  assert.notEqual(run("add-gallery", "film-x", "--title", "T").code, 0, "image required");
+  assert.notEqual(run("add-gallery", "nope", "--title", "T", "--image", still).code, 0);
+});
+
+test("a failed add-gallery leaves no files and no entry", () => {
+  const before = hash();
+  const bad = path.join(tmp, "bad-img.png");
+  fs.writeFileSync(bad, "not an image");
+  const filesBefore = fs.readdirSync(path.join(root, "public", "images", "film-x")).sort();
+  assert.notEqual(run("add-gallery", "film-x", "--title", "Broken", "--image", still2, "--image", bad).code, 0);
+  assert.equal(hash(), before);
+  assert.deepEqual(fs.readdirSync(path.join(root, "public", "images", "film-x")).sort(), filesBefore);
+});
+
+test("remove --delete-media also deletes full films and gallery images", () => {
+  assert.ok(exists("videos", "full", "film-x-1.mp4"));
+  assert.equal(run("remove", "film-x", "--delete-media").code, 0);
+  assert.equal(get("film-x"), undefined);
+  assert.ok(!exists("videos", "full", "film-x-1.mp4"));
+  assert.ok(!exists("images", "film-x", "second.webp"));
+  assert.ok(!exists("videos", "film-x-preview.mp4"));
+});
+
 // ---- optimize-media integration, with a stub that records how it is called ----
-function stubRoot(name, withThumb) {
+function stubRoot(name, withThumb, imageMode) {
   const r0 = path.join(tmp, name);
   fs.mkdirSync(path.join(r0, "data"), { recursive: true });
   fs.mkdirSync(path.join(r0, "public", "videos"), { recursive: true });
@@ -357,6 +565,9 @@ import fs from "node:fs"; import path from "node:path"; import { fileURLToPath }
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const a = process.argv.slice(2);
 fs.appendFileSync(path.join(root, "calls.log"), a.join(" ") + "\\n");
+${imageMode ? `if (a[0] === "image") {
+  ${imageMode === "fail" ? "console.error('image command broken'); process.exit(1);" : "fs.mkdirSync(path.dirname(a[2]), { recursive: true }); fs.copyFileSync(a[1], a[2]); process.exit(0);"}
+}` : ""}
 ${withThumb ? `if (a[0] === "thumb") {
   const d = path.join(root, "public", "images", "thumbs"); fs.mkdirSync(d, { recursive: true });
   fs.writeFileSync(path.join(d, a[2] + ".webp"), "stub"); fs.writeFileSync(path.join(d, a[2] + "-tiny.webp"), "stub");
@@ -398,6 +609,24 @@ test("an optimize-media without a thumb command falls back to the embedded ffmpe
   assert.equal(r.code, 0, r.all);
   assert.ok(!fs.existsSync(path.join(r0, "calls.log")), "stub not called");
   assert.equal(dims(path.join(r0, "public", "images", "thumbs", "halatia.webp")), "1280x536");
+});
+
+
+test("add-gallery calls `optimize-media image <src> <out>` when it has one, and falls back to ffmpeg when that fails", () => {
+  const r0 = stubRoot("stub-site-image", true, "ok");
+  const r = runIn(r0, "add-gallery", "halatia", "--title", "Stills", "--image", still);
+  assert.equal(r.code, 0, r.all);
+  assert.deepEqual(calls(r0), [`image ${still} ${path.join(r0, "public", "images", "halatia", "my-still-01.webp")}`.replaceAll(r0 + path.sep, "")]);
+  const g = JSON.parse(fs.readFileSync(path.join(r0, "data", "projects.json"), "utf8")).projects.find((p) => p.slug === "halatia").galleries;
+  assert.equal(g[0].images[0].path, "/images/halatia/my-still-01.webp");
+  const r1 = stubRoot("stub-site-image-fail", true, "fail");
+  const f = runIn(r1, "add-gallery", "halatia", "--title", "Stills", "--image", still);
+  assert.equal(f.code, 0, f.all);
+  assert.match(f.out, /using the embedded ffmpeg/);
+  assert.equal(dims(path.join(r1, "public", "images", "halatia", "my-still-01.webp")), "800x600");
+  const r2 = stubRoot("stub-site-noimage", true);
+  assert.equal(runIn(r2, "add-gallery", "halatia", "--title", "Stills", "--image", still).code, 0);
+  assert.ok(!fs.existsSync(path.join(r2, "calls.log")), "no image command: stub not called");
 });
 
 test("move reorders", () => {

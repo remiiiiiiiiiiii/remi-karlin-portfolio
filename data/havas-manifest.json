@@ -1,0 +1,1073 @@
+{
+  "generatedAt": "2026-10-09T08:14:33Z",
+  "sourceRoot": "Downloads/HAVAS/rendus finales",
+  "clients": [
+    {
+      "slug": "havas-allianz",
+      "client": "Allianz",
+      "sourceFolder": "Allianz",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Slalom",
+          "source": "Allianz/slalom v4.mp4",
+          "durationSec": 13.48,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-allianz-1.mp4",
+          "previewVideo": "/videos/havas-allianz-1-preview.mp4",
+          "poster": "/videos/posters/havas-allianz-1-preview.webp",
+          "sizeKB": 3775,
+          "variants": [],
+          "note": "skier in red jacket on a slalom course in snow, blue caption \"Moi qui repousse toutes les galères grâce à Allianz\" and \"PERTE DES CLÉS\""
+        },
+        {
+          "n": 2,
+          "title": "Para",
+          "source": "Allianz/v5 alianz para.mp4",
+          "durationSec": 74.13,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-allianz-2-preview.mp4",
+          "poster": "/videos/posters/havas-allianz-2-preview.webp",
+          "sizeKB": 0,
+          "variants": [],
+          "note": "opening frame is a dusk sky with a pylon seen from a moving vehicle, no text, no logo yet"
+        },
+        {
+          "n": 3,
+          "title": "Day in the life",
+          "source": "Allianz/day in life.mp4",
+          "durationSec": 88.0,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-allianz-3-preview.mp4",
+          "poster": "/videos/posters/havas-allianz-3-preview.webp",
+          "sizeKB": 0,
+          "variants": [],
+          "note": "man in a wheelchair, arms out, in an airport concourse, caption \"10H53 RETROUVAILLE AVEC JEREMIASZ\""
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Emoji",
+          "images": [
+            {
+              "path": "/images/havas/allianz/skieur-v5.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "Allianz/allianz emoji/skieur v5.png"
+            },
+            {
+              "path": "/images/havas/allianz/snowboarder-v5.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "Allianz/allianz emoji/snowboarder v5.png"
+            }
+          ]
+        },
+        {
+          "title": "Did you know",
+          "images": [
+            {
+              "path": "/images/havas/allianz/1-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "Allianz/allianz did you know/1 Allianz did you know v2.png"
+            },
+            {
+              "path": "/images/havas/allianz/2-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "Allianz/allianz did you know/2 Allianz did you know v2.png"
+            },
+            {
+              "path": "/images/havas/allianz/3-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "Allianz/allianz did you know/3 Allianz did you know v2.png"
+            },
+            {
+              "path": "/images/havas/allianz/4-allianz-did-you-know-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "Allianz/allianz did you know/4 Allianz did you know v2.png"
+            }
+          ]
+        }
+      ],
+      "thumbnail": "/images/thumbs/havas-allianz.webp",
+      "thumbnailTiny": "/images/thumbs/havas-allianz-tiny.webp"
+    },
+    {
+      "slug": "havas-bkt",
+      "client": "BKT",
+      "sourceFolder": "bkt",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Action 1",
+          "source": "bkt/actions/ACTION_1_1080x1920.mp4",
+          "durationSec": 29.8,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-bkt-1.mp4",
+          "previewVideo": "/videos/havas-bkt-1-preview.mp4",
+          "poster": "/videos/posters/havas-bkt-1-preview.webp",
+          "sizeKB": 9646,
+          "variants": [
+            "bkt/actions/ACTION_1_1200x1200.mp4"
+          ],
+          "note": "football pitch seen from above, player in orange kit on the halfway line, \"Le Mans FC\" label, \"L'Action BKT du mois d'avril\" header and BKT logo"
+        },
+        {
+          "n": 2,
+          "title": "Action 2",
+          "source": "bkt/actions/ACTION_2_1080x1920.mp4",
+          "durationSec": 28.29,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-bkt-2.mp4",
+          "previewVideo": "/videos/havas-bkt-2-preview.mp4",
+          "poster": "/videos/posters/havas-bkt-2-preview.webp",
+          "sizeKB": 11579,
+          "variants": [
+            "bkt/actions/ACTION_2_1200x1200.mp4"
+          ],
+          "note": "football match with a packed stand behind, \"ESTAC Troyes\" label with team crests, BKT header and logo"
+        },
+        {
+          "n": 3,
+          "title": "Action 3",
+          "source": "bkt/actions/ACTION_3_1080x1920.mp4",
+          "durationSec": 35.75,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-bkt-3.mp4",
+          "previewVideo": "/videos/havas-bkt-3-preview.mp4",
+          "poster": "/videos/posters/havas-bkt-3-preview.webp",
+          "sizeKB": 12176,
+          "variants": [
+            "bkt/actions/ACTION_3_1200x1200.mp4"
+          ],
+          "note": "football match by the goal, \"Stade Lavallois\" label with team crests, BKT header and logo"
+        },
+        {
+          "n": 4,
+          "title": "L'Action",
+          "source": "bkt/actions/L'ACTION_1080x1920.mp4",
+          "durationSec": 74.26,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-bkt-4-preview.mp4",
+          "poster": "/videos/posters/havas-bkt-4-preview.webp",
+          "sizeKB": 0,
+          "variants": [
+            "bkt/actions/L'ACTION_1200x1200.mp4"
+          ],
+          "note": "player in red and yellow kit mid-kick with two player cards (numbers 11 and 25) overlaid, BKT header"
+        },
+        {
+          "n": 5,
+          "title": "Social video 1",
+          "source": "bkt/SoMe/P3 BKT 1 v3.mp4",
+          "durationSec": 19.39,
+          "width": 720,
+          "height": 1280,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-bkt-5.mp4",
+          "previewVideo": "/videos/havas-bkt-5-preview.mp4",
+          "poster": "/videos/posters/havas-bkt-5-preview.webp",
+          "sizeKB": 3570,
+          "variants": [],
+          "note": "match footage with the question card \"Quelle action a été élue Action BKT du mois de novembre ?\", Red Star FC label, BKT logo"
+        },
+        {
+          "n": 6,
+          "title": "Social video 2",
+          "source": "bkt/SoMe/P3 BKT 2 v3.mp4",
+          "durationSec": 19.39,
+          "width": 720,
+          "height": 1280,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-bkt-6.mp4",
+          "previewVideo": "/videos/havas-bkt-6-preview.mp4",
+          "poster": "/videos/posters/havas-bkt-6-preview.webp",
+          "sizeKB": 2011,
+          "variants": [],
+          "note": "same vote card as video 5 over a blurred match background, poster frame is a close-up of a green number 7 shirt behind the card"
+        },
+        {
+          "n": 7,
+          "title": "Social video 3",
+          "source": "bkt/SoMe/P3 BKT 3 v3 .mp4",
+          "durationSec": 16.26,
+          "width": 720,
+          "height": 1280,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-bkt-7.mp4",
+          "previewVideo": "/videos/havas-bkt-7-preview.mp4",
+          "poster": "/videos/posters/havas-bkt-7-preview.webp",
+          "sizeKB": 3131,
+          "variants": [],
+          "note": "match footage with the caption \"L'ASSE a remporté l'action BKT du mois de novembre !\", AS Saint-Etienne label, BKT logo"
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Social media",
+          "images": [
+            {
+              "path": "/images/havas/bkt/p1-bkt-1.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P1 BKT 1.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p1-bkt-2.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P1 BKT 2.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p1-bkt-3-v2.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P1 BKT 3 v2.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p2-bkt-1-v2.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P2 BKT 1 v2.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p2-bkt-2-v2.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P2 BKT 2 v2.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p4-bkt-1.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P4 BKT 1.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p4-bkt-2.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P4 BKT 2.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p5-bkt-1-v3.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P5 BKT 1 v3.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/p5-bkt-2-v3.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/P5 BKT 2 V3.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/v3-concours-bkt-ballon-1x1.webp",
+              "width": 1080,
+              "height": 1080,
+              "source": "bkt/SoMe/V3 concours BKT ballon 1x1.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/v3-concours-bkt-ballon-9x16.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/V3 concours BKT ballon 9x16.jpg"
+            },
+            {
+              "path": "/images/havas/bkt/v6-vip-box-4x5.webp",
+              "width": 1200,
+              "height": 1500,
+              "source": "bkt/SoMe/V6-vip-box-4x5.png"
+            },
+            {
+              "path": "/images/havas/bkt/v8-vip-box-9x16.webp",
+              "width": 900,
+              "height": 1600,
+              "source": "bkt/SoMe/V8-vip-box-9x16.png"
+            }
+          ]
+        }
+      ],
+      "thumbnail": "/images/thumbs/havas-bkt.webp",
+      "thumbnailTiny": "/images/thumbs/havas-bkt-tiny.webp"
+    },
+    {
+      "slug": "havas-ffj",
+      "client": "Fédération Française de Judo",
+      "sourceFolder": "FFJ",
+      "videos": [],
+      "galleries": [
+        {
+          "title": "Posters",
+          "images": [
+            {
+              "path": "/images/havas/ffj/60x80-master-1.webp",
+              "width": 1200,
+              "height": 1600,
+              "source": "FFJ/60x80 master 1.png"
+            },
+            {
+              "path": "/images/havas/ffj/a4-master-2.webp",
+              "width": 1132,
+              "height": 1600,
+              "source": "FFJ/A4 master 2.png"
+            }
+          ]
+        }
+      ],
+      "thumbnail": "/images/thumbs/havas-ffj.webp",
+      "thumbnailTiny": "/images/thumbs/havas-ffj-tiny.webp"
+    },
+    {
+      "slug": "havas-kellogs",
+      "client": "Kellogg's",
+      "sourceFolder": "Kellogs",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Tasty Krunchy 10s",
+          "source": "Kellogs/9x16 10s Tasty Krunchy .mp4",
+          "durationSec": 9.98,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-kellogs-1.mp4",
+          "previewVideo": "/videos/havas-kellogs-1-preview.mp4",
+          "poster": "/videos/posters/havas-kellogs-1-preview.webp",
+          "sizeKB": 5218,
+          "variants": [
+            "Kellogs/1x1 10s Tasty Krunchy .mp4",
+            "Kellogs/1x1 6s Tasty Krunchy .mp4",
+            "Kellogs/9x16 6s Tasty Krunchy .mp4"
+          ],
+          "note": "man in a grey sweatshirt in an office kitchen holding a Kellogg's box, burned-in subtitles and a mangerbouger.fr health line"
+        },
+        {
+          "n": 2,
+          "title": "ASMR 10s",
+          "source": "Kellogs/9x16 10s ASMR.mp4",
+          "durationSec": 10.41,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-kellogs-2.mp4",
+          "previewVideo": "/videos/havas-kellogs-2-preview.mp4",
+          "poster": "/videos/posters/havas-kellogs-2-preview.webp",
+          "sizeKB": 5351,
+          "variants": [
+            "Kellogs/1x1 10s ASMR.mp4",
+            "Kellogs/1x1 6s ASMR.mp4",
+            "Kellogs/9x16 6s ASMR.mp4"
+          ],
+          "note": "close-up of a hand holding a Kellogg's Trésor box (caramelised biscuit, white choc), subtitle \"Écoute le nouveau goût Trésor\", health line at the bottom"
+        }
+      ],
+      "heroPreview": "/videos/havas-kellogs-hero-preview.mp4",
+      "heroPoster": "/videos/posters/havas-kellogs-hero-preview.webp",
+      "heroSource": "Kellogs/1x1 10s Tasty Krunchy .mp4",
+      "heroNote": "square crop of the Tasty Krunchy film: man in a grey sweatshirt in front of a brick wall, burned-in subtitle and health line",
+      "galleries": [],
+      "thumbnail": "/images/thumbs/havas-kellogs.webp",
+      "thumbnailTiny": "/images/thumbs/havas-kellogs-tiny.webp"
+    },
+    {
+      "slug": "havas-kfc",
+      "client": "KFC",
+      "sourceFolder": "kfc",
+      "videos": [
+        {
+          "n": 1,
+          "title": "KFC film",
+          "source": "kfc/kfc h264 v2.mp4",
+          "durationSec": 19.03,
+          "width": 1920,
+          "height": 1280,
+          "aspect": "3:2",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-kfc-1.mp4",
+          "previewVideo": "/videos/havas-kfc-1-preview.mp4",
+          "poster": "/videos/posters/havas-kfc-1-preview.webp",
+          "sizeKB": 9104,
+          "variants": [],
+          "note": "low street shot of a bicycle with a blue and orange backpack in its basket, trees and buildings, tilted wide-angle framing, no KFC branding in the first frames"
+        },
+        {
+          "n": 2,
+          "title": "Photos slow",
+          "source": "kfc/photos slow.mp4",
+          "durationSec": 16.43,
+          "width": 1080,
+          "height": 1080,
+          "aspect": "1:1",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-kfc-2.mp4",
+          "previewVideo": "/videos/havas-kfc-2-preview.mp4",
+          "poster": "/videos/posters/havas-kfc-2-preview.webp",
+          "sizeKB": 5189,
+          "variants": [],
+          "note": "circular fisheye vignette on black: man in a beige jacket biting a fried chicken piece in a KFC restaurant, woman laughing beside him"
+        }
+      ],
+      "galleries": [],
+      "thumbnail": "/images/thumbs/havas-kfc.webp",
+      "thumbnailTiny": "/images/thumbs/havas-kfc-tiny.webp"
+    },
+    {
+      "slug": "havas-nissan",
+      "client": "Nissan",
+      "sourceFolder": "NISSAN",
+      "videos": [
+        {
+          "n": 1,
+          "title": "ASMR",
+          "source": "NISSAN/ASMR.mp4",
+          "durationSec": 29.74,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-1.mp4",
+          "previewVideo": "/videos/havas-nissan-1-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-1-preview.webp",
+          "sizeKB": 9560,
+          "variants": [],
+          "note": "hand on a Nissan steering wheel and dashboard, caption \"NISSAN GT-R >>>\""
+        },
+        {
+          "n": 2,
+          "title": "ESC",
+          "source": "NISSAN/ESC v2.mp4",
+          "durationSec": 12.12,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-2.mp4",
+          "previewVideo": "/videos/havas-nissan-2-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-2-preview.webp",
+          "sizeKB": 1453,
+          "variants": [],
+          "note": "driver's view of a motorway at sunset, dashboard edge in the foreground, no text"
+        },
+        {
+          "n": 3,
+          "title": "Looking for Juke",
+          "source": "NISSAN/Looking for Juke.mp4",
+          "durationSec": 15.04,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-3.mp4",
+          "previewVideo": "/videos/havas-nissan-3-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-3-preview.webp",
+          "sizeKB": 9641,
+          "variants": [],
+          "note": "pattern of red Nissan Juke cutouts on a lilac background"
+        },
+        {
+          "n": 4,
+          "title": "One Piece",
+          "source": "NISSAN/One Piece.mp4",
+          "durationSec": 9.98,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-4.mp4",
+          "previewVideo": "/videos/havas-nissan-4-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-4-preview.webp",
+          "sizeKB": 1024,
+          "variants": [],
+          "note": "anime-style illustration of a green Nissan crossover in front of a colourful fantasy city with manga speed lines"
+        },
+        {
+          "n": 5,
+          "title": "Photoshop",
+          "source": "NISSAN/Photoshop v6.mp4",
+          "durationSec": 12.5,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-5.mp4",
+          "previewVideo": "/videos/havas-nissan-5-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-5-preview.webp",
+          "sizeKB": 1968,
+          "variants": [],
+          "note": "screen-recording of a photo editor on a white canvas with a grey Nissan X-Trail, caption \"Créez avec nous une pub à partir d'une photo\""
+        },
+        {
+          "n": 6,
+          "title": "Post bien-être",
+          "source": "NISSAN/Post bien-être V2.mp4",
+          "durationSec": 13.99,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-6.mp4",
+          "previewVideo": "/videos/havas-nissan-6-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-6-preview.webp",
+          "sizeKB": 765,
+          "variants": [],
+          "note": "Nissan logo inside a circle on a blue sky with the word \"RESPIRE\" and an energy-label bar bottom left"
+        },
+        {
+          "n": 7,
+          "title": "Dino",
+          "source": "NISSAN/nissan dino v5.mp4",
+          "durationSec": 27.41,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-7.mp4",
+          "previewVideo": "/videos/havas-nissan-7-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-7-preview.webp",
+          "sizeKB": 7243,
+          "variants": [],
+          "note": "red 1965 Datsun convertible parked in a garage with a Nissan sign on the wall, caption \"En 1965\""
+        },
+        {
+          "n": 8,
+          "title": "Pont de mai, pause",
+          "source": "NISSAN/pont de mai pause v4.mp4",
+          "durationSec": 8.02,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-nissan-8.mp4",
+          "previewVideo": "/videos/havas-nissan-8-preview.mp4",
+          "poster": "/videos/posters/havas-nissan-8-preview.webp",
+          "sizeKB": 2562,
+          "variants": [],
+          "note": "aerial view of a stone bridge over a turquoise river gorge with a small blue car, caption \"En mai avec Nissan, tous les moments sont bons pour faire une pause.\""
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Visuals",
+          "images": [
+            {
+              "path": "/images/havas/nissan/carnet-de-vacances-v1.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "NISSAN/CARNET DE VACANCES​ v1.png"
+            },
+            {
+              "path": "/images/havas/nissan/nissan-je-taime.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "NISSAN/Nissan je t'aime.png"
+            },
+            {
+              "path": "/images/havas/nissan/v2-pont-calendrier-slide-1.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "NISSAN/V2 pont calendrier slide 1.png"
+            }
+          ]
+        }
+      ],
+      "thumbnail": "/images/thumbs/havas-nissan.webp",
+      "thumbnailTiny": "/images/thumbs/havas-nissan-tiny.webp"
+    },
+    {
+      "slug": "havas-paris-fc",
+      "client": "Paris FC",
+      "sourceFolder": "PARIS FC",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Kop",
+          "source": "PARIS FC/V8 Kop 5.mp4",
+          "durationSec": 26.67,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-paris-fc-1.mp4",
+          "previewVideo": "/videos/havas-paris-fc-1-preview.mp4",
+          "poster": "/videos/posters/havas-paris-fc-1-preview.webp",
+          "sizeKB": 11440,
+          "variants": [],
+          "note": "Paris FC supporters' stand with a large blue banner reading \"Paris ... minutes\" and a KOP logo, then fans and children in the stands"
+        }
+      ],
+      "galleries": [],
+      "thumbnail": "/images/thumbs/havas-paris-fc.webp",
+      "thumbnailTiny": "/images/thumbs/havas-paris-fc-tiny.webp"
+    },
+    {
+      "slug": "havas-renault",
+      "client": "Renault",
+      "sourceFolder": "RENAULT",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Renault film",
+          "source": "RENAULT/renault v4.mp4",
+          "durationSec": 60.12,
+          "width": 3840,
+          "height": 2160,
+          "aspect": "16:9",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-renault-1-preview.mp4",
+          "poster": "/videos/posters/havas-renault-1-preview.webp",
+          "sizeKB": 0,
+          "variants": [],
+          "note": "portrait interviews of agency staff in a car park outside an office building, blue Renault car behind them, name and job-title captions (first speaker: \"martin perraud, directeur de création\"); no product shots"
+        }
+      ],
+      "galleries": [],
+      "thumbnail": "/images/thumbs/havas-renault.webp",
+      "thumbnailTiny": "/images/thumbs/havas-renault-tiny.webp"
+    },
+    {
+      "slug": "havas-sanofi",
+      "client": "Sanofi",
+      "sourceFolder": "SANOFI",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Mikkel",
+          "source": "SANOFI/Mikkel V4.mp4",
+          "durationSec": 100.82,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-sanofi-1-preview.mp4",
+          "poster": "/videos/posters/havas-sanofi-1-preview.webp",
+          "sizeKB": 0,
+          "variants": [],
+          "note": "talking-head of a man with curly hair in a blue t-shirt, subtitle \"I think.\""
+        },
+        {
+          "n": 2,
+          "title": "Paul Ricard",
+          "source": "SANOFI/Paul Ricard V5 TT safe.mp4",
+          "durationSec": 19.16,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-sanofi-2.mp4",
+          "previewVideo": "/videos/havas-sanofi-2-preview.mp4",
+          "poster": "/videos/posters/havas-sanofi-2-preview.webp",
+          "sizeKB": 5200,
+          "variants": [],
+          "note": "close-up of the side of a blue prototype race car with number 22, \"P2\" and TotalEnergies decals"
+        },
+        {
+          "n": 3,
+          "title": "Animation Sanofi",
+          "source": "SANOFI/animation sanofi V4.mp4",
+          "durationSec": 10.07,
+          "width": 1080,
+          "height": 1080,
+          "aspect": "1:1",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-sanofi-3.mp4",
+          "previewVideo": "/videos/havas-sanofi-3-preview.mp4",
+          "poster": "/videos/posters/havas-sanofi-3-preview.webp",
+          "sizeKB": 433,
+          "variants": [],
+          "note": "logo animation only: black \"S\" shape and purple dots on white, no people or product"
+        },
+        {
+          "n": 4,
+          "title": "Reveal",
+          "source": "SANOFI/reveal v22.mp4",
+          "durationSec": 15.59,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-sanofi-4.mp4",
+          "previewVideo": "/videos/havas-sanofi-4-preview.mp4",
+          "poster": "/videos/posters/havas-sanofi-4-preview.webp",
+          "sizeKB": 3566,
+          "variants": [],
+          "note": "black and white close-up of a race car cockpit and front wheel with \"ANCH Property Tech\" and Goodyear decals"
+        }
+      ],
+      "galleries": [],
+      "thumbnail": "/images/thumbs/havas-sanofi.webp",
+      "thumbnailTiny": "/images/thumbs/havas-sanofi-tiny.webp"
+    },
+    {
+      "slug": "havas-tor",
+      "client": "Orange",
+      "sourceFolder": "TOR",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Finish line",
+          "source": "TOR/V1 finish line.mp4",
+          "durationSec": 20.74,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-tor-1.mp4",
+          "previewVideo": "/videos/havas-tor-1-preview.mp4",
+          "poster": "/videos/posters/havas-tor-1-preview.webp",
+          "sizeKB": 10541,
+          "variants": [],
+          "note": "runners at a city race finish area under AG2R La Mondiale, Garmin and Hyundai banners, word cloud overlay (persévérance, énergie, courage...)"
+        },
+        {
+          "n": 2,
+          "title": "Teaser",
+          "source": "TOR/teaser vdef 2.mp4",
+          "durationSec": 20.61,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-tor-2.mp4",
+          "previewVideo": "/videos/havas-tor-2-preview.mp4",
+          "poster": "/videos/posters/havas-tor-2-preview.webp",
+          "sizeKB": 9872,
+          "variants": [],
+          "note": "woman in an orange running top seen from behind on a Paris riverside road, caption \"ET SI TU COURAIS AVEC NOUS ?\""
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Visuals",
+          "images": [
+            {
+              "path": "/images/havas/tor/artboard-1.webp",
+              "width": 1600,
+              "height": 572,
+              "source": "TOR/Artboard 1.png"
+            },
+            {
+              "path": "/images/havas/tor/artboard-1d.webp",
+              "width": 640,
+              "height": 1600,
+              "source": "TOR/Artboard 1D.png"
+            },
+            {
+              "path": "/images/havas/tor/artboard-1h.webp",
+              "width": 1600,
+              "height": 800,
+              "source": "TOR/Artboard 1H.png"
+            },
+            {
+              "path": "/images/havas/tor/tor-arche-6.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "TOR/TOR Arche 6.jpg"
+            },
+            {
+              "path": "/images/havas/tor/tor-je-taime-v3.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "TOR/TOR je t'aime V3.png"
+            },
+            {
+              "path": "/images/havas/tor/concours-tor-2-copy.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "TOR/concours TOR 2 copy.jpg"
+            },
+            {
+              "path": "/images/havas/tor/concours-tor-4.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "TOR/concours TOR 4.jpg"
+            },
+            {
+              "path": "/images/havas/tor/mur-b-v2.webp",
+              "width": 1600,
+              "height": 572,
+              "source": "TOR/mur B v2.png"
+            }
+          ]
+        }
+      ],
+      "thumbnail": "/images/thumbs/havas-tor.webp",
+      "thumbnailTiny": "/images/thumbs/havas-tor-tiny.webp"
+    },
+    {
+      "slug": "havas-louis-burton",
+      "client": "Louis Burton",
+      "sourceFolder": "Louis Burton",
+      "videos": [
+        {
+          "n": 1,
+          "title": "Louis Burton film",
+          "source": "Louis Burton/LB Vfinal.mp4",
+          "durationSec": 39.66,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-louis-burton-1.mp4",
+          "previewVideo": "/videos/havas-louis-burton-1-preview.mp4",
+          "poster": "/videos/posters/havas-louis-burton-1-preview.webp",
+          "sizeKB": 10802,
+          "variants": [],
+          "note": "sailor's arm handing a red rope on a dock, timer \"00:24\" and subtitle \"quand même sur le bateau,\""
+        },
+        {
+          "n": 2,
+          "title": "Cut v6",
+          "source": "Louis Burton/v6.mp4",
+          "durationSec": 14.7,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-louis-burton-2.mp4",
+          "previewVideo": "/videos/havas-louis-burton-2-preview.mp4",
+          "poster": "/videos/posters/havas-louis-burton-2-preview.webp",
+          "sizeKB": 5318,
+          "variants": [],
+          "note": "split panels on a boat: man in a bucket hat on deck, man's face behind a rope net, hands working boat equipment"
+        }
+      ],
+      "galleries": [],
+      "thumbnail": "/images/thumbs/havas-louis-burton.webp",
+      "thumbnailTiny": "/images/thumbs/havas-louis-burton-tiny.webp"
+    },
+    {
+      "slug": "havas-internal",
+      "client": "Havas Play internal",
+      "sourceFolder": "HAVAS internal",
+      "videos": [
+        {
+          "n": 1,
+          "title": "VD BKT x M6N",
+          "source": "HAVAS internal/VD BKT x M6N.mp4",
+          "durationSec": 36.54,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "self",
+          "localVideo": "/videos/full/havas-internal-1.mp4",
+          "previewVideo": "/videos/havas-internal-1-preview.mp4",
+          "poster": "/videos/posters/havas-internal-1-preview.webp",
+          "sizeKB": 9880,
+          "variants": [],
+          "note": "rugby match at a stadium with posts and a green pitch, caption \"MAIS AUJOURD'HUI, LES SPONSORS SONT NOMBREUX...\""
+        },
+        {
+          "n": 2,
+          "title": "Showreel",
+          "source": "HAVAS internal/Showreel v5.mp4",
+          "durationSec": 61.1,
+          "width": 1080,
+          "height": 1920,
+          "aspect": "9:16",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-internal-2-preview.mp4",
+          "poster": "/videos/posters/havas-internal-2-preview.webp",
+          "sizeKB": 0,
+          "variants": [],
+          "note": "man with curly hair in a black top holding a Foot Locker bag against a grey wall, comment sticker \"Cap de faire deux outfits inspirés du Ying-Yang ?\""
+        },
+        {
+          "n": 3,
+          "title": "Ce Créa 2026",
+          "source": "HAVAS internal/Ce Créa 2026.mp4",
+          "durationSec": 144.19,
+          "width": 3840,
+          "height": 2160,
+          "aspect": "16:9",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-internal-3-preview.mp4",
+          "poster": "/videos/posters/havas-internal-3-preview.webp",
+          "sizeKB": 0,
+          "variants": [],
+          "note": "empty meeting room with a long wooden table and one person working at the far end, no text"
+        },
+        {
+          "n": 4,
+          "title": "Sephora crew",
+          "source": "HAVAS internal/sephora crew v6.mp4",
+          "durationSec": 47.98,
+          "width": 1920,
+          "height": 1080,
+          "aspect": "16:9",
+          "hosting": "youtube",
+          "localVideo": "",
+          "previewVideo": "/videos/havas-internal-4-preview.mp4",
+          "poster": "/videos/posters/havas-internal-4-preview.webp",
+          "sizeKB": 0,
+          "variants": [],
+          "note": "young woman in a red-and-white striped sports shirt smiling, man in the background, small subtitle at the bottom"
+        }
+      ],
+      "galleries": [
+        {
+          "title": "Photos and posters",
+          "images": [
+            {
+              "path": "/images/havas/internal/affiche-stagios-vrai.webp",
+              "width": 1132,
+              "height": 1600,
+              "source": "HAVAS internal/affiche stagios vrai.png"
+            },
+            {
+              "path": "/images/havas/internal/dsc00103.webp",
+              "width": 1600,
+              "height": 900,
+              "source": "HAVAS internal/DSC00103.jpg"
+            },
+            {
+              "path": "/images/havas/internal/dsc07743.webp",
+              "width": 1200,
+              "height": 1600,
+              "source": "HAVAS internal/PHOTOS PROFILES/DSC07743.jpg"
+            },
+            {
+              "path": "/images/havas/internal/dsc07892.webp",
+              "width": 1200,
+              "height": 1600,
+              "source": "HAVAS internal/PHOTOS PROFILES/DSC07892.jpg"
+            },
+            {
+              "path": "/images/havas/internal/dsc08601.webp",
+              "width": 1200,
+              "height": 1600,
+              "source": "HAVAS internal/PHOTOS PROFILES/DSC08601.jpg"
+            },
+            {
+              "path": "/images/havas/internal/dsc09011.webp",
+              "width": 1200,
+              "height": 1600,
+              "source": "HAVAS internal/PHOTOS PROFILES/DSC09011.jpg"
+            },
+            {
+              "path": "/images/havas/internal/dsc09313.webp",
+              "width": 1200,
+              "height": 1600,
+              "source": "HAVAS internal/PHOTOS PROFILES/DSC09313.jpg"
+            }
+          ]
+        },
+        {
+          "title": "Awards posters",
+          "images": [
+            {
+              "path": "/images/havas/internal/awards/16x9-banniere-firecatchers-1.webp",
+              "width": 1600,
+              "height": 900,
+              "source": "awards posters/16x9 banniere firecatchers 1.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/fire-clios-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/Fire clios v2.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/firecatchers-one-show-result-2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/Firecatchers one show result 2.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/firecatchers-one-show-result-3.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/Firecatchers one show result 3.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/lvmh-clios-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/LVMH clios v2.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/a-and-ad-1.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/a and ad 1.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/clio-awards-results-3.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/clio awards results 3.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/fab-cannes.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/fab cannes.jpg"
+            },
+            {
+              "path": "/images/havas/internal/awards/gerety-shortlist-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/gerety shortlist v2.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/new-york-festivals-results-v2.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/new york festivals results v2.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/new-york-festivals-v4.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/new york festivals v4.png"
+            },
+            {
+              "path": "/images/havas/internal/awards/new-york-festivals.webp",
+              "width": 1080,
+              "height": 1350,
+              "source": "awards posters/new york festivals.png"
+            }
+          ]
+        }
+      ],
+      "thumbnail": "/images/thumbs/havas-internal.webp",
+      "thumbnailTiny": "/images/thumbs/havas-internal-tiny.webp"
+    }
+  ]
+}

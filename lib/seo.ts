@@ -211,9 +211,25 @@ const PROJECT_SEO: Record<string, ProjectSeo> = {
   },
 };
 
+/** ["Filmmaker","Editor","Art Director"] -> "Filmmaker, Editor & Art Director" */
+function roleList(roles: string[]): string {
+  if (roles.length <= 1) return roles.join("");
+  return `${roles.slice(0, -1).join(", ")} & ${roles[roles.length - 1]}`;
+}
+
 export function getProjectSeo(p: Project): ProjectSeo {
   const known = PROJECT_SEO[p.slug];
   if (known) return known;
+  if (p.agency) {
+    // Agency work: "KFC — Havas Play, Filmmaker, Editor & Art Director | Remi Karlin"
+    const roles = roleList(p.roles);
+    const namesAgency = p.title.toLowerCase().includes(p.agency.name.toLowerCase());
+    const who = [namesAgency ? "" : p.agency.name, roles].filter(Boolean).join(", ");
+    return {
+      title: `${p.title} — ${who} | ${SITE_NAME}`,
+      description: `${p.shortDescription.replace(/\.$/, "")}. ${SITE_NAME}, ${roles || "work"}, at ${p.agency.name} in ${p.location || "Paris"}, ${p.year}.`,
+    };
+  }
   const format = p.subtitle.split("·")[0].trim();
   return {
     title: `${p.title} — ${format} | ${SITE_NAME}`,

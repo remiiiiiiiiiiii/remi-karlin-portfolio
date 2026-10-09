@@ -27,11 +27,17 @@
 //   The original is removed (git rm when tracked) only when the WebP is smaller;
 //   lossless WebP is tried when lossy is bigger (flat-colour graphics).
 //   Existing .webp images wider than the cap are downscaled in place.
+// havas    (havas <plan.json> [--redo]) site assets for the Havas Play internship deliverables. The plan is a
+//   list of items {type:'preview'|'full'|'image', src, out, start?, name?}:
+//   - preview: same rules as above but from an arbitrary source and an optional start offset (seconds), written to out;
+//   - full: H.264 CRF 26 slow, AAC 128k, faststart, long edge <= 1920 (squares <= 1080), full length and audio;
+//   - image: WebP q80 (lossless when smaller), long edge <= 1600, written to out; the source is never touched.
+//   Items whose output already exists and is newer than the source are skipped unless --redo.
 // Idempotent: previews that already meet the target (no audio, short, low bitrate, no bars) and
 // existing posters/thumbs are skipped (thumbs are rewritten, they are cheap and deterministic).
 // Full-length videos (no "-preview" in the name) are never touched.
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, renameSync, rmSync, statSync, mkdtempSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -64,6 +70,7 @@ const POSTER_OVERRIDES = {
   'spain-preview': [5.0],                  // title card over the first 2.5 s, windshield shots after
   'b1nbags-shot-expresso-preview': [3.0],  // "MATHIS" title over the first second
   'essec-modessec-aftermovie-preview': [6.0], // dark opening with photographer credit
+  'havas-bkt-6-preview': [6.0],            // background is blurred behind the vote card until ~5 s; sharpest frame
 };
 const GALLERY_DIRS = ['fan-yan', 'modessec', 'the-outfiters-mood', 'halatia', 'unfold-agency'];
 
@@ -123,8 +130,8 @@ function probeVideo(file) {
 
 // Last crop rect that cropdetect reports over the first 8 s (cumulative: the union of all frames,
 // so dark scenes do not shrink it). Returns {w,h,x,y}.
-function cropdetect(file, round) {
-  const r = spawnSync(FFMPEG, ['-i', file, '-t', String(MAX_SECONDS), '-vf', `cropdetect=24:${round}:0`, '-f', 'null', '-'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+function cropdetect(file, round, start = 0) {
+  const r = spawnSync(FFMPEG, [...(start > 0 ? ['-ss', String(start)] : []), '-i', file, '-t', String(MAX_SECONDS), '-vf', `cropdetect=24:${round}:0`, '-f', 'null', '-'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   const m = [...(r.stderr || '').matchAll(/crop=(\d+):(\d+):(\d+):(\d+)/g)].pop();
   if (!m) return null;
   return { w: +m[1], h: +m[2], x: +m[3], y: +m[4] };
@@ -135,10 +142,10 @@ function barsOf(rect, W, H) {
 }
 
 // Static bars -> crop rect (null when none). Decided with round 16 (>= 8 px), rect refined with round 2.
-function detectStaticCrop(file, W, H) {
-  const coarse = cropdetect(file, 16);
+function detectStaticCrop(file, W, H, start = 0) {
+  const coarse = cropdetect(file, 16, start);
   if (!coarse || barsOf(coarse, W, H) < BAR_MIN_PX) return { rect: null, coarse };
-  const fine = cropdetect(file, 2) || coarse;
+  const fine = cropdetect(file, 2, start) || coarse;
   return { rect: { w: even(fine.w), h: even(fine.h), x: fine.x, y: fine.y }, coarse };
 }
 
@@ -193,15 +200,17 @@ function writePosters(file, name, report) {
   ff(['-ss', String(pk.t), '-i', file, '-frames:v', '1', '-vf', 'scale=24:-2:flags=lanczos', ...q, tiny]);
 }
 
-function optimizePreview(file) {
+// opts.src / opts.start: encode from another file, beginning `start` seconds in (havas command).
+function optimizePreview(file, opts = {}) {
   const name = basename(file, '.mp4');
   const report = [];
-  const src = FROM ? join(FROM, `${name}.mp4`) : file;
+  const start = opts.start || 0;
+  const src = opts.src || (FROM ? join(FROM, `${name}.mp4`) : file);
   if (!existsSync(src)) throw new Error(`${name}: source missing (${src})`);
   const p = probe(src);
   const { width: W, height: H } = probeVideo(src);
-  const { rect } = detectStaticCrop(src, W, H);
-  const ss = rect ? null : detectLeadingBars(src, W, H, p.duration);
+  const { rect } = detectStaticCrop(src, W, H, start);
+  const ss = rect || start > 0 ? null : detectLeadingBars(src, W, H, p.duration);
   let crop = rect;
   const strip = BOTTOM_STRIP[name];
   if (strip) {
@@ -211,26 +220,30 @@ function optimizePreview(file) {
     else report.push(`captions kept (${base.w}x${h2} would be ${(base.w / h2).toFixed(2)}:1, under 2:1)`);
   }
   const ok = !p.audio && p.duration <= MAX_DURATION_OK && p.bitrate < MAX_BITRATE_OK;
-  if (ok && !crop && ss == null && !FROM) report.push('video: already optimized');
+  if (ok && !crop && ss == null && !FROM && !opts.src) report.push('video: already optimized');
   else if (dry) report.push(`video: would re-encode (${kb(size(src))})${crop ? ` crop=${crop.w}:${crop.h}:${crop.x}:${crop.y}` : ''}${ss != null ? ` start@${ss.toFixed(2)}s` : ''}`);
   else {
     const out = join(tmp, `${name}.mp4`);
-    const before = size(file);
+    const before = existsSync(file) ? size(file) : 0;
     const scale = "scale='if(gt(iw,ih),min(1280,iw),-2)':'if(gt(iw,ih),-2,min(1280,ih))'";
     const vf = (crop ? `crop=${crop.w}:${crop.h}:${crop.x}:${crop.y},` : '') + scale;
     // CRF 28; clips that still exceed the bitrate budget are retried at CRF 30, 32 (reported)
-    let crf = 28, q;
-    for (; crf <= 32; crf += 2) {
-      ff([...(ss != null ? ['-ss', ss.toFixed(3)] : []), '-i', src, '-t', String(MAX_SECONDS), '-an', '-vf', vf,
-        '-c:v', 'libx264', '-preset', 'slow', '-crf', String(crf), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out]);
+    // Grainy 50/60 fps sources that still bust the budget at CRF 32 are retried at 30 fps (CRF 28..36).
+    const attempts = [[28, 0], [30, 0], [32, 0], [28, 30], [30, 30], [32, 30], [34, 30], [36, 30]];
+    let crf = 28, fps30 = false, q;
+    for (const [c, r] of attempts) {
+      crf = c; fps30 = r === 30;
+      ff([...(ss != null ? ['-ss', ss.toFixed(3)] : start > 0 ? ['-ss', String(start)] : []), '-i', src, '-t', String(MAX_SECONDS), '-an', '-vf', vf,
+        ...(fps30 ? ['-r', '30'] : []), '-c:v', 'libx264', '-preset', 'slow', '-crf', String(crf), '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out]);
       q = probe(out);
       if (q.bitrate < MAX_BITRATE_OK) break;
     }
-    if (q.audio || q.duration > MAX_DURATION_OK || !(q.duration > 0) || q.bitrate >= MAX_BITRATE_OK) throw new Error(`${name}: bad encode`);
-    if (crf > 28) report.push(`crf ${crf} (bitrate budget)`);
+    if (q.audio || q.duration > MAX_DURATION_OK || !(q.duration > 0) || q.bitrate >= MAX_BITRATE_OK) throw new Error(`${name}: bad encode (audio ${q.audio}, ${q.duration}s, ${q.bitrate} bps)`);
+    if (crf > 28 || fps30) report.push(`crf ${crf}${fps30 ? ', 30 fps' : ''} (bitrate budget)`);
+    mkdirSync(dirname(file), { recursive: true });
     renameSync(out, file);
     const v = probeVideo(file);
-    report.push(`video: ${kb(before)} -> ${kb(size(file))}, ${v.width}x${v.height}${crop ? ` (crop ${crop.w}:${crop.h}:${crop.x}:${crop.y})` : ''}${ss != null ? ` (start@${ss.toFixed(2)}s)` : ''}`);
+    report.push(`video: ${kb(before)} -> ${kb(size(file))}, ${v.width}x${v.height}${crop ? ` (crop ${crop.w}:${crop.h}:${crop.x}:${crop.y})` : ''}${ss != null ? ` (start@${ss.toFixed(2)}s)` : ''}${start > 0 ? ` (from ${start}s)` : ''}`);
   }
   writePosters(file, name, report);
   return report.join('; ');
@@ -301,6 +314,59 @@ function collect() {
     if (!args[i].startsWith('--')) out.push(resolve(args[i]));
   }
   return out;
+}
+
+// ---- havas command ----
+function isFresh(out, src) { return !flags.has('--redo') && existsSync(out) && statSync(out).mtimeMs >= statSync(src).mtimeMs; }
+
+function encodeFull(src, out) {
+  const { width: W, height: H } = probeVideo(src);
+  const cap = W === H ? 1080 : 1920;
+  const vf = W === H ? `scale='min(${cap},iw)':-2` : `scale='if(gt(iw,ih),min(${cap},iw),-2)':'if(gt(iw,ih),-2,min(${cap},ih))'`;
+  const tmpOut = join(tmp, 'full.mp4');
+  ff(['-i', src, '-map', '0:v:0', '-map', '0:a:0?', '-vf', vf, '-c:v', 'libx264', '-preset', 'slow', '-crf', '26', '-pix_fmt', 'yuv420p',
+    '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', tmpOut]);
+  mkdirSync(dirname(out), { recursive: true });
+  renameSync(tmpOut, out);
+  const v = probeVideo(out);
+  return `${v.width}x${v.height} ${(size(out) / 1048576).toFixed(1)} MB`;
+}
+
+function encodeImage(src, out) {
+  const cap = 1600;
+  const vf = `scale='if(gt(iw,ih),min(${cap},iw),-2)':'if(gt(iw,ih),-2,min(${cap},ih))':flags=lanczos`;
+  const t1 = join(tmp, 'h1.webp'), t2 = join(tmp, 'h2.webp');
+  ff(['-i', src, '-frames:v', '1', '-vf', vf, '-c:v', 'libwebp', '-quality', '80', '-compression_level', '6', t1]);
+  let best = t1;
+  ff(['-i', src, '-frames:v', '1', '-vf', vf, '-c:v', 'libwebp', '-lossless', '1', '-compression_level', '6', t2]);
+  if (size(t2) < size(t1)) best = t2;
+  mkdirSync(dirname(out), { recursive: true });
+  renameSync(best, out);
+  const v = probeVideo(out);
+  return `${v.width}x${v.height} ${kb(size(out))}`;
+}
+
+if (args[0] === 'havas') {
+  const planPath = args[1];
+  if (!planPath) { console.error('usage: optimize-media.mjs havas <plan.json> [--redo]'); process.exit(2); }
+  const plan = JSON.parse(readFileSync(resolve(planPath), 'utf8'));
+  let ok = 0, bad = 0, skipped = 0;
+  for (const it of plan) {
+    const out = resolve(ROOT, it.out);
+    try {
+      if (!existsSync(it.src)) throw new Error(`source missing ${it.src}`);
+      if (isFresh(out, it.src)) { skipped++; if (it.type === 'preview') writePosters(out, basename(out, '.mp4'), []); continue; }
+      let r;
+      if (it.type === 'preview') r = optimizePreview(out, { src: it.src, start: it.start || 0 });
+      else if (it.type === 'full') r = encodeFull(it.src, out);
+      else if (it.type === 'image') r = encodeImage(it.src, out);
+      else throw new Error(`bad type ${it.type}`);
+      console.log(`${it.out}: ${r}`); ok++;
+    } catch (e) { bad++; console.error(`${it.out}: ERROR ${e.message}`); }
+  }
+  rmSync(tmp, { recursive: true, force: true });
+  console.log(`havas: ${ok} done, ${skipped} up to date, ${bad} errors`);
+  process.exit(bad ? 1 : 0);
 }
 
 let n = 0, fail = 0;

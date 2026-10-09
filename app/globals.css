@@ -1380,3 +1380,260 @@ body.is-hover .cursor-ring {
 @media (prefers-reduced-motion: reduce) {
   .pv-facade img, .pv-play { transition: none; }
 }
+
+/* ProjectVideo aspects */
+/* Self-hosted films and "coming soon" posters. The wrapper owns the aspect ratio; the player or
+   poster fills it with object-fit: contain on black, so a clamped height letterboxes, never crops. */
+.pv-native {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  overflow: hidden;
+}
+.pv-native video,
+.pv-native > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #000;
+  border: 0;
+}
+.pv-native[data-aspect="9:16"] {
+  aspect-ratio: 9 / 16;
+  max-height: 80vh;
+}
+.pv-native[data-aspect="4:5"] {
+  aspect-ratio: 4 / 5;
+  max-height: 80vh;
+}
+.pv-native[data-aspect="1:1"] {
+  aspect-ratio: 1 / 1;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.pv-native[data-aspect="3:2"] {
+  aspect-ratio: 3 / 2;
+}
+.pv-pending > img {
+  opacity: 0.55;
+}
+.pv-pending-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+.pv-meta {
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 12px;
+}
+/* A run of vertical / square films sits in a grid instead of a stack of tall players */
+.pv-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 48px 24px;
+  align-items: start;
+}
+.pv-rail .project-additional-video {
+  margin-top: 0;
+}
+.pv-rail .project-additional-video-title {
+  font-size: 15px;
+}
+.pv-rail .pv-native[data-aspect="1:1"] {
+  max-width: none;
+}
+
+/* Project hero when the first clip is vertical: clip sits right, text stays left */
+.project-hero--portrait .project-video-frame .pv-img,
+.project-hero--portrait .project-video-frame video {
+  object-position: 78% center;
+}
+.project-hero--portrait .project-hero-inner {
+  max-width: min(720px, 46%);
+}
+@media (max-width: 720px) {
+  .project-hero--portrait .project-video-frame {
+    height: 118vw;
+  }
+  .project-hero--portrait .project-video-frame .pv-img,
+  .project-hero--portrait .project-video-frame video {
+    object-fit: contain;
+    object-position: center top;
+  }
+  .project-hero--portrait .project-hero-inner {
+    max-width: 100%;
+  }
+  .pv-rail {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Image galleries (project pages): masonry columns, intrinsic size from width/height attributes */
+.img-gallery {
+  column-count: 3;
+  column-gap: 8px;
+}
+.img-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 0 8px;
+  break-inside: avoid;
+  background: #0a0a0a;
+}
+@media (max-width: 900px) {
+  .img-gallery {
+    column-count: 2;
+  }
+}
+
+/* Havas hub */
+.havas-intro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--pad-x) 72px;
+}
+.havas-intro p {
+  max-width: 680px;
+  margin: 0;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-2);
+}
+.havas-intro .havas-intro-meta {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 40px;
+  font-weight: 200;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+.havas-clients {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 56px var(--pad-x) 96px;
+  border-top: 1px solid var(--line);
+}
+.havas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 56px 24px;
+}
+.havas-grid--small {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 32px 16px;
+}
+.havas-card {
+  display: block;
+  color: inherit;
+}
+.havas-card-thumb {
+  display: block;
+  position: relative;
+  aspect-ratio: 2.39 / 1;
+  background: #0a0a0a;
+  overflow: hidden;
+}
+.havas-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.88;
+  transition: opacity 250ms var(--ease);
+}
+.havas-card-name {
+  display: block;
+  margin-top: 14px;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.havas-grid--small .havas-card-name {
+  font-size: 15px;
+  margin-top: 10px;
+}
+.havas-card-role,
+.havas-card-count {
+  display: block;
+  margin-top: 6px;
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+.havas-card-count {
+  margin-top: 4px;
+  color: var(--text-dim);
+}
+@media (hover: hover) and (pointer: fine) {
+  .havas-card:hover .havas-card-thumb img {
+    opacity: 1;
+  }
+  .havas-card:hover .havas-card-name {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+}
+.havas-card:active {
+  transform: scale(0.99);
+}
+.havas-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.havas-empty {
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+  margin: 0;
+}
+/* Agency line in the credits block, and the "More from" strip */
+.project-credits dd a {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 4px;
+}
+.project-credits dd a:hover {
+  color: #fff;
+}
+.agency-more-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.agency-more-head .project-section-label {
+  margin-bottom: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .havas-card-thumb img {
+    transition: none;
+  }
+}
