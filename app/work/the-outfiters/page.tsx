@@ -1,18 +1,21 @@
 import Link from "next/link";
 import { projects } from "@/lib/projects";
 import BackButton from "@/components/BackButton";
-import PhotoCarousel from "@/components/PhotoCarousel";
-import PhotoGallery from "@/components/PhotoGallery";
+import SlideDeck from "@/components/SlideDeck";
+import MilanoteEmbed from "@/components/MilanoteEmbed";
 import Footer from "@/components/Footer";
 import brandImages from "@/data/outfiters-brand-images.json";
-import moodImages from "@/data/outfiters-mood-images.json";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
   title: "The Outfiters — Remi Karlin",
-  description: "Artistic direction for a project selling Vietnamese streetwear to European markets.",
+  description: "Artistic direction for The Outfiters, Vietnamese streetwear for European markets: brand board, logo system and the mood board behind the Instagram account.",
   path: "/work/the-outfiters",
 });
+
+const MOODBOARD_URL = "https://app.milanote.com/1XfiCd1keSSa5d/the-outfiters";
+// paste the src of Milanote's embed code here (Share → read-only link → Generate HTML embed code)
+const MOODBOARD_EMBED = "";
 
 const LOGO_SRC = `/images/the-outfiters-brand/${encodeURIComponent("out fiters vn (5).webp")}`;
 
@@ -36,8 +39,8 @@ export default function OutfitersPage() {
           Artistic direction · Vietnamese streetwear
         </div>
 
-        <div style={{ display: "flex", gap: 48, alignItems: "flex-end" }}>
-          <div style={{ flex: 1 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "32px 48px", alignItems: "flex-end" }}>
+          <div style={{ flex: "1 1 320px", minWidth: 0 }}>
             <p style={{ fontWeight: 300, fontSize: 15, lineHeight: 1.8, color: "var(--text-2)", margin: 0 }}>
               Artistic direction for a small project selling Vietnamese streetwear to European markets. The goal was to build an Instagram account that represented a mood board of the style and lifestyle we wanted to project to our audience — and within that mood board, mix in the Vietnamese brands to sell in Europe using the mood we had built up on the page.
             </p>
@@ -48,23 +51,21 @@ export default function OutfitersPage() {
             </div>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={LOGO_SRC} alt="The Outfiters logo" style={{ width: "clamp(280px, 40vw, 540px)", flexShrink: 0, display: "block" }} />
+          <img src={LOGO_SRC} alt="The Outfiters logo" style={{ width: "clamp(220px, 40vw, 540px)", maxWidth: "100%", flexShrink: 0, display: "block" }} />
         </div>
       </header>
 
       {brandImages.length > 0 && (
-        <section style={{ maxWidth: 1200, margin: "0 auto", borderTop: "1px solid var(--line)", padding: "48px var(--pad-x) 0" }}>
-          <div className="project-section-label" style={{ marginBottom: 24 }}>Brand board</div>
-          <PhotoCarousel images={brandImages} alt="Brand" centerFit="contain" />
+        <section className="project-section" style={{ paddingBottom: 0 }}>
+          <div className="project-section-label">Brand board</div>
+          <SlideDeck images={brandImages} alt="The Outfiters brand board" />
         </section>
       )}
 
-      {moodImages.length > 0 && (
-        <section style={{ maxWidth: 1200, margin: "48px auto 0", borderTop: "1px solid var(--line)", padding: "48px var(--pad-x) 0" }}>
-          <div className="project-section-label" style={{ marginBottom: 24 }}>Mood board inspiration</div>
-          <PhotoGallery images={moodImages} alt="Mood" columns={4} />
-        </section>
-      )}
+      <section className="project-section" style={{ paddingBottom: 0 }}>
+        <div className="project-section-label">Mood board</div>
+        <MilanoteEmbed src={MOODBOARD_EMBED} title="The Outfiters mood board" boardUrl={MOODBOARD_URL} />
+      </section>
 
       <nav className="project-prev-next" aria-label="Project navigation" style={{ marginTop: 96 }}>
         <div>

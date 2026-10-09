@@ -178,7 +178,7 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
   const [extra, setExtra] = useState<HeroItem[]>([]);
   useEffect(() => {
     if (process.env.NODE_ENV !== "production" && window.location.search.includes("heroStills=1")) {
-      setExtra([{ slug: "stills-test", title: "Stills test", label: "test", clips: ["/images/thumbs/halatia.webp", "/images/thumbs/unfold-agency.webp"] }]);
+      setExtra([{ slug: "stills-test", title: "Stills test", label: "test", clips: ["/images/thumbs/halatia.webp", "/images/thumbs/the-outfiters.webp"] }]);
     }
   }, []);
   const items = useMemo(() => (extra.length ? [...baseItems, ...extra] : baseItems), [baseItems, extra]);

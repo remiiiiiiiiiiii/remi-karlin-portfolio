@@ -7,12 +7,12 @@ import Footer from "@/components/Footer";
 
 const SLUG = "brand-identity";
 const INTRO =
-  "Identity work for three brands: a Parisian eau de parfum, a creative agency and a Vietnamese streetwear label. Logo, palette, type and the first campaign visuals for each.";
+  "Identity work for two brands: a Parisian eau de parfum and a Vietnamese streetwear label. Logo, palette, type and the first campaign visuals for each.";
 
 export const metadata = pageMeta({
-  title: "Brand Identity — Halatia, Unfold Agency, The Outfiters | Remi Karlin",
+  title: "Brand Identity — Halatia, The Outfiters | Remi Karlin",
   description:
-    "Brand identity and art direction case studies by Remi Karlin: Halatia Paris eau de parfum, Unfold Agency and The Outfiters.",
+    "Brand identity and art direction case studies by Remi Karlin: Halatia Paris eau de parfum and The Outfiters.",
   path: `/work/${SLUG}`,
 });
 
@@ -35,7 +35,7 @@ export default function BrandIdentityHub() {
         </div>
         <h1 className="page-title">Brand Identity</h1>
         <div className="page-subtitle" style={{ textTransform: "uppercase", fontSize: 14, letterSpacing: "0.08em" }}>
-          Three identities · Paris · 2025
+          Two identities · Paris · 2025
         </div>
       </header>
 
