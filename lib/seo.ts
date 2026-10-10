@@ -67,7 +67,8 @@ export const siteJsonLd = {
       sameAs: [
         "https://www.instagram.com/karlinremi",
         "https://www.linkedin.com/in/remi-karlin",
-        "https://www.youtube.com/@remicamm",
+        "https://www.instagram.com/remi.camm",
+        "https://www.instagram.com/b1nbags",
       ],
     },
   ],

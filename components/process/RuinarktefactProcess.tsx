@@ -18,10 +18,10 @@ export default function RuinarktefactProcess() {
       <ScrollReveal>
         <div className="project-section-label">Creative process</div>
         <div style={{ fontWeight: 300, fontSize: 14, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)", marginBottom: 32 }}>
-          Campaign identity · Art direction · Short film
+          Film · Creative production · Campaign identity
         </div>
         <p style={{ fontWeight: 300, fontSize: 15, lineHeight: 1.8, color: "var(--text-2)", maxWidth: 680, margin: "0 0 24px" }}>
-          The creative process behind VOLCAN'ARCHIK, the BDE ESSEC 2024/25 campaign. Teammates also helped with sound design, mascot design, derushing and planning. The design work began with mascot concepting in Procreate, refined through Photoshop and Illustrator for vectorisation, then extended into 3D name designs built in Blender, Photoshop, and Adobe Firefly with Midjourney-generated backgrounds. The centrepiece was a 20-minute declaration short film — scripted, moodboarded shot-by-shot, filmed on a Sony FX3 with a 24-70 GM lens, graded in DaVinci Resolve with phantom LUTs, and finished in Premiere Pro and After Effects for 3D special effects. The campaign reached over 40,000 views across platforms.
+          The creative process behind VOLCAN'ARCHIK, the BDE ESSEC 2024/25 campaign. The design work began with mascot concepting in Procreate, refined through Photoshop and Illustrator for vectorisation, then extended into 3D name designs built in Blender, Photoshop, and Adobe Firefly with Midjourney-generated backgrounds. The centrepiece was a 20-minute declaration short film — scripted, moodboarded shot-by-shot, filmed on a Sony FX3 with a 24-70 GM lens, graded in DaVinci Resolve with phantom LUTs, and finished in Premiere Pro and After Effects for 3D special effects. Teammates helped with sound design, mascot design, derushing and planning.
         </p>
         <div style={{ display: "flex", gap: "16px 40px", flexWrap: "wrap", fontWeight: 200, fontSize: 9, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", marginBottom: 48 }}>
           <span>2024 – 2025</span>

@@ -1186,6 +1186,7 @@ body.is-hover .cursor-ring {
 }
 
 .project-link {
+  pointer-events: auto;
   font-weight: 400;
   font-size: 11px;
   color: #888;

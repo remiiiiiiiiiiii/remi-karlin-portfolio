@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 
 const SLUG = "brand-identity";
 const INTRO =
-  "Identity work for four projects: Halatia, an eau de parfum, and The Outfiters, a Vietnamese streetwear project, both started with friends and never launched; B1NBAGS, a clothing label in Hong Kong; and the Volcan'Archik student campaign. Logo, palette, type and the first visuals for each.";
+  "Identity work for four projects: Halatia, an eau de parfum, and The Outfiters, a Vietnamese streetwear project, both started with friends and never launched; B1NBAGS, a clothing label in Hong Kong; and the Volcan'Archik student campaign, made with teammates. Logo, palette, type and the first visuals for each.";
 
 export const metadata = pageMeta({
   title: "Brand Identity — Halatia, The Outfiters, B1NBAGS, Volcan'Archik | Remi Karlin",
@@ -35,14 +35,14 @@ export default function BrandIdentityHub() {
         </div>
         <h1 className="page-title">Brand Identity</h1>
         <div className="page-subtitle" style={{ textTransform: "uppercase", fontSize: 14, letterSpacing: "0.08em" }}>
-          Four identities · Paris · Hong Kong · 2025
+          Four identities · Paris · Hong Kong · 2023–25
         </div>
       </header>
 
       <div className="havas-intro">
         <p>{INTRO}</p>
         <div className="havas-intro-meta">
-          <span>2025</span>
+          <span>2023–25</span>
           <span>Paris</span>
           <span>Art Director · Brand Designer</span>
         </div>
