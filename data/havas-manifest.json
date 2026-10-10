@@ -404,20 +404,8 @@
       ],
       "galleries": [
         {
-          "title": "Photos and posters",
+          "title": "Portraits",
           "images": [
-            {
-              "path": "/images/havas/internal/affiche-stagios-vrai.webp",
-              "width": 1132,
-              "height": 1600,
-              "source": "HAVAS internal/affiche stagios vrai.png"
-            },
-            {
-              "path": "/images/havas/internal/dsc00103.webp",
-              "width": 1600,
-              "height": 900,
-              "source": "HAVAS internal/DSC00103.jpg"
-            },
             {
               "path": "/images/havas/internal/dsc07743.webp",
               "width": 1200,

@@ -515,7 +515,7 @@
       "year": "2026",
       "location": "Paris",
       "roles": ["Editor", "Art Director"],
-      "description": "Work made for the agency itself: the Ce Créa 2026 film and a BKT x M6N piece, plus portraits, an interns poster and awards posters. Remi planned, set up, shot and edited the portraits himself, and designed the awards posters in his own style.",
+      "description": "Work made for the agency itself: the Ce Créa 2026 film and a BKT x M6N piece, plus portraits and awards posters. Remi planned, set up, shot and edited the portraits himself, and designed the awards posters in his own style.",
       "previewVideo": "/videos/havas-internal-1-preview.mp4",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-internal.webp",
@@ -547,18 +547,8 @@
       ],
       "galleries": [
         {
-          "title": "Photos and posters",
+          "title": "Portraits",
           "images": [
-            {
-              "path": "/images/havas/internal/affiche-stagios-vrai.webp",
-              "width": 1132,
-              "height": 1600
-            },
-            {
-              "path": "/images/havas/internal/dsc00103.webp",
-              "width": 1600,
-              "height": 900
-            },
             {
               "path": "/images/havas/internal/dsc07743.webp",
               "width": 1200,
