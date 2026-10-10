@@ -1355,8 +1355,12 @@ body.is-hover .cursor-ring {
   .project-video-frame .pv-img {
     object-fit: cover;
   }
+  /* Phones: text sits under the video, so long descriptions never spill over the top of the frame */
   .project-hero-overlay {
-    padding: 0 var(--pad-x) 20px;
+    position: relative;
+    inset: auto;
+    padding: 20px var(--pad-x) 8px;
+    background: none;
   }
   .project-hero-inner {
     max-width: 100%;
