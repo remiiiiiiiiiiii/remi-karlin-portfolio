@@ -30,7 +30,6 @@ export default function AboutPage() {
               aspectRatio: "3 / 4",
               objectFit: "cover",
               display: "block",
-              filter: "grayscale(15%)",
             }}
           />
         </div>
