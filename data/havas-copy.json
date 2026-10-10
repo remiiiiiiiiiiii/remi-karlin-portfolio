@@ -1,14 +1,16 @@
 {
-  "_about": "Copy for the Havas Play internship work. Read by scripts/import-havas.mjs (writes data/projects.json) and by app/work/havas-play/page.tsx (intro, order). youtubeIds maps a manifest video number (n) to a YouTube id once the film is uploaded; the import then turns the pending placeholder into the YouTube facade. Slugs and order are fixed here; titles are display names.",
+  "_about": "Copy for the Havas Play internship work. Read by scripts/import-havas.mjs (writes data/projects.json) and by app/work/havas-play/page.tsx and lib/projects.ts (intro, order, tiers). youtubeIds maps a manifest video number (n) to a YouTube id once the film is uploaded; the import then turns the pending placeholder into the YouTube facade. Slugs and order are fixed here; titles are display names. tier: \"main\" clients get a full card on the hub and in the homepage bracket row, \"also\" clients sit in the smaller \"Also at Havas\" section. A client or a piece that is not in data/havas-manifest.json is never imported, so removing it from the manifest is how it stays removed.",
   "hub": {
     "slug": "havas-play",
     "title": "Havas Play",
     "tag": "Agency",
     "subtitle": "Internship · Editor & Art Director · Paris · January to June 2026",
     "shortDescription": "Internship at Havas Play, Paris: editing, art direction and some filming for sports and entertainment brands.",
-    "intro": "Havas Play is the sports and entertainment agency of Havas, based in Paris. Between January and June 2026, Remi worked there as an editor and art director, with some filming for a few clients. The clients below are Allianz, BKT, the Fédération Française de Judo, Kellogg's, KFC, Nissan, Orange, Paris FC, Renault, Sanofi and Louis Burton, plus work made for the agency itself.",
+    "intro": "Havas Play is the sports and entertainment agency of Havas, based in Paris. Between January and June 2026, Remi worked there as an editor and art director, with some filming for a few clients: KFC, Renault, Sanofi, the Fédération Française de Judo, Kellogg's, Nissan, Allianz, Paris FC and Louis Burton, plus work made for the agency itself.",
     "roles": ["Editor", "Art Director"],
-    "thumbnail": "/images/thumbs/havas-internal.webp"
+    "thumbnail": "/images/thumbs/havas-internal.webp",
+    "mainLabel": "Clients",
+    "alsoLabel": "Also at Havas"
   },
   "existingFeatured": {
     "fan-yan": 1,
@@ -21,6 +23,7 @@
   "clients": {
     "havas-kfc": {
       "order": 1,
+      "tier": "main",
       "title": "KFC",
       "client": "KFC",
       "subtitle": "Product film and stills film · Havas Play",
@@ -32,6 +35,7 @@
     },
     "havas-renault": {
       "order": 2,
+      "tier": "main",
       "title": "Renault",
       "client": "Renault",
       "subtitle": "One-minute film · Havas Play",
@@ -41,79 +45,31 @@
       "featured": 4,
       "youtubeIds": {}
     },
-    "havas-kellogs": {
-      "order": 3,
-      "title": "Kellogg's",
-      "client": "Kellogg's",
-      "subtitle": "Tasty Krunchy · Social films · Havas Play",
-      "shortDescription": "ASMR-style social films for Kellogg's Tasty Krunchy, made at Havas Play.",
-      "description": "Short social films for Kellogg's Tasty Krunchy, built around close shots and the sound of the snack in the manner of ASMR. Filmed, edited and art directed at Havas Play, delivered as short social cuts.",
-      "roles": ["Filmmaker", "Editor", "Art Director"],
-      "featured": 5,
-      "youtubeIds": {}
-    },
-    "havas-nissan": {
-      "order": 4,
-      "title": "Nissan",
-      "client": "Nissan",
-      "subtitle": "Juke social series · Havas Play",
-      "shortDescription": "A social series for the Nissan Juke: ASMR films, a One Piece film and calendar posts.",
-      "description": "A social series for the Nissan Juke, made at Havas Play. It mixes ASMR films, a film around One Piece and calendar-style posts, edited and art directed as social cuts.",
-      "roles": ["Editor", "Art Director"],
-      "youtubeIds": {}
-    },
-    "havas-allianz": {
-      "order": 5,
-      "title": "Allianz",
-      "client": "Allianz",
-      "subtitle": "Winter sports social content · Havas Play",
-      "shortDescription": "Winter sports social content for Allianz: slalom, paragliding, a day in the life, stickers and cards.",
-      "description": "Social content around winter sports for Allianz, made at Havas Play. Films on slalom and paragliding and a day in the life, alongside emoji stickers and \"did you know\" cards, edited and art directed for social formats.",
-      "roles": ["Editor", "Art Director"],
-      "youtubeIds": {}
-    },
     "havas-sanofi": {
-      "order": 6,
+      "order": 3,
+      "tier": "main",
       "title": "Sanofi",
       "client": "Sanofi",
-      "subtitle": "Athlete films · Havas Play",
-      "shortDescription": "Athlete films for Sanofi: a reveal, Paul Ricard, Mikkel, and a logo animation.",
-      "description": "A set of athlete films for Sanofi, made at Havas Play: a reveal film, one shot at Paul Ricard and one with Mikkel, plus a logo animation. Edited and art directed in Paris.",
+      "subtitle": "Films for Sanofi · Havas Play",
+      "shortDescription": "Two car films and a motion piece with Mikkel for Sanofi, made at Havas Play.",
+      "description": "Films for Sanofi made at Havas Play: two car films, one shot at the Paul Ricard circuit and a reveal, plus a motion piece with Mikkel. Edited and art directed in Paris.",
       "roles": ["Editor", "Art Director"],
       "youtubeIds": {}
     },
-    "havas-bkt": {
-      "order": 7,
-      "title": "BKT",
-      "client": "BKT",
-      "subtitle": "Football sponsorship · Social content · Havas Play",
-      "shortDescription": "Match-day films and social posts for BKT, the tyre brand, around its football sponsorship.",
-      "description": "Social content for BKT, the tyre brand, around its football sponsorship. Match-day \"actions\" films and social posts, edited and art directed at Havas Play.",
-      "roles": ["Editor", "Art Director"],
-      "youtubeIds": {}
-    },
-    "havas-paris-fc": {
-      "order": 8,
-      "title": "Paris FC",
-      "client": "Paris FC",
-      "subtitle": "The Kop · Film · Havas Play",
-      "shortDescription": "A film for Paris FC about the Kop, made at Havas Play.",
-      "description": "A film for Paris FC about the Kop, edited and art directed at Havas Play.",
-      "roles": ["Editor", "Art Director"],
-      "youtubeIds": {}
-    },
-    "havas-tor": {
-      "order": 9,
-      "title": "Orange",
-      "client": "Orange",
-      "subtitle": "Team Orange Running · event films",
-      "shortDescription": "Finish-line and teaser films and contest visuals for Team Orange Running, a running event by Orange.",
-      "description": "Films and visuals for Team Orange Running, a running event by Orange, made at Havas Play. A finish-line film and teaser films, plus visuals for a contest, edited and art directed in Paris.",
+    "havas-internal": {
+      "order": 4,
+      "tier": "main",
+      "title": "Havas Play, internal",
+      "client": "Havas Play",
+      "subtitle": "Work for the agency itself · Havas Play",
+      "shortDescription": "Work made for Havas Play itself: the Ce Créa 2026 film, posters, portraits and more.",
+      "description": "Work made for the agency itself: the Ce Créa 2026 film and a BKT x M6N piece, plus portraits, an interns poster and awards posters. Remi planned, set up, shot and edited the portraits himself, and designed the awards posters in his own style.",
       "roles": ["Editor", "Art Director"],
       "youtubeIds": {}
     },
     "havas-ffj": {
-      "order": 10,
+      "order": 5,
+      "tier": "main",
       "title": "Fédération Française de Judo",
       "client": "Fédération Française de Judo",
       "subtitle": "FFJ · poster series",
@@ -122,23 +78,59 @@
       "roles": ["Editor", "Art Director"],
       "youtubeIds": {}
     },
-    "havas-louis-burton": {
-      "order": 11,
-      "title": "Louis Burton",
-      "client": "Louis Burton",
-      "subtitle": "Two vertical films · Havas Play",
-      "shortDescription": "Two vertical films for Louis Burton, made at Havas Play.",
-      "description": "Two vertical films for Louis Burton, edited and art directed at Havas Play.",
+    "havas-kellogs": {
+      "order": 6,
+      "tier": "also",
+      "title": "Kellogg's",
+      "client": "Kellogg's",
+      "subtitle": "Tasty Krunchy · Social film · Havas Play",
+      "shortDescription": "A short ASMR-style social film for Kellogg's Tasty Krunchy, made at Havas Play.",
+      "description": "A short social film for Kellogg's Tasty Krunchy, built around close shots and the sound of the snack in the manner of ASMR. Directed, filmed and edited at Havas Play.",
+      "roles": ["Director", "Filmmaker", "Editor"],
+      "featured": 5,
+      "youtubeIds": {}
+    },
+    "havas-nissan": {
+      "order": 7,
+      "tier": "also",
+      "title": "Nissan",
+      "client": "Nissan",
+      "subtitle": "Social content · Havas Play",
+      "shortDescription": "Social content for Nissan: a GT-R film, a film on building an ad from one photo, and calendar-style posts.",
+      "description": "Social content for Nissan made at Havas Play: a Nissan GT-R film, a film showing how an ad is built from a single photo, and calendar-style posts. Edited and art directed in Paris.",
       "roles": ["Editor", "Art Director"],
       "youtubeIds": {}
     },
-    "havas-internal": {
-      "order": 12,
-      "title": "Havas Play, internal",
-      "client": "Havas Play",
-      "subtitle": "Work for the agency itself · Havas Play",
-      "shortDescription": "Work made for Havas Play itself: showreel, Ce Créa 2026, posters, portraits and more.",
-      "description": "Work made for the agency itself: the Havas Play showreel, the Ce Créa 2026 film, a Sephora crew film and a BKT x M6N piece, plus an interns poster, profile portraits and awards posters. Edited and art directed during the internship.",
+    "havas-allianz": {
+      "order": 8,
+      "tier": "also",
+      "title": "Allianz",
+      "client": "Allianz",
+      "subtitle": "Winter sports social content · Havas Play",
+      "shortDescription": "Winter-sports content for Allianz: a day-in-the-life film, emoji stickers and cards.",
+      "description": "Winter-sports content for Allianz made at Havas Play: a day-in-the-life film alongside emoji stickers and \"did you know\" cards, edited and art directed for social formats.",
+      "roles": ["Editor", "Art Director"],
+      "youtubeIds": {}
+    },
+    "havas-paris-fc": {
+      "order": 9,
+      "tier": "also",
+      "title": "Paris FC",
+      "client": "Paris FC",
+      "subtitle": "The Kop · Film · Havas Play",
+      "shortDescription": "A film for Paris FC about the Kop, made at Havas Play.",
+      "description": "A film for Paris FC about the Kop, edited and art directed at Havas Play.",
+      "roles": ["Editor", "Art Director"],
+      "youtubeIds": {}
+    },
+    "havas-louis-burton": {
+      "order": 10,
+      "tier": "also",
+      "title": "Louis Burton",
+      "client": "Louis Burton",
+      "subtitle": "Vertical film · Havas Play",
+      "shortDescription": "A vertical film for Louis Burton, made at Havas Play.",
+      "description": "A vertical film for Louis Burton, edited and art directed at Havas Play.",
       "roles": ["Editor", "Art Director"],
       "youtubeIds": {}
     }

@@ -70,7 +70,6 @@ const POSTER_OVERRIDES = {
   'spain-preview': [5.0],                  // title card over the first 2.5 s, windshield shots after
   'b1nbags-shot-expresso-preview': [3.0],  // "MATHIS" title over the first second
   'essec-modessec-aftermovie-preview': [6.0], // dark opening with photographer credit
-  'havas-bkt-6-preview': [6.0],            // background is blurred behind the vote card until ~5 s; sharpest frame
 };
 const GALLERY_DIRS = ['fan-yan', 'modessec', 'the-outfiters-mood', 'halatia', 'unfold-agency'];
 
