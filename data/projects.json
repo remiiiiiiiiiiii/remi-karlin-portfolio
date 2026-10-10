@@ -1010,6 +1010,53 @@
       "instagramUrl": "https://instagram.com/b1nbags",
       "bannerImage": "/images/b1nbags/banner.webp",
       "instagramGridImage": "/images/b1nbags/instagram-grid.webp",
+      "galleries": [
+        {
+          "title": "Pieces",
+          "images": [
+            {
+              "path": "/images/b1nbags/22-cqf5kacvfit-1.webp",
+              "width": 1440,
+              "height": 1440
+            },
+            {
+              "path": "/images/b1nbags/53-csqdnjppbs_-2.webp",
+              "width": 1440,
+              "height": 1440
+            },
+            {
+              "path": "/images/b1nbags/38-cqf6v19pkuq-3.webp",
+              "width": 1440,
+              "height": 1440
+            },
+            {
+              "path": "/images/b1nbags/59-csqd89wpifz-3.webp",
+              "width": 1440,
+              "height": 1440
+            },
+            {
+              "path": "/images/b1nbags/73-csgagyxpdvg-1.webp",
+              "width": 1440,
+              "height": 1440
+            },
+            {
+              "path": "/images/b1nbags/76-csgagyxpdvg-4.webp",
+              "width": 1440,
+              "height": 1440
+            },
+            {
+              "path": "/images/b1nbags/105-c1t6wusvpxt-1.webp",
+              "width": 1440,
+              "height": 1440
+            },
+            {
+              "path": "/images/b1nbags/115-c6raexru2b9-1.webp",
+              "width": 1440,
+              "height": 1800
+            }
+          ]
+        }
+      ],
       "credits": {
         "Year": "2023–25",
         "Location": "Hong Kong",
