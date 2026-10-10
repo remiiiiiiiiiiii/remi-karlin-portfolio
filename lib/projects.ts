@@ -58,6 +58,8 @@ export type Project = {
   /** Brand the work was made for (the agency's client). */
   client?: string;
   galleries?: ProjectGallery[];
+  /** Optional external links shown under the description (opens in a new tab). */
+  links?: { label: string; url: string }[];
   /** Hub entries only: other projects' sections shown on this hub too (e.g. a film's process section), without
    *  taking those projects out of the work index. `hash` is the anchor on their page, `title` the label here. */
   hubLinks?: { slug: string; title?: string; hash?: string }[];

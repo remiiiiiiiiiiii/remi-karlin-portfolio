@@ -9,7 +9,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
   title: "The Outfiters — Remi Karlin",
-  description: "Artistic direction for The Outfiters, Vietnamese streetwear for European markets: brand board, logo system and the mood board behind the Instagram account.",
+  description: "Art direction for The Outfiters, a project started with friends to bring Vietnamese streetwear to European buyers. It never took off. Brand board, logo system and mood board.",
   path: "/work/the-outfiters",
 });
 
@@ -39,18 +39,18 @@ export default function OutfitersPage() {
           The Outfiters
         </h1>
         <div style={{ fontWeight: 300, fontSize: 14, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)", marginBottom: 32 }}>
-          Artistic direction · Vietnamese streetwear
+          Art direction · Vietnamese streetwear
         </div>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "32px 48px", alignItems: "flex-end" }}>
           <div style={{ flex: "1 1 320px", minWidth: 0 }}>
             <p style={{ fontWeight: 300, fontSize: 15, lineHeight: 1.8, color: "var(--text-2)", margin: 0 }}>
-              Artistic direction for a small project selling Vietnamese streetwear to European markets. The goal was to build an Instagram account that represented a mood board of the style and lifestyle we wanted to project to our audience — and within that mood board, mix in the Vietnamese brands to sell in Europe using the mood we had built up on the page.
+              Art direction for The Outfiters, a project started with friends to bring Vietnamese streetwear to European buyers. It never took off. Remi came up with the name and did all the art direction: the identity, and a mood board of the style and lifestyle the brand was meant to stand for, built to frame the Vietnamese labels it would sell. Friends led the product and business side.
             </p>
             <div style={{ marginTop: 24, display: "flex", gap: "16px 40px", flexWrap: "wrap", fontWeight: 200, fontSize: 9, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
               <span>2025</span>
               <span>Paris / Vietnam</span>
-              <span>Art Direction · Instagram</span>
+              <span>Art Direction</span>
             </div>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}

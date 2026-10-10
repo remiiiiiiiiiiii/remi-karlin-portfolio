@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Remi Karlin, filmmaker and cinematographer, Hong Kong and Paris";
+export const alt = "Remi Karlin, art director, Paris";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -41,7 +41,7 @@ export default function Image() {
             color: "#888888",
           }}
         >
-          Filmmaker · Cinematographer · Artistic Director · Hong Kong / Paris
+          Art Director · Paris
         </div>
       </div>
     ),

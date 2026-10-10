@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 
 const SLUG = "brand-identity";
 const INTRO =
-  "Identity work for a Parisian eau de parfum, a Vietnamese streetwear label, a Hong Kong clothing brand and a student campaign. Logo, palette, type and the first visuals for each.";
+  "Identity work for four projects: Halatia, an eau de parfum, and The Outfiters, a Vietnamese streetwear project, both started with friends and never launched; B1NBAGS, a clothing label in Hong Kong; and the Volcan'Archik student campaign. Logo, palette, type and the first visuals for each.";
 
 export const metadata = pageMeta({
   title: "Brand Identity — Halatia, The Outfiters, B1NBAGS, Volcan'Archik | Remi Karlin",

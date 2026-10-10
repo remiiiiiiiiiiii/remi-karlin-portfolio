@@ -32,20 +32,20 @@ export const metadata: Metadata = {
     locale: "en_GB",
     title: HOME_TITLE,
     description:
-      "Filmmaker and cinematographer between Hong Kong and Paris. Documentary, brand film and music video work.",
+      "Art director based in Paris. Brand identities and campaigns, and the films and photographs that carry them.",
     images: [
       {
         url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Remi Karlin, filmmaker and cinematographer",
+        alt: "Remi Karlin, art director",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: HOME_TITLE,
-    description: "Filmmaker and cinematographer between Hong Kong and Paris.",
+    description: "Art director based in Paris.",
     images: [DEFAULT_OG_IMAGE],
   },
   robots: {

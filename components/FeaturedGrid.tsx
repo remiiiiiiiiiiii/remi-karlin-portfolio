@@ -25,7 +25,7 @@ export default function FeaturedGrid({ items }: { items: FeaturedItem[] }) {
     <section className="hm" aria-label="Chosen work">
       <div className="hm-intro">
         <p className="hm-name">Remi Karlin</p>
-        <p className="hm-role label">Filmmaker · Cinematographer · Artistic Director</p>
+        <p className="hm-role label">Filmmaker · Cinematographer · Art Director</p>
       </div>
       <ol className="hm-grid">
         {items.map((it, i) => {

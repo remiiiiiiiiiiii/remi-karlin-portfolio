@@ -201,6 +201,7 @@ Preview naming: one preview becomes `public/videos/<slug>-preview.mp4`, several 
 | `photoGrid` | `{ title, images[] }`, optional | Stills gallery |
 | `galleries` | `[{ title, images: [{ path, width?, height? }] }]`, optional | Titled galleries, made by `add-gallery`; sits just before `credits` |
 | `agency` | `{ name, slug }`, optional | Agency the work was made for, e.g. `{ "name": "Havas Play", "slug": "havas-play" }`. `slug` is the hub page `/work/<slug>`; the hub lists every project with this slug. Sits after `location` |
+| `links` | `[{ label, url }]`, optional | External links shown under the description on the project page (new tab, `noopener noreferrer`), e.g. `fanyan-art.com` on Fan Yan. Edit by hand; the script does not set it |
 | `client` | string, optional | Brand the work was made for, e.g. `KFC`. Sits after `agency` |
 | `instagram`, `instagramUrl`, `bannerImage`, `instagramGridImage`, `campaignBody`, `mascotImage`, `campaignDesignImage` | strings, optional | Used by the campaign-style pages. Not set by the script; edit by hand |
 

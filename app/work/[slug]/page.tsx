@@ -217,6 +217,17 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
               )}
             </div>
             <p className="project-hero-desc">{project.description}</p>
+            {project.links?.map((l) => (
+              <a
+                key={l.url}
+                className="project-link"
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {l.label}
+              </a>
+            ))}
           </div>
         </div>
       </div>

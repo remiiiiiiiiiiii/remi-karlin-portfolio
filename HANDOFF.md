@@ -8,7 +8,7 @@ Last updated: 2026-10-09 · Last commit when written: `c5c2a53` (+ Havas Play wo
 
 ## 1. Who / what
 
-- **Owner:** Remi Karlin, filmmaker, cinematographer and artistic director (Hong Kong / Paris). Use "artistic director", not "creative director", in site copy.
+- **Owner:** Remi Karlin, art director based in Paris who also shoots, edits and grades (raised in Hong Kong). Use "art director" / "art direction", never "creative director", in site copy. Site copy writes "Remi" without the accent.
 - **Site:** Personal portfolio, live at **remikarlin.com**
 - **Audience:** film producers, art directors, agencies. Goal: understand Remi's creative direction and the vibe of the work, then keep exploring and come away impressed.
 - **Personality:** cinematic, precise, understated. Video does the talking and the UI stays out of the way.
@@ -83,8 +83,8 @@ Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it 
 
 `node scripts/add-project.mjs list` is the live truth (slug, category, featured, hidden, clip, thumbnail). At the time of writing, 32 entries:
 
-- **Featured (hero / grid order):** fan-yan, solene, havas-kfc, havas-renault, havas-kellogs, hong-kong, b1nbags, ruinarktefact, modessec.
-- **Hidden:** vietnam (own page, not listed).
+- **Featured (hero / grid order):** b1nbags, modessec, fan-yan, havas-play (hub), brand-identity (hub), ruinarktefact, travel (hub).
+- **Hidden:** amsterdam, vietnam (own pages, not listed).
 - **Case studies (`other`, each with `thumbnail` and a custom page):** halatia, unfold-agency, the-outfiters, b1nbags-process, ruinarktefact-process.
 
 | Slug | Category | Notes |

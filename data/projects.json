@@ -4,16 +4,22 @@
       "slug": "fan-yan",
       "title": "Fan Yan",
       "subtitle": "Mini documentary · Hong Kong",
-      "shortDescription": "A mini documentary on Hong Kong artist Fan Yan, including artwork stills and an AI video experiment.",
+      "shortDescription": "A mini documentary portrait of Fan Yan, Remi's mum and a Hong Kong ink painter.",
       "tag": "Documentary",
       "category": "film",
       "year": "2025",
       "location": "Hong Kong",
       "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
-      "description": "A mini documentary portrait of Hong Kong–based artist Fan Yan. Shot, edited and graded end-to-end. The project also includes a series of artwork product photography stills, a lamps short film, and a short film to advertise the artist's products.",
+      "description": "A mini documentary portrait of Fan Yan, Remi's mum: a Hong Kong ink painter who played viola in the Hong Kong Philharmonic Orchestra for over 20 years before returning to her first love, ink and watercolour on rice paper. Her work has been shown in a solo exhibition at Alisan Fine Arts (2023) and at Collect Hong Kong (2025). Remi proposed the film to her and made it alone for her Instagram: directed, shot, edited and graded. The project also includes product photography of her artworks, a short film about her lamps and a short film advertising her products. Remi also designed and runs her website.",
+      "links": [
+        {
+          "label": "fanyan-art.com",
+          "url": "https://www.fanyan-art.com"
+        }
+      ],
       "previewVideo": "/videos/fan-yan-2-preview.mp4",
       "coverImage": "/images/cover-fan-yan.webp",
-      "featured": 6,
+      "featured": 3,
       "hidden": false,
       "videos": [
         {
@@ -39,7 +45,8 @@
         "Roles": "Direction · Cinematography · Editing · Color",
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
-        "Post": "DaVinci Resolve"
+        "Post": "DaVinci Resolve",
+        "Website": "Design and upkeep of fanyan-art.com"
       }
     },
     {
@@ -52,7 +59,7 @@
       "year": "2025",
       "location": "Philadelphia",
       "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
-      "description": "Music video for Solène — a cover of 12:51 by The Strokes. Shot, edited and colour graded end-to-end in Philadelphia.",
+      "description": "Music video for Solène, Remi's sister: a cover of 12:51 by The Strokes. A collaboration Remi offered her; he directed, shot, edited and graded it alone in Philadelphia.",
       "previewVideo": "/videos/solene-preview.mp4",
       "coverImage": "",
       "hidden": false,
@@ -1044,19 +1051,19 @@
     {
       "slug": "travel",
       "title": "Travel",
-      "subtitle": "Eight places, one camera",
+      "subtitle": "Six places, one camera",
       "shortDescription": "All the travel films in one place.",
       "tag": "Travel films",
       "category": "travel",
       "year": "2024–25",
-      "location": "Hong Kong · France · Spain · Morocco · Amsterdam · Vietnam · Venice · New York",
+      "location": "Hong Kong · France · Spain · Morocco · Venice · New York",
       "roles": ["Cinematographer", "Editor", "Colorist"],
-      "description": "Personal films shot while travelling, from Hong Kong to New York. All of them were filmed on a Lumix S5II and graded in DaVinci Resolve.",
+      "description": "Personal films shot while travelling, from Hong Kong to New York, on a Lumix S5II. Each one is graded fresh in DaVinci Resolve: the grade evolves from film to film, with a film-emulation look running through all of them.",
       "previewVideo": "/videos/newyork-preview.mp4",
-      "heroClips": ["/videos/newyork-preview.mp4", "/videos/spain-preview.mp4", "/videos/vietnam-preview.mp4"],
+      "heroClips": ["/videos/newyork-preview.mp4", "/videos/spain-preview.mp4", "/videos/venice-preview.mp4"],
       "coverImage": "",
       "thumbnail": "/images/thumbs/travel.webp",
-      "featured": 4,
+      "featured": 7,
       "poster": "/images/thumbs/travel-16x9.webp",
       "custom": true,
       "videos": [],
@@ -1133,7 +1140,7 @@
       "year": "2025",
       "location": "France",
       "roles": ["Cinematographer", "Editor", "Colorist"],
-      "description": "Three contrasting palettes across France — alpine cold in the French Alps, Mediterranean warmth on the southern coast, and the warm stone light of Avignon. Vlog-style edits filmed across Chamonix, Sanary-sur-Mer and Avignon.",
+      "description": "Three contrasting palettes across France — alpine cold in the French Alps, Mediterranean warmth on the southern coast, and the warm stone light of Avignon. Filmed across Chamonix, Sanary-sur-Mer and Avignon.",
       "previewVideo": "/videos/france-chamonix-preview.mp4",
       "coverImage": "/images/cover-france.webp",
       "videos": [
@@ -1232,15 +1239,16 @@
       "slug": "amsterdam",
       "title": "Amsterdam",
       "subtitle": "Trams and brick streets",
-      "shortDescription": "Short vlog-style edit from a trip to Amsterdam.",
+      "shortDescription": "Short film from a trip to Amsterdam.",
       "tag": "Travel",
       "category": "travel",
       "year": "2025",
       "location": "Amsterdam",
       "roles": ["Cinematographer", "Editor", "Colorist"],
-      "description": "Short vlog-style edit from a trip to Amsterdam.",
+      "description": "Short film from a trip to Amsterdam.",
       "previewVideo": "/videos/amsterdam-preview.mp4",
       "coverImage": "/images/cover-amsterdam.webp",
+      "hidden": true,
       "videos": [
         {
           "title": "Amsterdam",
@@ -1256,8 +1264,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
-      },
-      "hidden": false
+      }
     },
     {
       "slug": "vietnam",
@@ -1272,6 +1279,7 @@
       "description": "Short travel film from a trip to Vietnam.",
       "previewVideo": "/videos/vietnam-preview.mp4",
       "coverImage": "/images/cover-vietnam.webp",
+      "hidden": true,
       "videos": [
         {
           "title": "Vietnam",
@@ -1287,8 +1295,7 @@
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
-      },
-      "hidden": false
+      }
     },
     {
       "slug": "venice",
@@ -1355,20 +1362,20 @@
     {
       "slug": "b1nbags",
       "title": "B1NBAGS",
-      "subtitle": "Personal clothing brand · Hong Kong",
+      "subtitle": "Clothing brand · Hong Kong",
       "shortDescription": "A personal clothing brand started in Hong Kong in 2023.",
       "tag": "Brand",
       "category": "film",
       "year": "2023–25",
       "location": "Hong Kong",
-      "roles": ["Founder", "Artistic Director", "Cinematographer", "Editor"],
-      "description": "B1NBAGS is a brand I started in 2023 in Hong Kong, paused in 2024 to focus on university, and restarted in 2025. The video work focuses on selling the creative lifestyle rather than the product — high-quality reels shot on a cinema-grade camera, colour-graded with film emulations to build a consistent vintage, textured feel.",
+      "roles": ["Founder", "Art Director", "Cinematographer", "Editor"],
+      "description": "B1NBAGS is a clothing label I started in Hong Kong in 2023: reworked vintage and second-hand pieces, and t-shirts I screen-print by hand. I paused it in 2024 to focus on university, restarted it in 2025, and it is on pause again for now. I do everything myself, from the prints to the films. The video work sells the creative lifestyle rather than the product: reels shot on a cinema-grade camera and graded with film emulation for a consistent vintage, textured feel.",
       "previewVideo": "/videos/b1nbags-1-preview.mp4",
       "coverImage": "/images/cover-b1nbags.webp",
       "thumbnail": "/images/thumbs/b1nbags.webp",
-      "poster": "/images/thumbs/b1nbags-16x9.webp",
       "featured": 1,
       "hidden": false,
+      "poster": "/images/thumbs/b1nbags-16x9.webp",
       "videos": [
         {
           "title": "B1NBAGS — Teaser",
@@ -1396,7 +1403,7 @@
       "credits": {
         "Year": "2023–25",
         "Location": "Hong Kong",
-        "Roles": "Brand · Direction · Cinematography · Editing",
+        "Roles": "Founder · Art direction · Screen printing · Cinematography · Editing",
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve · Photoshop"
@@ -1406,13 +1413,13 @@
       "slug": "halatia",
       "title": "Halatia",
       "subtitle": "Brand identity · Eau de parfum · Paris",
-      "shortDescription": "Brand identity and art direction for Halatia Paris, a Parisian eau de parfum.",
+      "shortDescription": "Brand identity for Halatia Paris, an eau de parfum started with friends that never reached production.",
       "tag": "Brand Identity",
       "category": "other",
       "year": "2025",
       "location": "Paris",
       "roles": ["Art Director", "Brand Designer"],
-      "description": "Brand identity and art direction for Halatia Paris — a Parisian eau de parfum. The brand takes its name from halation, the photographic phenomenon of light spreading beyond its proper boundaries, used as a metaphor for a fragrance that leaves a radiant, invisible impression. The identity is built around an orange signature colour representing optimism, confidence, warmth and boundless energy, paired with a vintage film aesthetic drawn from Paris and classic photography. Designed for a new generation that defies labels.",
+      "description": "Brand identity for Halatia Paris, an eau de parfum started with friends that never reached production. Remi came up with the name and did all the art direction; friends led the product and business side. The name comes from halation, the photographic phenomenon of light spreading beyond its proper boundaries, used as a metaphor for a fragrance that leaves a radiant, invisible impression. The identity was built around an orange signature colour for optimism, confidence, warmth and energy, paired with a vintage film aesthetic drawn from Paris and classic photography.",
       "previewVideo": "",
       "coverImage": "",
       "videos": [],
@@ -1428,21 +1435,21 @@
     {
       "slug": "the-outfiters",
       "title": "The Outfiters",
-      "subtitle": "Artistic direction · Vietnamese streetwear",
-      "shortDescription": "Artistic direction for a project selling Vietnamese streetwear to European markets.",
+      "subtitle": "Art direction · Vietnamese streetwear",
+      "shortDescription": "Art direction for The Outfiters, a project started with friends to bring Vietnamese streetwear to European buyers. It never took off.",
       "tag": "Art Direction",
       "category": "other",
       "year": "2025",
       "location": "Paris / Vietnam",
       "roles": ["Art Director"],
-      "description": "Artistic direction for a small project selling Vietnamese streetwear to European markets. The goal was to build an Instagram account that represented a mood board of the style and lifestyle we wanted to project to our audience — and within that mood board, mix in the Vietnamese brands to sell in Europe using the mood we had built up on the page.",
+      "description": "Art direction for The Outfiters, a project started with friends to bring Vietnamese streetwear to European buyers. It never took off. Remi came up with the name and did all the art direction: the identity, and a mood board of the style and lifestyle the brand was meant to stand for, built to frame the Vietnamese labels it would sell. Friends led the product and business side.",
       "previewVideo": "/videos/b1nbags-shot-expresso-preview.mp4",
       "coverImage": "",
       "videos": [],
       "credits": {
         "Year": "2025",
         "Location": "Paris / Vietnam",
-        "Roles": "Art Direction · Instagram"
+        "Roles": "Art Direction"
       },
       "hidden": false,
       "thumbnail": "/images/thumbs/the-outfiters.webp",
@@ -1458,11 +1465,11 @@
       "year": "2025",
       "location": "Paris",
       "roles": ["Art Director", "Brand Designer"],
-      "description": "Identity work for a Parisian eau de parfum, a Vietnamese streetwear label, a Hong Kong clothing brand and a student campaign. Logo, palette, type and the first visuals for each.",
+      "description": "Identity work for four projects: Halatia, an eau de parfum, and The Outfiters, a Vietnamese streetwear project, both started with friends and never launched; B1NBAGS, a clothing label in Hong Kong; and the Volcan'Archik student campaign. Logo, palette, type and the first visuals for each.",
       "previewVideo": "",
       "coverImage": "",
       "thumbnail": "/images/thumbs/brand-identity.webp",
-      "featured": 7,
+      "featured": 5,
       "hidden": false,
       "poster": "/images/thumbs/brand-identity-16x9.webp",
       "heroClips": ["/images/halatia/10.webp", "/images/halatia/15.webp", "/images/halatia/16.webp", "/images/the-outfiters-brand/1.webp", "/images/the-outfiters-brand/2.webp"],
@@ -1496,9 +1503,9 @@
       "previewVideo": "",
       "coverImage": "",
       "thumbnail": "/images/thumbs/havas-play.webp",
-      "poster": "/images/thumbs/havas-play-16x9.webp",
-      "featured": 2,
+      "featured": 4,
       "hidden": false,
+      "poster": "/images/thumbs/havas-play-16x9.webp",
       "heroClips": ["/videos/havas-kfc-1-preview.mp4", "/videos/havas-internal-3-preview.mp4"],
       "videos": [],
       "credits": {
@@ -1516,12 +1523,12 @@
       "category": "film",
       "year": "2024–25",
       "location": "Cergy, France",
-      "roles": ["Cinematographer", "Editor", "Colorist"],
-      "description": "Visual work for Modessec — the fashion association at ESSEC. Includes the 2025 fashion show aftermovie and teaser, a 2024 teaser, and product photography for the association's hoodie release.",
+      "roles": ["Director", "Cinematographer", "Editor", "Colorist", "Photographer"],
+      "description": "Visual work for Modessec, the fashion association at ESSEC, made as a member of its communications team. For the 2025 fashion show, held at the school in front of hundreds of students with several designers, Remi came up with the concept and the plan for the teaser and the aftermovie, then shot, edited and graded both. Also a 2024 teaser, and product photography for the association's hoodie release, set up and shot by Remi.",
       "previewVideo": "/videos/essec-modessec-teaser-preview.mp4",
       "coverImage": "/images/cover-modessec.webp",
       "thumbnail": "/images/thumbs/modessec.webp",
-      "featured": 3,
+      "featured": 2,
       "hidden": false,
       "poster": "/images/thumbs/modessec-16x9.webp",
       "videos": [
@@ -1545,7 +1552,7 @@
       "credits": {
         "Year": "2024–25",
         "Location": "Cergy, France",
-        "Roles": "Cinematography · Editing · Color · Photography",
+        "Roles": "Direction · Cinematography · Editing · Color · Photography",
         "Camera": "Lumix S5II",
         "Lens": "Lumix 20–60mm f/3.5–5.6",
         "Post": "DaVinci Resolve"
@@ -1561,11 +1568,10 @@
       "year": "2025",
       "location": "Cergy, France",
       "roles": ["Director", "Cinematographer", "Editor", "Colorist"],
-      "description": "Promotional and event films for RMX, the DJ association at ESSEC. Includes a short promo and an aftermovie from a school event.",
+      "description": "Promotional and event films for RMX, the DJ association at ESSEC, made as a friend of the association: a short promo and an aftermovie from a school event attended by several hundred students. Directed, shot, edited and graded by Remi.",
       "previewVideo": "/videos/essec-rmx-2-preview.mp4",
       "coverImage": "/images/cover-rmx.webp",
       "thumbnail": "/images/thumbs/rmx.webp",
-      "featured": 8,
       "hidden": false,
       "poster": "/images/thumbs/rmx-16x9.webp",
       "videos": [
@@ -1594,20 +1600,20 @@
     {
       "slug": "ruinarktefact",
       "title": "Ruinarktefact",
-      "subtitle": "Artistic Director · ESSEC 2024/25",
-      "shortDescription": "Creative direction and head of communications for the Ruinarktefact campaign at ESSEC.",
-      "tag": "Artistic Direction",
+      "subtitle": "Lead on film and creative production · ESSEC 2024/25",
+      "shortDescription": "Lead on film and creative production for the Ruinarktefact campaign at ESSEC.",
+      "tag": "Campaign",
       "category": "film",
       "year": "2024–25",
       "location": "Cergy, France",
-      "roles": ["Artistic Director", "Head of Communications", "Director", "Editor"],
-      "description": "Artistic director and head of communications for RUINARKTEFACT, the year-long BDE campaign at ESSEC 2024/25 — two teams of 35 competing through events and communications. Directed rap videos, event aftermovies and teasers, plus a 20-minute declaration film for the campaign. Campaign identity, mascot, and Instagram managed entirely by Remi Karlin alongside a team of 5.",
+      "roles": ["Filmmaker", "Editor", "Creative Production"],
+      "description": "RUINARKTEFACT was a year-long BDE campaign at ESSEC in 2024/25: two teams of 35 competing through events and communications. Remi shot and edited the campaign's films: rap videos, event aftermovies, teasers and a 20-minute declaration film. He also took part in ideation, creative recruitment, concept and production prep, and co-built the campaign website with teammates. Teammates also helped with sound design, mascot design, derushing and planning. Five large school events drew thousands of students.",
       "previewVideo": "/videos/essec-wei07-preview.mp4",
       "coverImage": "/images/cover-ruinarktefact.webp",
       "thumbnail": "/images/thumbs/ruinarktefact.webp",
-      "poster": "/images/thumbs/ruinarktefact-16x9.webp",
-      "featured": 5,
+      "featured": 6,
       "hidden": false,
+      "poster": "/images/thumbs/ruinarktefact-16x9.webp",
       "videos": [
         {
           "title": "Declaration Film",
@@ -1630,14 +1636,13 @@
       ],
       "instagram": "@itsmickjaguar",
       "instagramUrl": "https://instagram.com/itsmickjaguar",
-      "campaignBody": "Campaign-name designs were built across Illustrator, Photoshop, Procreate, Firefly and Midjourney. The mascot was designed and coloured in Procreate and Illustrator. The Instagram account was run by Remi Karlin alongside a team of 5, posting stories for events and promotional posts for the campaign.",
       "mascotImage": "/images/ruinarktefact/mascot.webp",
       "campaignDesignImage": "/images/ruinarktefact/campaign-design.webp",
       "instagramGridImage": "/images/ruinarktefact/instagram-grid.webp",
       "credits": {
         "Year": "2024–25",
         "Location": "Cergy, France",
-        "Roles": "Artistic Direction · Communications · Direction · Editing",
+        "Roles": "Film · Editing · Creative production · Website (co-built)",
         "Cameras": "Lumix S5II · Sony FX3",
         "Lenses": "Lumix 20–60mm f/3.5–5.6 · Sony GM 24–70",
         "Post": "DaVinci Resolve · Premiere Pro · After Effects"

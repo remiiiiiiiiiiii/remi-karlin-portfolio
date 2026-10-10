@@ -8,7 +8,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
   title: "Halatia — Remi Karlin",
-  description: "Brand identity and art direction for Halatia Paris, a Parisian eau de parfum.",
+  description: "Brand identity for Halatia Paris, an eau de parfum started with friends that never reached production.",
   path: "/work/halatia",
 });
 
@@ -32,7 +32,7 @@ export default function HalatiaPage() {
           Brand identity · Eau de parfum · Paris
         </div>
         <p style={{ fontWeight: 300, fontSize: 15, lineHeight: 1.8, color: "var(--text-2)", maxWidth: 680, margin: "0 0 24px" }}>
-          Brand identity and art direction for Halatia Paris — a Parisian eau de parfum. The brand takes its name from halation, the photographic phenomenon of light spreading beyond its proper boundaries, used as a metaphor for a fragrance that leaves a radiant, invisible impression. The identity is built around an orange signature colour representing optimism, confidence, warmth and boundless energy, paired with a vintage film aesthetic drawn from Paris and classic photography. Designed for a new generation that defies labels.
+          Brand identity for Halatia Paris, an eau de parfum started with friends that never reached production. Remi came up with the name and did all the art direction; friends led the product and business side. The name comes from halation, the photographic phenomenon of light spreading beyond its proper boundaries, used as a metaphor for a fragrance that leaves a radiant, invisible impression. The identity was built around an orange signature colour for optimism, confidence, warmth and energy, paired with a vintage film aesthetic drawn from Paris and classic photography.
         </p>
         <div style={{ display: "flex", gap: "16px 40px", flexWrap: "wrap", fontWeight: 200, fontSize: 9, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)" }}>
           <span>2025</span>

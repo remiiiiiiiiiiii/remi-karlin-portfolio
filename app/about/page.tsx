@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
-  title: "About Remi Karlin — Filmmaker and Artistic Director",
+  title: "About Remi Karlin, Art Director",
   description:
-    "Hong Kong-raised, half French and half Chinese. Remi Karlin directs, shoots, edits and grades films, and builds brand and campaign identities.",
+    "Paris-based art director, raised in Hong Kong, half French and half Chinese. Brand identities and campaigns, and the films and photographs that carry them.",
   path: "/about",
   ogType: "profile",
 });
@@ -33,16 +33,6 @@ export default function AboutPage() {
               filter: "grayscale(15%)",
             }}
           />
-          <div style={{
-            marginTop: 10,
-            fontWeight: 300,
-            fontSize: 9,
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "var(--text-dim)",
-          }}>
-            Remi Karlin · Hong Kong, 2025
-          </div>
         </div>
 
         {/* Bio */}
@@ -55,34 +45,32 @@ export default function AboutPage() {
           }}
         >
           <p>
-            I&apos;m a Hong Kong–raised, half French–half Chinese filmmaker and creative.
+            I&apos;m an art director based in Paris. I grew up in Hong Kong, half French and half Chinese, with an ink artist for a mum, and art classes all through school taught me that good work comes from process: plan, research, iterate, refine.
           </p>
           <p style={{ marginTop: "1.4em" }}>
-            Growing up with an artist for a mum and taking art all through high school, I learned
-            early that good work comes from process: plan, research, iterate, refine. That mindset
-            still drives how I build visuals today.
+            In Hong Kong I started B1NBAGS, a label of reworked vintage and hand-screenprinted tees, and taught myself product, visuals and marketing along the way. It is on pause for now.
           </p>
           <p style={{ marginTop: "1.4em" }}>
-            A big turning point was being recruited to model for BAPE in Hong Kong. On set, I
-            watched ideas turn into campaigns — creative direction, teamwork, tight timelines. It
-            pulled me into the world behind the camera. I launched a small clothing brand,
-            B1nbags, in Hong Kong and taught myself the basics of product, visuals, and marketing.
-            That&apos;s when creativity and entrepreneurship clicked for me.
+            At ESSEC I joined creative associations and took on filming, editing and creative production, most intensely on the year-long Ruinarktefact campaign. In 2026 I spent six months as an editor and art director at Havas Play in Paris, working on KFC, Allianz, Sanofi and others.
           </p>
           <p style={{ marginTop: "1.4em" }}>
-            At university, I joined creative associations and took on creative direction, content
-            creation, and organisation. The most intense stretch was our year-long BDE campaign:
-            two teams of 35 competing through events and communications. I spent one summer in
-            deep practice operating a cinema-grade camera, lighting scenes, recording clean audio,
-            and delivering in post with editing and colour grading. Since then I&apos;ve focused on
-            filmmaking, cinematography, editing, and creative direction — telling clear, honest
-            stories in both short and long formats.
+            The personal work on this site I made myself, from pre-production to colour grading to the website.
           </p>
-          <p style={{ marginTop: "1.4em" }}>
-            All the creative work on this website has been done completely by myself, from
-            pre-production, filming, lighting, sound design, colour grading, post-production, to
-            website design.
-          </p>
+          <ul
+            style={{
+              listStyle: "none",
+              margin: "48px 0 0",
+              padding: 0,
+              fontWeight: 300,
+              fontSize: 11,
+              letterSpacing: "0.04em",
+              lineHeight: 2,
+              color: "var(--text-dim)",
+            }}
+          >
+            <li>Havas Play · Editor and Art Director · Paris · Jan to Jun 2026</li>
+            <li>ESSEC Business School · Global BBA · Class of 2027</li>
+          </ul>
         </div>
       </section>
       <Footer />

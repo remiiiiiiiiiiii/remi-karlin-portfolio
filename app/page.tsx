@@ -69,7 +69,7 @@ export default function Page() {
       <a className="skip" href="#work">
         Skip to work
       </a>
-      <h1 className="vh">Remi Karlin: filmmaker, cinematographer and artistic director in Hong Kong and Paris</h1>
+      <h1 className="vh">Remi Karlin: art director based in Paris</h1>
       {heroItems.length > 0 && (
         <>
           <div className="hero-d">

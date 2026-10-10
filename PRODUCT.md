@@ -10,7 +10,7 @@ A mix of film producers, art directors, brand clients, and agencies — people a
 
 ## Product Purpose
 
-A filmmaker, cinematographer, and artistic director's portfolio. The site exists to communicate creative identity before a single word is read — the design is itself a demonstration of taste. Success means a visitor understands Remi's vibe within seconds, feels compelled to explore, and leaves impressed.
+An art director's portfolio, with the films and photographs he shoots, edits and grades. The site exists to communicate creative identity before a single word is read — the design is itself a demonstration of taste. Success means a visitor understands Remi's vibe within seconds, feels compelled to explore, and leaves impressed.
 
 ## Brand Personality
 

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const ROLE = "Filmmaker · Cinematographer · Artistic Director";
+const ROLE = "Filmmaker · Cinematographer · Art Director";
 
 export default function Nav() {
   const pathname = usePathname() || "/";

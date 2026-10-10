@@ -1,6 +1,6 @@
 ---
 name: Remi Karlin Portfolio
-description: Filmmaker, cinematographer, and artistic director portfolio — where restraint is the loudest signal.
+description: Art director portfolio — where restraint is the loudest signal.
 colors:
   accent: "#620c0a"
   black: "#000000"

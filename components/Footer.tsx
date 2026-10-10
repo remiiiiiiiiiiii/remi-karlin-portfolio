@@ -23,9 +23,15 @@ export default function Footer() {
         >
           remikarlin@gmail.com
         </a>
-        <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+        <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
           <a className="footer-link" href="https://instagram.com/karlinremi" target="_blank" rel="noopener noreferrer">
-            Instagram
+            Instagram @karlinremi
+          </a>
+          <a className="footer-link" href="https://instagram.com/remi.camm" target="_blank" rel="noopener noreferrer">
+            @remi.camm
+          </a>
+          <a className="footer-link" href="https://instagram.com/b1nbags" target="_blank" rel="noopener noreferrer">
+            @b1nbags
           </a>
           <a className="footer-link" href="https://linkedin.com/in/remi-karlin" target="_blank" rel="noopener noreferrer">
             LinkedIn
@@ -33,7 +39,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer-right">
-        Lumix S5II · Lumix 20–60mm f/3.5–5.6
+        Lumix S5II · Sony FX3
         <br />
         Edited in DaVinci Resolve
       </div>
