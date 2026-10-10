@@ -16,6 +16,9 @@ export const metadata = pageMeta({
 const MOODBOARD_URL = "https://app.milanote.com/1XfiCd1keSSa5d?p=iuDdY4z8Qcs";
 // paste the src of Milanote's embed code here (Share → read-only link → Generate HTML embed code)
 const MOODBOARD_EMBED = "https://app.milanote.com/1XfiCd1keSSa5d?p=iuDdY4z8Qcs";
+// Whole-board picture shown first (the live frame opens on an empty corner at 100%). Refresh after editing the
+// board: npm run moodboard -- "<read-only link>" public/images/the-outfiters/moodboard.webp
+const MOODBOARD_SNAPSHOT = { src: "/images/the-outfiters/moodboard.webp", tiny: "/images/the-outfiters/moodboard-tiny.webp", width: 2400, height: 3076 };
 
 const LOGO_SRC = `/images/the-outfiters-brand/${encodeURIComponent("out fiters vn (5).webp")}`;
 
@@ -64,7 +67,12 @@ export default function OutfitersPage() {
 
       <section className="project-section" style={{ paddingBottom: 0 }}>
         <div className="project-section-label">Mood board</div>
-        <MilanoteEmbed src={MOODBOARD_EMBED} title="The Outfiters mood board" boardUrl={MOODBOARD_URL} />
+        <MilanoteEmbed
+          src={MOODBOARD_EMBED}
+          title="The Outfiters mood board"
+          boardUrl={MOODBOARD_URL}
+          snapshot={MOODBOARD_SNAPSHOT}
+        />
       </section>
 
       <nav className="project-prev-next" aria-label="Project navigation" style={{ marginTop: 96 }}>

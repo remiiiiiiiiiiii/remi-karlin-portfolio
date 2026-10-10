@@ -209,3 +209,13 @@ Array order matters: it sets the order inside each index filter and the prev/nex
 ## Tests
 
 `node scripts/add-project.test.mjs` runs everything on a temp copy and touches nothing real. Run it after any change in `scripts/`.
+
+## Mood board snapshot (The Outfiters)
+
+The Outfiters page shows a picture of the whole Milanote board first (the read-only Milanote view opens at 100% on an empty corner of a board that size) and the live board on request. After editing the board, refresh the picture:
+
+```bash
+npm run moodboard -- "https://app.milanote.com/<board id>?p=<read-only token>" public/images/the-outfiters/moodboard.webp
+```
+
+It photographs the board in tiles with headless Chrome (one browser per tile, a shared cache), stitches them and writes a 2400 px WebP plus a `-tiny.webp`. About 10 minutes. Then update `MOODBOARD_SNAPSHOT.height` in `app/work/the-outfiters/page.tsx` if the printed height changed, and commit `public/images/the-outfiters/`.

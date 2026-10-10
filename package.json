@@ -10,7 +10,8 @@
     "add-project": "node scripts/add-project.mjs",
     "media": "node scripts/optimize-media.mjs",
     "deploy": "git push origin main",
-    "pick-frames": "node scripts/pick-frames.mjs"
+    "pick-frames": "node scripts/pick-frames.mjs",
+    "moodboard": "node scripts/snapshot-milanote.mjs"
   },
   "dependencies": {
     "next": "14.2.18",
