@@ -1,0 +1,551 @@
+{
+  "sections": [
+    {
+      "id": "film",
+      "title": "35mm Film",
+      "groups": [
+        {
+          "title": "Kodak Gold",
+          "images": [
+            {
+              "path": "/images/photography/film/kodak-gold-9c925-03.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-68fd3-13.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-9c925-17.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-img-1805.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-68fd3-08.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-img-1814.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-img-1861.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-a16f7-26.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-68fd3-21.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-a16f7-24.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-img-1838.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-9c925-26.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-9c925-13.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-img-1808.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-9c925-36.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/kodak-gold-img-1865.webp",
+              "width": 1600,
+              "height": 1056
+            }
+          ]
+        },
+        {
+          "title": "Portra 400",
+          "images": [
+            {
+              "path": "/images/photography/film/portra-400-img-0554.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0596.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0578.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0620.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0584.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0602.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0563.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0594.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0613.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0611.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/portra-400-img-0605.webp",
+              "width": 1600,
+              "height": 1068
+            }
+          ]
+        },
+        {
+          "title": "Cinestill 400",
+          "images": [
+            {
+              "path": "/images/photography/film/cinestill-400-a0080-11.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/cinestill-400-a0080-25.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/cinestill-400-a0080-21.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/cinestill-400-a0080-28.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/cinestill-400-a0080-19.webp",
+              "width": 1600,
+              "height": 1068
+            },
+            {
+              "path": "/images/photography/film/cinestill-400-a0080-17.webp",
+              "width": 1600,
+              "height": 1068
+            }
+          ]
+        },
+        {
+          "title": "Ilford HP5",
+          "images": [
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90544.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90547.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90540.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90562.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90552.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90560.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90571.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90563.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90573.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90559.webp",
+              "width": 1600,
+              "height": 1056
+            },
+            {
+              "path": "/images/photography/film/ilford-hp5-timeline-1-90568.webp",
+              "width": 1600,
+              "height": 1056
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "event",
+      "title": "Event",
+      "groups": [
+        {
+          "title": "La Nuit de l'ESSEC 2024",
+          "images": [
+            {
+              "path": "/images/photography/event/ndle-2024-rk-019.webp",
+              "width": 1600,
+              "height": 1074
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-197.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-038.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-147.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-080.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-144.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-108.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-287.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-110.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-291.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-222.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-227.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/event/ndle-2024-rk-036.webp",
+              "width": 1600,
+              "height": 1066
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "portrait",
+      "title": "Portrait",
+      "groups": [
+        {
+          "images": [
+            {
+              "path": "/images/photography/portrait/dsc07743.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/photography/portrait/dsc09313.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/photography/portrait/dsc07892.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/photography/portrait/dsc09011.webp",
+              "width": 1200,
+              "height": 1600
+            },
+            {
+              "path": "/images/photography/portrait/dsc08601.webp",
+              "width": 1200,
+              "height": 1600
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "personal",
+      "title": "Personal",
+      "groups": [
+        {
+          "images": [
+            {
+              "path": "/images/photography/personal/dsc00554.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01449.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01794.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/p1176644.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00557.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01509.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/6a434498-3727-4df2-8626-cc1074ff11c3.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01369.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc02016.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00533.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/p1176613.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01542.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01764.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00521.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/p1165345.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01527.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/p1165954.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00542.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/p1165161.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01511.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01396.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01811.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/img-9475.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00423.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01456.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/5850a4e8-ef9b-4260-a184-68d81eb85107.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc02044.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00727.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01515.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/p1175985.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc02221.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00518.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc01452.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/7e4c4884-b32e-427e-846b-e9109353aae0.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc02075.webp",
+              "width": 1600,
+              "height": 1066
+            },
+            {
+              "path": "/images/photography/personal/dsc00611.webp",
+              "width": 1600,
+              "height": 1066
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

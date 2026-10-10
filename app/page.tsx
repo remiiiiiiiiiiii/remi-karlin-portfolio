@@ -38,6 +38,7 @@ export default function Page() {
     title: p.title,
     label: [p.tag, p.location, p.year].filter(Boolean).join(" · "),
     clips: getHeroClips(p),
+    stillMs: p.heroStillMs,
     clients: clientsOf(p),
   }));
 

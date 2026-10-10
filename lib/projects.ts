@@ -51,6 +51,8 @@ export type Project = {
   custom?: boolean;
   /** Explicit preview paths the homepage hero cycles for this project. When set it replaces the derived list (previewVideo need not be first). */
   heroClips?: string[];
+  /** Hero rows made of still images only: ms each still stays on screen (the hero default is 3000). */
+  heroStillMs?: number;
   photoGrid?: { title: string; images: string[] };
   /** Agency the work was made for, e.g. { name: "Havas Play", slug: "havas-play" }. slug is the hub page /work/<slug>. */
   agency?: { name: string; slug: string };

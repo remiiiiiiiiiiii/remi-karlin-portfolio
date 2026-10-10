@@ -1,6 +1,8 @@
 type Props = {
   images: { path: string; width?: number; height?: number }[];
   alt?: string;
+  /** "masonry" (default): CSS columns, reads down each column. "rows": a grid that reads left to right, row by row, so the order of `images` is the order on screen. */
+  layout?: "masonry" | "rows";
 };
 
 /**
@@ -8,9 +10,9 @@ type Props = {
  * width/height attributes so the layout does not jump while they load. The first image of the
  * page is not special-cased: galleries sit below the fold.
  */
-export default function ImageGallery({ images, alt = "Visual" }: Props) {
+export default function ImageGallery({ images, alt = "Visual", layout = "masonry" }: Props) {
   return (
-    <div className="img-gallery">
+    <div className={layout === "rows" ? "img-gallery img-gallery--rows" : "img-gallery"}>
       {images.map((img, i) => (
         // eslint-disable-next-line @next/next/no-img-element
         <img

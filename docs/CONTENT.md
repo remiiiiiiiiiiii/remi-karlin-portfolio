@@ -203,6 +203,8 @@ Preview naming: one preview becomes `public/videos/<slug>-preview.mp4`, several 
 | `agency` | `{ name, slug }`, optional | Agency the work was made for, e.g. `{ "name": "Havas Play", "slug": "havas-play" }`. `slug` is the hub page `/work/<slug>`; the hub lists every project with this slug. Sits after `location` |
 | `links` | `[{ label, url }]`, optional | External links shown under the description on the project page (new tab, `noopener noreferrer`), e.g. `fanyan-art.com` on Fan Yan. Edit by hand; the script does not set it |
 | `client` | string, optional | Brand the work was made for, e.g. `KFC`. Sits after `agency` |
+| `heroClips` | string[], optional | Preview paths the hero cycles for this project (replaces the derived list). Entries may be still images (`.webp`/`.jpg`...): each shows full-frame for 3 s (Brand Identity, Photography) |
+| `heroStillMs` | number, optional | Still-image rows only: ms per still instead of the 3000 default. Photography uses 2000 |
 | `instagram`, `instagramUrl`, `bannerImage`, `instagramGridImage`, `campaignBody`, `mascotImage`, `campaignDesignImage` | strings, optional | Used by the campaign-style pages. Not set by the script; edit by hand |
 
 Array order matters: it sets the order inside each index filter and the prev/next links.

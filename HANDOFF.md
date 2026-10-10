@@ -45,6 +45,8 @@ app/
   work/[slug]/page.tsx      Generic project page for every video project in projects.json
   work/havas-play/          Custom hub page for the Havas Play internship: lists every project whose
                             agency.slug is "havas-play" (order, tier and copy in data/havas-copy.json; two tiers: main cards, then "Also at Havas")
+  work/photography/         Photography page (category "other"): slideshow (components/StillSlideshow.tsx, = the hero row's 9 stills) + four
+                            sections from data/photography-images.json, film stocks as subheadings; WebPs in public/images/photography/<section>/
   work/halatia/             Custom case-study pages (category "other"). Same for
   work/unfold-agency/       unfold-agency, the-outfiters, b1nbags-process,
   work/the-outfiters/       ruinarktefact-process. A custom folder beats [slug].
@@ -83,7 +85,7 @@ Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it 
 
 `node scripts/add-project.mjs list` is the live truth (slug, category, featured, hidden, clip, thumbnail). At the time of writing, 32 entries:
 
-- **Featured (hero / grid order):** b1nbags, modessec, fan-yan, havas-play (hub), brand-identity (hub), ruinarktefact, travel (hub).
+- **Featured (hero / grid order):** b1nbags, modessec, fan-yan, photography (case page, 9-still slideshow at 2 s), havas-play (hub), brand-identity (hub), ruinarktefact, travel (hub).
 - **Hidden:** amsterdam, vietnam (own pages, not listed).
 - **Case studies (`other`, each with `thumbnail` and a custom page):** halatia, unfold-agency, the-outfiters, b1nbags-process, ruinarktefact-process.
 

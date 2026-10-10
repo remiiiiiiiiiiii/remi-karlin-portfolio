@@ -13,14 +13,16 @@ export type HeroItem = {
   label: string;
   /** Every preview clip of the project in play order, e.g. ["/videos/solene-preview.mp4"]. Posters derive from the path. A still image (.webp/.jpg/.jpeg/.png/.avif) is also allowed: it shows full-frame for STILL_MS. */
   clips: string[];
+  /** Still-image rows only: how long each still stays on screen, in ms. Default STILL_MS (3 s). */
+  stillMs?: number;
   /** Agency hub only: its client pages, shown in brackets after the title while the row is current or hovered. */
   clients?: { slug: string; title: string; href?: string }[];
 };
 
 /** One clip of one featured project. Every clip is its own full-frame layer. `image`: a still, no <video>. */
-type Slot = { pi: number; ci: number; src: string; poster: string; tiny: string; image: boolean };
+type Slot = { pi: number; ci: number; src: string; poster: string; tiny: string; image: boolean; ms: number };
 
-/** How long a still image stays on screen before the hero advances. */
+/** How long a still image stays on screen before the hero advances (a row can override it with `stillMs`). */
 const STILL_MS = 3000;
 /** Duration of the swipe-in of a still; keep in sync with the hd-swipe animation in globals.css. */
 const STILL_SWIPE_MS = 560;
@@ -197,7 +199,9 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
     items.forEach((it, pi) => {
       starts.push(slots.length);
       lens.push(it.clips.length);
-      it.clips.forEach((src, ci) => slots.push({ pi, ci, src, poster: posterPath(src), tiny: posterPath(src, true), image: isImage(src) }));
+      it.clips.forEach((src, ci) =>
+        slots.push({ pi, ci, src, poster: posterPath(src), tiny: posterPath(src, true), image: isImage(src), ms: it.stillMs ?? STILL_MS })
+      );
     });
     return { slots, starts, lens };
   }, [items]);
@@ -447,7 +451,8 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
     }
     if (!running) return;
     stillT0.current = performance.now();
-    const left = Math.max(0, STILL_MS - stillBase.current);
+    const stillMs = slots[cur].ms;
+    const left = Math.max(0, stillMs - stillBase.current);
     // Both timers re-check `cur`: a hover can move on in the gap before this effect's cleanup runs.
     const warmTimer = window.setTimeout(() => {
       if (curRef.current !== cur) return;
@@ -464,7 +469,7 @@ export default function HeroFrame({ items: baseItems }: { items: HeroItem[] }) {
       window.clearTimeout(timer);
       stillBase.current += performance.now() - stillT0.current;
     };
-  }, [running, curImage, cur, auto, nextOf, go]);
+  }, [running, curImage, cur, auto, nextOf, go, slots]);
 
   // Timecode of the playing clip (or elapsed time of a still), 24 fps; restarts at 0 on every slot change. Written straight to the DOM, no React renders.
   useEffect(() => {
