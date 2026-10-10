@@ -13,6 +13,7 @@
 //     description, roles, video titles and descriptions) and only refreshes media and structure
 //   - --set-featured applies the featured numbers from the copy file (hero order); without it
 //     `featured` is never touched
+// A havas-* entry that is not listed in the copy file is removed. Pieces missing from the manifest disappear from their page.
 // New film entries go right after "solene"; the hub goes after the last case study ("other").
 
 import fs from "node:fs";
@@ -214,7 +215,7 @@ function buildHub(internalThumb) {
   };
 }
 
-/** Rebuild with the canonical key order, then any extra keys the old entry carried; keep featured/hidden. */
+/** Rebuild with the old entry's key order (canonical for new entries), keeping featured/hidden. */
 function finalize(entry, old) {
   const merged = { ...entry };
   if (old) {
@@ -225,7 +226,9 @@ function finalize(entry, old) {
     merged.hidden = false;
   }
   const out = {};
-  for (const k of KEY_ORDER) if (merged[k] !== undefined) out[k] = merged[k];
+  // an existing entry keeps its own key order (so a re-run does not shuffle the file); new keys follow the canonical order
+  if (old) for (const k of Object.keys(old)) if (merged[k] !== undefined) out[k] = merged[k];
+  for (const k of KEY_ORDER) if (merged[k] !== undefined && !(k in out)) out[k] = merged[k];
   for (const k of Object.keys(merged)) if (!(k in out) && merged[k] !== undefined) out[k] = merged[k];
   return out;
 }
@@ -237,6 +240,18 @@ function describe(e) {
   const pend = v.filter((x) => x.pending).length;
   const imgs = (e.galleries || []).reduce((n, g) => n + g.images.length, 0);
   return `${v.length} films (${self} self-hosted, ${yt} youtube, ${pend} pending), ${imgs} visuals in ${(e.galleries || []).length} galleries`;
+}
+
+// ---- prune: a Havas Play client page that is no longer in the copy file is removed ----
+// (copy file = the list of clients on the site; this is how a dropped client such as Orange or BKT stays gone)
+let removed = 0;
+for (let i = list.length - 1; i >= 0; i--) {
+  const p = list[i];
+  if (p.agency?.slug === AGENCY.slug && p.slug !== (copy.hub?.slug || AGENCY.slug) && !(copy.clients || {})[p.slug]) {
+    list.splice(i, 1);
+    removed++;
+    log.push(`remove  ${p.slug}  (not in the copy file)`);
+  }
 }
 
 // ---- upsert film entries, in copy order ----
@@ -323,7 +338,7 @@ const featuredOrder = list
 
 console.log(`${args.dry ? "[dry run] " : ""}manifest ${manifestFile}`);
 for (const l of log) console.log("  " + l);
-console.log(`\n${inserted} inserted, ${updated} updated (films); hub ${hubAt >= 0 ? "updated" : "inserted"}; ${list.length} entries in projects.json`);
+console.log(`\n${inserted} inserted, ${updated} updated, ${removed} removed (films); hub ${hubAt >= 0 ? "updated" : "inserted"}; ${list.length} entries in projects.json`);
 console.log(`featured order: ${featuredOrder.join(" | ") || "(none)"}`);
 if (warnings.length) {
   console.log(`\n${warnings.length} warning(s):`);

@@ -1,4 +1,5 @@
 import data from "@/data/projects.json";
+import havasCopy from "@/data/havas-copy.json";
 
 export type ProjectVideoEntry = {
   title: string;
@@ -143,9 +144,32 @@ export function getHubProjects(hubSlug: string, exceptSlug?: string): Project[] 
 /** One entry of a hub page: the project it points at, the label and the href (hub children, then `hubLinks`). */
 export type HubEntry = { project: Project; title: string; href: string };
 
+/**
+ * Havas Play hub: `order` and `tier` of each client page come from data/havas-copy.json. The hub page shows
+ * the "main" tier as full cards and the "also" tier as a smaller "Also at Havas" section; the homepage bracket
+ * row lists the main tier only.
+ */
+type HavasClientCopy = { order: number; tier?: string };
+const HAVAS_CLIENTS = havasCopy.clients as Record<string, HavasClientCopy>;
+export const HAVAS_ORDER: Record<string, number> = Object.fromEntries(
+  Object.entries(HAVAS_CLIENTS).map(([slug, c]) => [slug, c.order])
+);
+export const HAVAS_ALSO = new Set(
+  Object.entries(HAVAS_CLIENTS)
+    .filter(([, c]) => c.tier === "also")
+    .map(([slug]) => slug)
+);
+
 export function getHubEntries(hubSlug: string, exceptSlug?: string): HubEntry[] {
   const hub = projects.find((p) => p.slug === hubSlug);
-  const own = getHubProjects(hubSlug, exceptSlug).map((p) => ({ project: p, title: p.title, href: `/work/${p.slug}` }));
+  let children = getHubProjects(hubSlug, exceptSlug);
+  if (hubSlug === havasCopy.hub.slug) {
+    // main tier only, in the order set in havas-copy.json
+    children = children
+      .filter((p) => !HAVAS_ALSO.has(p.slug))
+      .sort((a, b) => (HAVAS_ORDER[a.slug] ?? Number.POSITIVE_INFINITY) - (HAVAS_ORDER[b.slug] ?? Number.POSITIVE_INFINITY));
+  }
+  const own = children.map((p) => ({ project: p, title: p.title, href: `/work/${p.slug}` }));
   const linked = (hub?.hubLinks ?? [])
     .map((l) => ({ l, project: projects.find((p) => p.slug === l.slug) }))
     .filter((x): x is { l: NonNullable<Project["hubLinks"]>[number]; project: Project } => !!x.project && !x.project.hidden && x.project.slug !== exceptSlug)

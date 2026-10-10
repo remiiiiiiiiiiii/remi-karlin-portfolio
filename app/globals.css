@@ -1655,6 +1655,10 @@ body.is-hover .cursor-ring {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 56px 24px;
 }
+.havas-also {
+  padding-top: 40px;
+  padding-bottom: 72px;
+}
 .havas-grid--small {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 32px 16px;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAgencyProjects, projects } from "@/lib/projects";
+import { getAgencyProjects, HAVAS_ALSO, HAVAS_ORDER, projects } from "@/lib/projects";
 import { pageMeta } from "@/lib/seo";
 import BackButton from "@/components/BackButton";
 import AgencyCard from "@/components/AgencyCard";
@@ -7,9 +7,6 @@ import Footer from "@/components/Footer";
 import copy from "@/data/havas-copy.json";
 
 const SLUG = copy.hub.slug;
-const ORDER: Record<string, number> = Object.fromEntries(
-  Object.entries(copy.clients).map(([slug, c]) => [slug, (c as { order: number }).order])
-);
 
 export const metadata = pageMeta({
   title: "Havas Play — Editor & Art Director, Paris | Remi Karlin",
@@ -19,8 +16,11 @@ export const metadata = pageMeta({
 });
 
 export default function HavasPlayHub() {
-  // Every project made for Havas Play, in the order set in data/havas-copy.json.
-  const clients = getAgencyProjects(SLUG, ORDER);
+  // Every project made for Havas Play, in the order set in data/havas-copy.json, in two tiers:
+  // the main clients (full cards), then the smaller "Also at Havas" section.
+  const all = getAgencyProjects(SLUG, HAVAS_ORDER);
+  const clients = all.filter((p) => !HAVAS_ALSO.has(p.slug));
+  const also = all.filter((p) => HAVAS_ALSO.has(p.slug));
   // prev/next only link to listed pages: hidden projects are skipped
   const visible = projects.filter((p) => !p.hidden || p.slug === SLUG);
   const idx = visible.findIndex((p) => p.slug === SLUG);
@@ -51,7 +51,7 @@ export default function HavasPlayHub() {
       </div>
 
       <section className="havas-clients" aria-label="Clients">
-        <div className="project-section-label">Clients</div>
+        <div className="project-section-label">{copy.hub.mainLabel}</div>
         {clients.length > 0 ? (
           <div className="havas-grid">
             {clients.map((p) => (
@@ -62,6 +62,17 @@ export default function HavasPlayHub() {
           <p className="havas-empty">The client work is being added. Check back soon.</p>
         )}
       </section>
+
+      {also.length > 0 && (
+        <section className="havas-clients havas-also" aria-label={copy.hub.alsoLabel}>
+          <div className="project-section-label">{copy.hub.alsoLabel}</div>
+          <div className="havas-grid havas-grid--small">
+            {also.map((p) => (
+              <AgencyCard key={p.slug} p={p} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <nav className="project-prev-next" aria-label="Project navigation">
         <div>

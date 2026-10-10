@@ -4,7 +4,7 @@ Everything the site lists lives in `data/projects.json`. You do not edit code to
 
 ## What the homepage shows, and where each piece comes from
 
-1. **Hero (desktop)**: a full-frame video with a hover list of the featured projects. The list is the projects that have `featured`, in `featured` order (1 = first). Hovering or selecting a row plays that project's clips one after the other (`heroClips` when set, else its `previewVideo` first and then the other landscape clips). A hub can be featured too: the Travel hub cycles its `heroClips`; the Havas Play hub does the same and its row shows the client pages in brackets, revealed while the row is current or hovered. This is desktop only.
+1. **Hero (desktop)**: a full-frame video with a hover list of the featured projects. The list is the projects that have `featured`, in `featured` order (1 = first). Hovering or selecting a row plays that project's clips one after the other (`heroClips` when set, else its `previewVideo` first and then the other landscape clips). A hub can be featured too: the Travel hub cycles its `heroClips`; the Havas Play hub does the same and its row shows the main-tier client pages in brackets (not the "Also at Havas" ones), revealed while the row is current or hovered. This is desktop only.
 2. **Poster grid (mobile)**: the same featured projects, same order, as static 16:9 stills: the entry's `poster` when set, else the poster of its `previewVideo`. Nothing plays.
 3. **Bio**: text on the page, not in `projects.json`.
 4. **Work index**: every project that is not `hidden` (travel destinations excepted, see the table), with two filters:
@@ -76,7 +76,7 @@ Change a thumbnail later: `node scripts/add-project.mjs set-thumbnail halatia /p
 
 ## Agency work and the Havas hub
 
-Work made for an agency is a normal project entry with two extra fields: `agency: { name, slug }` and `client`. The hub is a custom page (`app/work/havas-play/`, listed itself as a case-study entry). It lists every visible project whose `agency.slug` is `havas-play`, ordered by `order` in `data/havas-copy.json`; a client without an `order` goes after the numbered ones, in `projects.json` order. The client page is the generic `/work/<slug>` page and links back to the hub through `agency`. So: set `agency` and the client shows up on the hub, nothing else to wire.
+Work made for an agency is a normal project entry with two extra fields: `agency: { name, slug }` and `client`. The hub is a custom page (`app/work/havas-play/`, listed itself as a case-study entry). It lists every visible project whose `agency.slug` is `havas-play`, ordered by `order` in `data/havas-copy.json`; a client without an `order` goes after the numbered ones, in `projects.json` order. The hub has **two tiers**, set by `tier` in `havas-copy.json`: `main` clients (KFC, Renault, Sanofi, Havas internal, FFJ) get full cards under "Clients"; `also` clients (Kellogg's, Nissan, Allianz, Paris FC, Louis Burton) get smaller cards under "Also at Havas". The homepage hero bracket row lists the main tier only (`getHubEntries` in `lib/projects.ts`). Orange (`havas-tor`) and BKT (`havas-bkt`) were removed on 2026-10-10, along with several pieces (Sanofi animation, Showreel, Sephora crew, Allianz Slalom and Para, Kellogg's Tasty Krunchy, most Nissan films, Louis Burton cut v6) and their media. Re-running `scripts/import-havas.mjs` cannot bring them back: it only builds what `havas-manifest.json` lists for the clients in `havas-copy.json`, and it deletes a `havas-*` entry that is no longer in the copy file. The client page is the generic `/work/<slug>` page and links back to the hub through `agency`. So: set `agency` and the client shows up on the hub, nothing else to wire.
 
 **Add a new client page** (slug `havas-<client>`; never `havas-play`, which is the hub):
 
@@ -91,7 +91,7 @@ node scripts/add-project.mjs --slug havas-nissan --title "Nissan" --category fil
 
 - A film of 40 s or less goes on the site: `--full` encodes it to `public/videos/full/<slug>-<n>.mp4` (H.264 CRF 26, long edge 1920, AAC 128k, faststart) and sets `localVideo`, `hosting: "self"`, `aspect` and `durationSec` from the file. Above 40 s the script warns: upload to YouTube instead.
 - A longer film: add it as `--pending "Title"` (shows the poster with "Full film coming soon"), then send the file to YouTube.
-- `--client` and `--agency` are only for `add` / `add-case`. Optional: add the slug to `clients` in `data/havas-copy.json` to fix its position on the hub and give it hub copy.
+- `--client` and `--agency` are only for `add` / `add-case`. Optional: add the slug to `clients` in `data/havas-copy.json` (with `order` and `tier`) to fix its position on the hub and give it hub copy.
 
 **Fill the YouTube ids of pending films** once Rémi has uploaded them:
 

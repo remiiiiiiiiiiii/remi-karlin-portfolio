@@ -44,7 +44,7 @@ app/
   about/page.tsx
   work/[slug]/page.tsx      Generic project page for every video project in projects.json
   work/havas-play/          Custom hub page for the Havas Play internship: lists every project whose
-                            agency.slug is "havas-play" (order and copy in data/havas-copy.json)
+                            agency.slug is "havas-play" (order, tier and copy in data/havas-copy.json; two tiers: main cards, then "Also at Havas")
   work/halatia/             Custom case-study pages (category "other"). Same for
   work/unfold-agency/       unfold-agency, the-outfiters, b1nbags-process,
   work/the-outfiters/       ruinarktefact-process. A custom folder beats [slug].
@@ -101,18 +101,14 @@ Moved to **[docs/CONTENT.md](docs/CONTENT.md)**: how the homepage picks what it 
 | ruinarktefact | film | Campaign films. Mascot/campaign assets live on the **ruinarktefact-process** case study |
 | halatia, unfold-agency, the-outfiters, b1nbags-process, ruinarktefact-process | other | Custom pages under `app/work/`. Thumbnails are `/images/thumbs/<slug>.webp`. the-outfiters carries a `previewVideo` that is not in a `videos[]`, so `set-preview` on it needs `--force` |
 
-**Havas Play (agency work, Jan–Jun 2026).** The hub page `/work/havas-play` and one client page per brand (slugs `havas-<client>`, each with `agency: { name: "Havas Play", slug: "havas-play" }` and `client`) exist; they were created by the manifest importer `scripts/import-havas.mjs`. Short films are self-hosted in `public/videos/full/`. **Films still pending a YouTube upload** (longer than 40 s; the page shows the poster and "Full film coming soon" until the id is filled with `set-youtube`; `list` shows the count per project):
+**Havas Play (agency work, Jan–Jun 2026).** The hub page `/work/havas-play` and one client page per brand (slugs `havas-<client>`, each with `agency: { name: "Havas Play", slug: "havas-play" }` and `client`) exist; they were created by the manifest importer `scripts/import-havas.mjs`. The hub has two tiers (`tier` in `data/havas-copy.json`): main = KFC, Renault, Sanofi, Havas internal, FFJ (also the homepage bracket row); "Also at Havas" = Kellogg's, Nissan, Allianz, Paris FC, Louis Burton. Orange and BKT were removed on 2026-10-10, as were several pieces and their media; the importer cannot resurrect them (it only reads the manifest and copy file, and prunes `havas-*` entries that are not in the copy file). Short films are self-hosted in `public/videos/full/`. **Films still pending a YouTube upload** (longer than 40 s; the page shows the poster and "Full film coming soon" until the id is filled with `set-youtube`; `list` shows the count per project):
 
 | Film | Length |
 |---|---|
-| Allianz, paragliding | 74 s |
 | Allianz, day in the life | 88 s |
-| BKT, L'Action | 74 s |
 | Renault | 60 s |
 | Sanofi, Mikkel | 100 s |
-| Havas showreel | 61 s |
-| Ce Créa | 144 s |
-| Sephora, crew | 48 s |
+| Ce Créa 2026 | 144 s |
 
 When Rémi has uploaded one: `node scripts/add-project.mjs set-youtube <slug> <n|title> <url>`, check the page, commit `data`, push.
 
